@@ -12,6 +12,8 @@ double erf(double x); // Error function
 double erfc(double x); // Complementary error function
 double ndtr(double x); // Normal CDF
 double ndtri(double x); // Inverse normal CDF
+double incbet(double a, double b, double x); // Incomplete beta
+double incbi(double a, double b, double y); // Inverse incomplete beta
 
 double igam(double a, double x);  // Incomplete gamma integral 
 double igamc(double a, double x); // Complemented incomplete gamma integral
@@ -187,6 +189,36 @@ value Specialfn_ndtri(vm *v, int nargs, value *args) {
     return out;
 }
 
+value Specialfn_incbet(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, b, x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 2), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(incbet(a,b,x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "incbet", 3, "float");
+
+    return out;
+}
+
+value Specialfn_incbi(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, b, y;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 2), &y)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(incbi(a,b,y));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "incbi", 3, "float");
+
+    return out;
+}
+
 value Specialfn_igamc(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL; 
 
@@ -224,4 +256,6 @@ void specialfn_initialize(void) {
     morpho_addfunction("erfc", "Float (_)", Specialfn_erfc, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("ndtr", "Float (_)", Specialfn_ndtr, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("ndtri", "Float (_)", Specialfn_ndtri, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("incbet", "Float (_,_,_)", Specialfn_incbet, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("incbi", "Float (_,_,_)", Specialfn_incbi, BUILTIN_FLAGSEMPTY, NULL);
 }
