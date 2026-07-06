@@ -15,7 +15,7 @@ value Specialfn_gamma(vm *v, int nargs, value *args) {
     double x; 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
         out=MORPHO_FLOAT(gamma(x));
-    }
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "gamma", 1, "float");
 
     return out;
 }
@@ -26,7 +26,7 @@ value Specialfn_lgam(vm *v, int nargs, value *args) {
     double x; 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
         out=MORPHO_FLOAT(lgam(x));
-    }
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "lgam", 1, "float");
 
     return out;
 }
@@ -38,7 +38,7 @@ value Specialfn_igam(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         out=MORPHO_FLOAT(igam(a,x));
-    }
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "igam", 2, "float");
 
     return out;
 }
@@ -50,7 +50,7 @@ value Specialfn_igamc(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         out=MORPHO_FLOAT(igamc(a,x));
-    }
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "igamc", 2, "float");
 
     return out;
 }
