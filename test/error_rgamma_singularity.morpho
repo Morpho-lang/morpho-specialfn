@@ -1,0 +1,4 @@
+// Error: 'SpecialfnUnderflow'
+import specialfn
+
+rgamma(40)

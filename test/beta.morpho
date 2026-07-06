@@ -1,0 +1,18 @@
+// Test beta family functions
+
+import specialfn
+
+var values = (
+    ( beta(1, 1), 1.0 ),
+    ( beta(1, 2.5), 0.4 ),
+    ( beta(0.5, 0.5), 3.14159265358979323846 ),
+    ( lbeta(1, 2.5), -0.91629073187415506518 ),
+    ( rgamma(1), 1.0 ),
+    ( rgamma(0.5), 0.56418958354775628695 )
+)
+
+var tol = 1e-13
+
+for (v in values) {
+    if (abs(1-v[1]/v[0]) > tol) print "Fail: ${v[0]}, ${v[1]}"
+}

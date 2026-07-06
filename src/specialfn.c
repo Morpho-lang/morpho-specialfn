@@ -5,6 +5,9 @@
 
 double gamma(double x); // Gamma function
 double lgam(double x);  // Logarithm of the gamma function
+double beta(double a, double b); // Beta function
+double lbeta(double a, double b); // Logarithm of beta
+double rgamma(double x); // Reciprocal gamma function
 
 double igam(double a, double x);  // Incomplete gamma integral 
 double igamc(double a, double x); // Complemented incomplete gamma integral
@@ -73,6 +76,34 @@ value Specialfn_lgam(vm *v, int nargs, value *args) {
     return out;
 }
 
+value Specialfn_beta(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, b;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(beta(a,b));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "beta", 2, "float");
+
+    return out;
+}
+
+value Specialfn_lbeta(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, b;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(lbeta(a,b));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "lbeta", 2, "float");
+
+    return out;
+}
+
 value Specialfn_igam(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL; 
 
@@ -83,6 +114,19 @@ value Specialfn_igam(vm *v, int nargs, value *args) {
         out=MORPHO_FLOAT(igam(a,x));
         if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "igam", 2, "float");
+
+    return out;
+}
+
+value Specialfn_rgamma(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(rgamma(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "rgamma", 1, "float");
 
     return out;
 }
@@ -115,6 +159,9 @@ void specialfn_initialize(void) {
 
     morpho_addfunction("gamma", "Float (_)", Specialfn_gamma, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("lgam", "Float (_)", Specialfn_lgam, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("beta", "Float (_,_)", Specialfn_beta, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("lbeta", "Float (_,_)", Specialfn_lbeta, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("igam", "Float (_,_)", Specialfn_igam, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("igamc", "Float (_,_)", Specialfn_igamc, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("rgamma", "Float (_)", Specialfn_rgamma, BUILTIN_FLAGSEMPTY, NULL);
 }

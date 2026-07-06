@@ -22,6 +22,7 @@
 
 void mtherr_reset(void);
 int mtherr_geterror(void);
+int mtherr(char *name, int code);
 
 extern const char *merrorname;
 

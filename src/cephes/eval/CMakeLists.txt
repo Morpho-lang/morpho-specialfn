@@ -7,5 +7,3 @@ target_sources(specialfn
         polevl.c
         mconf.h
 )
-
-
