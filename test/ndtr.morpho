@@ -1,0 +1,24 @@
+// Test normal distribution functions
+
+import specialfn
+
+var values = (
+    ( ndtr(0), 0.5 ),
+    ( ndtr(1), 0.84134474606854294859 ),
+    ( ndtr(-1), 0.15865525393145705141 ),
+    ( ndtri(0.5), 0.0 ),
+    ( ndtri(0.84134474606854294859), 1.0 ),
+    ( ndtri(0.15865525393145705141), -1.0 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

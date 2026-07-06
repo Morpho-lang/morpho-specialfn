@@ -1,0 +1,4 @@
+// Error: 'SpecialfnDomain'
+import specialfn
+
+ndtri(0)

@@ -4,4 +4,5 @@ target_sources(specialfn
         expx2.c
         igam.c
         ndtr.c
+        ndtri.c
 )
