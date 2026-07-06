@@ -8,6 +8,8 @@ double lgam(double x);  // Logarithm of the gamma function
 double beta(double a, double b); // Beta function
 double lbeta(double a, double b); // Logarithm of beta
 double rgamma(double x); // Reciprocal gamma function
+double erf(double x); // Error function
+double erfc(double x); // Complementary error function
 
 double igam(double a, double x);  // Incomplete gamma integral 
 double igamc(double a, double x); // Complemented incomplete gamma integral
@@ -131,6 +133,32 @@ value Specialfn_rgamma(vm *v, int nargs, value *args) {
     return out;
 }
 
+value Specialfn_erf(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(erf(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "erf", 1, "float");
+
+    return out;
+}
+
+value Specialfn_erfc(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(erfc(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "erfc", 1, "float");
+
+    return out;
+}
+
 value Specialfn_igamc(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL; 
 
@@ -164,4 +192,6 @@ void specialfn_initialize(void) {
     morpho_addfunction("igam", "Float (_,_)", Specialfn_igam, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("igamc", "Float (_,_)", Specialfn_igamc, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("rgamma", "Float (_)", Specialfn_rgamma, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("erf", "Float (_)", Specialfn_erf, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("erfc", "Float (_)", Specialfn_erfc, BUILTIN_FLAGSEMPTY, NULL);
 }
