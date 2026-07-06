@@ -25,3 +25,5 @@ for (v in values) {
     var gp = v[1]
     if (abs(1-gp/g) > tol) print "Fail: ${x}, ${g}, ${abs(1-gp/g)}"
 }
+
+print "Success" // expect: Success

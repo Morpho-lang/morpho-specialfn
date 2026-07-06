@@ -1,0 +1,4 @@
+// Error: 'SpecialfnUnderflow'
+import specialfn
+
+igam(1000, 1)

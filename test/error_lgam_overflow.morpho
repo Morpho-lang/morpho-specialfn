@@ -1,0 +1,4 @@
+// Error: 'SpecialfnOverflow'
+import specialfn
+
+lgam(-35)

@@ -9,12 +9,52 @@ double lgam(double x);  // Logarithm of the gamma function
 double igam(double a, double x);  // Incomplete gamma integral 
 double igamc(double a, double x); // Complemented incomplete gamma integral
 
+/* -------------------------------------------------------
+ * Raise Ceres errors as morpho errors
+ * ------------------------------------------------------- */
+
+typedef struct {
+    int code;
+    errorid tag;
+} SpecialfnError;
+
+static const SpecialfnError specialfn_errors[] = {
+    { DOMAIN, SPECIALFN_DOMAINERROR },
+    { SING, SPECIALFN_SINGULARITYERROR },
+    { OVERFLOW, SPECIALFN_OVERFLOWERROR },
+    { UNDERFLOW, SPECIALFN_UNDERFLOWERROR },
+    { TLOSS, SPECIALFN_TLOSSERROR },
+    { PLOSS, SPECIALFN_PLOSSERROR }
+};
+
+static bool specialfn_dispatcherror(vm *v) {
+    int code = mtherr_geterror();
+    if (code == 0) return false;
+    
+    const char *function = (merrorname) ? merrorname : "unknown";
+
+    for (unsigned int i = 0; i < sizeof(specialfn_errors)/sizeof(specialfn_errors[0]); i++) {
+        if (specialfn_errors[i].code == code) {
+            morpho_runtimeerror(v, specialfn_errors[i].tag, function);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/* -------------------------------------------------------
+ * Ceres veneers
+ * ------------------------------------------------------- */
+
 value Specialfn_gamma(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL; 
 
     double x; 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
         out=MORPHO_FLOAT(gamma(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "gamma", 1, "float");
 
     return out;
@@ -25,7 +65,9 @@ value Specialfn_lgam(vm *v, int nargs, value *args) {
 
     double x; 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
         out=MORPHO_FLOAT(lgam(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "lgam", 1, "float");
 
     return out;
@@ -37,7 +79,9 @@ value Specialfn_igam(vm *v, int nargs, value *args) {
     double a, x; 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
         out=MORPHO_FLOAT(igam(a,x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "igam", 2, "float");
 
     return out;
@@ -49,7 +93,9 @@ value Specialfn_igamc(vm *v, int nargs, value *args) {
     double a, x; 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
         out=MORPHO_FLOAT(igamc(a,x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "igamc", 2, "float");
 
     return out;
@@ -60,6 +106,13 @@ value Specialfn_igamc(vm *v, int nargs, value *args) {
  * ------------------------------------------------------- */
 
 void specialfn_initialize(void) { 
+    morpho_defineerror(SPECIALFN_DOMAINERROR, ERROR_HALT, SPECIALFN_DOMAINERROR_MSG);
+    morpho_defineerror(SPECIALFN_SINGULARITYERROR, ERROR_HALT, SPECIALFN_SINGULARITYERROR_MSG);
+    morpho_defineerror(SPECIALFN_OVERFLOWERROR, ERROR_HALT, SPECIALFN_OVERFLOWERROR_MSG);
+    morpho_defineerror(SPECIALFN_UNDERFLOWERROR, ERROR_HALT, SPECIALFN_UNDERFLOWERROR_MSG);
+    morpho_defineerror(SPECIALFN_TLOSSERROR, ERROR_HALT, SPECIALFN_TLOSSERROR_MSG);
+    morpho_defineerror(SPECIALFN_PLOSSERROR, ERROR_HALT, SPECIALFN_PLOSSERROR_MSG);
+
     morpho_addfunction("gamma", "Float (_)", Specialfn_gamma, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("lgam", "Float (_)", Specialfn_lgam, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("igam", "Float (_,_)", Specialfn_igam, BUILTIN_FLAGSEMPTY, NULL);
