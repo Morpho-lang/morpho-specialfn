@@ -1,0 +1,24 @@
+// Test first-order Bessel functions
+
+import specialfn
+
+var values = (
+    ( j0(0), 1.0 ),
+    ( j0(1), 0.76519768655796655145 ),
+    ( j1(0), 0.0 ),
+    ( j1(1), 0.44005058574493351596 ),
+    ( y0(1), 0.08825696421567695798 ),
+    ( y1(1), -0.78121282130028871655 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

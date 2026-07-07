@@ -14,6 +14,10 @@ double ndtr(double x); // Normal CDF
 double ndtri(double x); // Inverse normal CDF
 double incbet(double a, double b, double x); // Incomplete beta
 double incbi(double a, double b, double y); // Inverse incomplete beta
+double j0(double x); // Bessel J0
+double j1(double x); // Bessel J1
+double y0(double x); // Bessel Y0
+double y1(double x); // Bessel Y1
 
 double igam(double a, double x);  // Incomplete gamma integral 
 double igamc(double a, double x); // Complemented incomplete gamma integral
@@ -219,6 +223,58 @@ value Specialfn_incbi(vm *v, int nargs, value *args) {
     return out;
 }
 
+value Specialfn_j0(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(j0(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "j0", 1, "float");
+
+    return out;
+}
+
+value Specialfn_j1(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(j1(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "j1", 1, "float");
+
+    return out;
+}
+
+value Specialfn_y0(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(y0(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "y0", 1, "float");
+
+    return out;
+}
+
+value Specialfn_y1(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(y1(x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, "y1", 1, "float");
+
+    return out;
+}
+
 value Specialfn_igamc(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL; 
 
@@ -258,4 +314,8 @@ void specialfn_initialize(void) {
     morpho_addfunction("ndtri", "Float (_)", Specialfn_ndtri, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("incbet", "Float (_,_,_)", Specialfn_incbet, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction("incbi", "Float (_,_,_)", Specialfn_incbi, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("j0", "Float (_)", Specialfn_j0, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("j1", "Float (_)", Specialfn_j1, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("y0", "Float (_)", Specialfn_y0, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction("y1", "Float (_)", Specialfn_y1, BUILTIN_FLAGSEMPTY, NULL);
 }
