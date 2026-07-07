@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <morpho.h>
 
 #include "specialfn.h"
@@ -365,6 +366,10 @@ value Specialfn_struve(vm *v, int nargs, value *args) {
     double order, x;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &order) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        if (x < 0.0 && floor(order) != order) {
+            morpho_runtimeerror(v, SPECIALFN_DOMAINERROR, SPECIALFN_STRUVEH);
+            return MORPHO_NIL;
+        }
         mtherr_reset();
         out=MORPHO_FLOAT(struve(order, x));
         if (specialfn_dispatcherror(v)) out=MORPHO_NIL;

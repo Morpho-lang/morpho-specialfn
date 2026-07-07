@@ -221,6 +221,8 @@ The first argument is an integer order `n`.
 
 Computes the Struve function `H_v(x)` of order `v`.
 
+Negative `x` is only accepted when `v` is an integer.
+
     print struveH(0, 1)
 
 ## erf
