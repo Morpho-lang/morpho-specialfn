@@ -1,0 +1,45 @@
+// Test mathematical identities for special functions
+
+import specialfn
+
+var values = (
+    // lowerIncompleteGamma(a, x) + upperIncompleteGamma(a, x) = 1
+    ( lowerIncompleteGamma(1.0, 0.5) + upperIncompleteGamma(1.0, 0.5), 1.0 ),
+    ( lowerIncompleteGamma(2.0, 1.0) + upperIncompleteGamma(2.0, 1.0), 1.0 ),
+    ( lowerIncompleteGamma(5.0, 3.0) + upperIncompleteGamma(5.0, 3.0), 1.0 ),
+    ( lowerIncompleteGamma(0.5, 2.0) + upperIncompleteGamma(0.5, 2.0), 1.0 ),
+
+    // upperIncompleteGamma(a, inverseUpperIncompleteGamma(a, p)) = p
+    ( upperIncompleteGamma(1.0, inverseUpperIncompleteGamma(1.0, 0.25)), 0.25 ),
+    ( upperIncompleteGamma(2.0, inverseUpperIncompleteGamma(2.0, 0.5)), 0.5 ),
+    ( upperIncompleteGamma(5.0, inverseUpperIncompleteGamma(5.0, 0.1)), 0.1 ),
+
+    // incompleteBeta(a, b, inverseIncompleteBeta(a, b, y)) = y
+    ( incompleteBeta(1.0, 1.0, inverseIncompleteBeta(1.0, 1.0, 0.25)), 0.25 ),
+    ( incompleteBeta(2.0, 3.0, inverseIncompleteBeta(2.0, 3.0, 0.4)), 0.4 ),
+    ( incompleteBeta(0.5, 0.5, inverseIncompleteBeta(0.5, 0.5, 0.7)), 0.7 ),
+
+    // normalCDF(inverseNormalCDF(p)) = p
+    ( normalCDF(inverseNormalCDF(0.1)), 0.1 ),
+    ( normalCDF(inverseNormalCDF(0.25)), 0.25 ),
+    ( normalCDF(inverseNormalCDF(0.5)), 0.5 ),
+    ( normalCDF(inverseNormalCDF(0.75)), 0.75 ),
+    ( normalCDF(inverseNormalCDF(0.9)), 0.9 ),
+
+    // dilog(x) = polylog(2, x)
+    ( dilog(0.25), polylog(2, 0.25) ),
+    ( dilog(0.5), polylog(2, 0.5) ),
+    ( dilog(0.75), polylog(2, 0.75) )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

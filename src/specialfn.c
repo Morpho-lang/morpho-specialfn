@@ -75,11 +75,11 @@ static const SpecialfnError specialfn_errors[] = {
     { PLOSS, SPECIALFN_PLOSSERROR }
 };
 
-static bool specialfn_dispatcherror(vm *v) {
+static bool specialfn_dispatcherror(vm *v, const char *label) {
     int code = mtherr_geterror();
     if (code == 0) return false;
-    
-    const char *function = (merrorname) ? merrorname : "unknown";
+
+    const char *function = label ? label : "unknown";
 
     for (unsigned int i = 0; i < sizeof(specialfn_errors)/sizeof(specialfn_errors[0]); i++) {
         if (specialfn_errors[i].code == code) {
@@ -161,7 +161,7 @@ value wrapper(vm *v, int nargs, value *args) { \
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) { \
         mtherr_reset(); \
         out=MORPHO_FLOAT(function(x)); \
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL; \
+        if (specialfn_dispatcherror(v, label)) out=MORPHO_NIL; \
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 1, "float"); \
     return out; \
 }
@@ -174,7 +174,7 @@ value wrapper(vm *v, int nargs, value *args) { \
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) { \
         mtherr_reset(); \
         out=MORPHO_FLOAT(function(a, b)); \
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL; \
+        if (specialfn_dispatcherror(v, label)) out=MORPHO_NIL; \
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 2, "float"); \
     return out; \
 }
@@ -198,7 +198,19 @@ SPECIALFN_UNARY_WRAPPER(Specialfn_ndtri, SPECIALFN_INVERSENORMALCDF, ndtri)
 SPECIALFN_UNARY_WRAPPER(Specialfn_ei, SPECIALFN_EXPINTEGRALEI, ei)
 SPECIALFN_UNARY_WRAPPER(Specialfn_dawsn, SPECIALFN_DAWSON, dawsn)
 SPECIALFN_UNARY_WRAPPER(Specialfn_zetac, SPECIALFN_RIEMANNZETAMINUSONE, zetac)
-SPECIALFN_UNARY_WRAPPER(Specialfn_spence, SPECIALFN_DILOG, spence)
+
+value Specialfn_dilog(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(spence(1.0 - x));
+        if (specialfn_dispatcherror(v, SPECIALFN_DILOG)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_DILOG, 1, "float");
+
+    return out;
+}
 
 value Specialfn_incbet(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -209,7 +221,7 @@ value Specialfn_incbet(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(incbet(a,b,x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_INCOMPLETEBETA)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INCOMPLETEBETA, 3, "float");
 
     return out;
@@ -222,7 +234,7 @@ value Specialfn_ellpk(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &m)) {
         mtherr_reset();
         out=MORPHO_FLOAT(ellpk(1.0 - m));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_COMPLETEELLIPTICK)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COMPLETEELLIPTICK, 1, "float");
 
     return out;
@@ -235,7 +247,7 @@ value Specialfn_ellpe(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &m)) {
         mtherr_reset();
         out=MORPHO_FLOAT(ellpe(1.0 - m));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_COMPLETEELLIPTICE)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COMPLETEELLIPTICE, 1, "float");
 
     return out;
@@ -250,7 +262,7 @@ value Specialfn_incbi(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &y)) {
         mtherr_reset();
         out=MORPHO_FLOAT(incbi(a,b,y));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_INVERSEINCOMPLETEBETA)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSEINCOMPLETEBETA, 3, "float");
 
     return out;
@@ -264,7 +276,7 @@ value Specialfn_igami(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &p)) {
         mtherr_reset();
         out=MORPHO_FLOAT(igami(a, p));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA, 2, "float");
 
     return out;
@@ -279,7 +291,7 @@ value Specialfn_hyperg(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(hyperg(a, b, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_CONFLUENTHYPERGEOMETRIC)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_CONFLUENTHYPERGEOMETRIC, 3, "float");
 
     return out;
@@ -295,7 +307,7 @@ value Specialfn_hyp2f1(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 3), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(hyp2f1(a, b, c, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_GAUSSHYPERGEOMETRIC)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_GAUSSHYPERGEOMETRIC, 4, "float");
 
     return out;
@@ -309,7 +321,7 @@ value Specialfn_expn(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(expn(n, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_EXPINTEGRALE)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_EXPINTEGRALE, 2, "integer, float");
 
     return out;
@@ -326,7 +338,7 @@ value Specialfn_riemannZeta(vm *v, int nargs, value *args) {
         }
         mtherr_reset();
         out=MORPHO_FLOAT(zetac(x) + 1.0);
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_RIEMANNZETA)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_RIEMANNZETA, 1, "float");
 
     return out;
@@ -340,7 +352,7 @@ value Specialfn_hurwitzZeta(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &q)) {
         mtherr_reset();
         out=MORPHO_FLOAT(zeta(x, q));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_HURWITZZETA)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_HURWITZZETA, 2, "float");
 
     return out;
@@ -354,7 +366,7 @@ value Specialfn_polylog(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(polylog(n, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_POLYLOG)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_POLYLOG, 2, "integer, float");
 
     return out;
@@ -372,7 +384,7 @@ value Specialfn_struve(vm *v, int nargs, value *args) {
         }
         mtherr_reset();
         out=MORPHO_FLOAT(struve(order, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_STRUVEH)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_STRUVEH, 2, "float");
 
     return out;
@@ -477,7 +489,7 @@ value Specialfn_airyBiPrime(vm *v, int nargs, value *args) {
 value Specialfn_jacobiSn(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBISN, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBISN)) return MORPHO_NIL;
         return MORPHO_FLOAT(sn);
     }
     return MORPHO_NIL;
@@ -486,7 +498,7 @@ value Specialfn_jacobiSn(vm *v, int nargs, value *args) {
 value Specialfn_jacobiCn(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBICN, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBICN)) return MORPHO_NIL;
         return MORPHO_FLOAT(cn);
     }
     return MORPHO_NIL;
@@ -495,7 +507,7 @@ value Specialfn_jacobiCn(vm *v, int nargs, value *args) {
 value Specialfn_jacobiDn(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBIDN, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBIDN)) return MORPHO_NIL;
         return MORPHO_FLOAT(dn);
     }
     return MORPHO_NIL;
@@ -504,7 +516,7 @@ value Specialfn_jacobiDn(vm *v, int nargs, value *args) {
 value Specialfn_jacobiAmplitude(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBIAMPLITUDE, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBIAMPLITUDE)) return MORPHO_NIL;
         return MORPHO_FLOAT(ph);
     }
     return MORPHO_NIL;
@@ -528,7 +540,7 @@ value Specialfn_jn(vm *v, int nargs, value *args) {
         if (n == 0) out=MORPHO_FLOAT(j0(x));
         else if (n == 1) out=MORPHO_FLOAT(j1(x));
         else out=MORPHO_FLOAT(jn(n, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_BESSELJ)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "integer, float");
 
     return out;
@@ -542,7 +554,7 @@ value Specialfn_jv(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(jv(order, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_BESSELJ)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "float");
 
     return out;
@@ -558,7 +570,7 @@ value Specialfn_yn(vm *v, int nargs, value *args) {
         if (n == 0) out=MORPHO_FLOAT(y0(x));
         else if (n == 1) out=MORPHO_FLOAT(y1(x));
         else out=MORPHO_FLOAT(yn(n, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_BESSELY)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELY, 2, "integer, float");
 
     return out;
@@ -574,7 +586,7 @@ value Specialfn_i1(vm *v, int nargs, value *args) {
         if (n == 0) out=MORPHO_FLOAT(i0(x));
         else if (n == 1) out=MORPHO_FLOAT(i1(x));
         else out=MORPHO_FLOAT(iv((double) n, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELI)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELI, 2, "integer, float");
 
     return out;
@@ -588,7 +600,7 @@ value Specialfn_iv(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
         out=MORPHO_FLOAT(iv(order, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELI)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELI, 2, "float");
 
     return out;
@@ -604,7 +616,7 @@ value Specialfn_kn(vm *v, int nargs, value *args) {
         if (n == 0) out=MORPHO_FLOAT(k0(x));
         else if (n == 1) out=MORPHO_FLOAT(k1(x));
         else out=MORPHO_FLOAT(kn(n, x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELK)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELK, 2, "integer, float");
 
     return out;
@@ -652,7 +664,7 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_RIEMANNZETA, "Float (_)", Specialfn_riemannZeta, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_RIEMANNZETAMINUSONE, "Float (_)", Specialfn_zetac, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_HURWITZZETA, "Float (_,_)", Specialfn_hurwitzZeta, BUILTIN_FLAGSEMPTY, NULL);
-    morpho_addfunction(SPECIALFN_DILOG, "Float (_)", Specialfn_spence, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_DILOG, "Float (_)", Specialfn_dilog, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_POLYLOG, "Float (Int,_)", Specialfn_polylog, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_STRUVEH, "Float (_,_)", Specialfn_struve, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (_)", Specialfn_j0, BUILTIN_FLAGSEMPTY, NULL);

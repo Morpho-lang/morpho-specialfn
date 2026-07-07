@@ -1,0 +1,5 @@
+// Error: 'SpecialfnDomain'
+// Error in: completeEllipticK
+import specialfn
+
+completeEllipticK(2.0)

@@ -1,4 +1,5 @@
 // Error: 'SpecialfnDomain'
+// Error in: besselJ
 import specialfn
 
-dilog(2.0)
+besselJ(0.5, -1.0)

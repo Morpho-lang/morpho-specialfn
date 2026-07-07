@@ -203,9 +203,9 @@ This is the two-parameter zeta function `zeta(x, q)`.
 ## dilog
 [dilog]: # (dilog)
 
-Computes the dilogarithm.
+Computes the dilogarithm `Li_2(x)`, using the convention `Li_2(x) = spence(1 - x)`.
 
-    print dilog(1)
+    print dilog(0.5)
 
 ## polylog
 [polylog]: # (polylog)

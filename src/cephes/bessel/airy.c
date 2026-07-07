@@ -65,7 +65,7 @@ extern double PI;
 
 extern double MAXNUM, MACHEP;
 #ifdef UNK
-#define MAXAIRY 25.77
+#define MAXAIRY 103.892
 #endif
 #ifdef DEC
 #define MAXAIRY 25.77

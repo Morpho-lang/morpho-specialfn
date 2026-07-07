@@ -31,7 +31,7 @@ def findvalue(text):
 
 
 def finderror(text):
-    return re.findall(r".*[E|e]rror[ :].*?(.*)", text)
+    return re.findall(r"// Error: '([^']*)'", text)
 
 
 def iserror(text):
@@ -42,40 +42,62 @@ def isin(text):
     return len(re.findall(r".*in .*", text)) > 0
 
 
-def findexpected(text):
-    out = finderror(text)
-    if out != []:
-        out = [simplify_errors(text)]
-    else:
-        out = findvalue(text)
-    return out
+def extract_function_name(text):
+    match = re.search(r"Special function (\w+) encountered", text)
+    if match:
+        return "@function[" + match.group(1) + "]"
+    return None
+
+
+def finderrorin(text):
+    return re.findall(r"// Error in: (\w+)", text)
 
 
 def getexpect(filepath):
     with open(filepath, "r", encoding="utf8") as file_object:
         lines = file_object.readlines()
 
-    if lines != []:
-        out = list(map(findexpected, lines))
-        out = reduce(operator.concat, out)
-    else:
-        out = []
-    return out
+    if lines == []:
+        return []
+
+    error_tags = reduce(operator.concat, map(finderror, lines), [])
+    error_names = reduce(operator.concat, map(finderrorin, lines), [])
+    values = reduce(operator.concat, map(findvalue, lines), [])
+
+    if error_tags != []:
+        out = ["@error[" + error_tags[0] + "]"]
+        if error_names != []:
+            out.append("@function[" + error_names[0] + "]")
+        return out
+
+    return values
 
 
-def getoutput(filepath):
-    with open(filepath, "r", encoding="utf8") as file_object:
+def getoutput(outpath):
+    sourcepath = outpath[:-4] if outpath.endswith(".out") else outpath
+    with open(sourcepath, "r", encoding="utf8") as file_object:
+        source = file_object.read()
+
+    expect_function_name = finderrorin(source) != []
+
+    with open(outpath, "r", encoding="utf8") as file_object:
         lines = file_object.readlines()
 
-    lines = list(map(remove_control_characters, lines))
-    lines = list(map(simplify_errors, lines))
-    lines = list(map(simplify_stacktrace, lines))
+    out = []
+    for line in lines:
+        line = remove_control_characters(line)
+        fname = extract_function_name(line) if expect_function_name else None
+        line = simplify_errors(line)
+        line = simplify_stacktrace(line)
+        out.append(line)
+        if fname:
+            out.append(fname)
 
-    for i in range(len(lines) - 1):
-        if iserror(lines[i]) and isin(lines[i + 1]):
-            lines[i + 1] = stk
+    for i in range(len(out) - 1):
+        if iserror(out[i]) and isin(out[i + 1]):
+            out[i + 1] = stk
 
-    return list(filter(lambda x: x != stk, lines))
+    return list(filter(lambda x: x != stk, out))
 
 
 def test(file, testlog, ci):

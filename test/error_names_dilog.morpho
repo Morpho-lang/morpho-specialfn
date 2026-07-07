@@ -1,4 +1,5 @@
 // Error: 'SpecialfnDomain'
+// Error in: dilog
 import specialfn
 
 dilog(2.0)
