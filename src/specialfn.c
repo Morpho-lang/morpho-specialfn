@@ -67,11 +67,12 @@ static bool specialfn_dispatcherror(vm *v) {
     return false;
 }
 
-static bool specialfn_airy(vm *v, value *args, const char *label, double *ai, double *aip, double *bi, double *bip) {
+static bool specialfn_airy(vm *v, value *args, const char *label, double *ai, double *aip, double *bi, double *bip, int *status) {
     double x;
 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        airy(x, ai, aip, bi, bip);
+        mtherr_reset();
+        *status = airy(x, ai, aip, bi, bip);
         return true;
     }
 
@@ -155,25 +156,41 @@ SPECIALFN_UNARY_WRAPPER(Specialfn_y0, SPECIALFN_BESSELY, y0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_y1, SPECIALFN_BESSELY, y1)
 value Specialfn_airyAi(vm *v, int nargs, value *args) {
     double ai, aip, bi, bip;
-    if (specialfn_airy(v, args, SPECIALFN_AIRYAI, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(ai);
+    int status;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYAI, &ai, &aip, &bi, &bip, &status)) return MORPHO_FLOAT(ai);
     return MORPHO_NIL;
 }
 
 value Specialfn_airyAiPrime(vm *v, int nargs, value *args) {
     double ai, aip, bi, bip;
-    if (specialfn_airy(v, args, SPECIALFN_AIRYAIPRIME, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(aip);
+    int status;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYAIPRIME, &ai, &aip, &bi, &bip, &status)) return MORPHO_FLOAT(aip);
     return MORPHO_NIL;
 }
 
 value Specialfn_airyBi(vm *v, int nargs, value *args) {
     double ai, aip, bi, bip;
-    if (specialfn_airy(v, args, SPECIALFN_AIRYBI, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(bi);
+    int status;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYBI, &ai, &aip, &bi, &bip, &status)) {
+        if (status < 0) {
+            morpho_runtimeerror(v, SPECIALFN_OVERFLOWERROR, SPECIALFN_AIRYBI);
+            return MORPHO_NIL;
+        }
+        return MORPHO_FLOAT(bi);
+    }
     return MORPHO_NIL;
 }
 
 value Specialfn_airyBiPrime(vm *v, int nargs, value *args) {
     double ai, aip, bi, bip;
-    if (specialfn_airy(v, args, SPECIALFN_AIRYBIPRIME, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(bip);
+    int status;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYBIPRIME, &ai, &aip, &bi, &bip, &status)) {
+        if (status < 0) {
+            morpho_runtimeerror(v, SPECIALFN_OVERFLOWERROR, SPECIALFN_AIRYBIPRIME);
+            return MORPHO_NIL;
+        }
+        return MORPHO_FLOAT(bip);
+    }
     return MORPHO_NIL;
 }
 
