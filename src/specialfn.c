@@ -19,7 +19,9 @@ double j1(double x); // Bessel J1
 double y0(double x); // Bessel Y0
 double y1(double x); // Bessel Y1
 double jn(int n, double x); // Bessel Jn
+double jv(double v, double x); // Bessel Jv
 double yn(int n, double x); // Bessel Yn
+int airy(double x, double *ai, double *aip, double *bi, double *bip); // Airy functions
 double psi(double x); // Digamma
 double i0(double x); // Modified Bessel I0
 double i1(double x); // Modified Bessel I1
@@ -62,6 +64,18 @@ static bool specialfn_dispatcherror(vm *v) {
         }
     }
 
+    return false;
+}
+
+static bool specialfn_airy(vm *v, value *args, const char *label, double *ai, double *aip, double *bi, double *bip) {
+    double x;
+
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        airy(x, ai, aip, bi, bip);
+        return true;
+    }
+
+    morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 1, "float");
     return false;
 }
 
@@ -139,6 +153,30 @@ SPECIALFN_UNARY_WRAPPER(Specialfn_j0, SPECIALFN_BESSELJ, j0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_j1, SPECIALFN_BESSELJ, j1)
 SPECIALFN_UNARY_WRAPPER(Specialfn_y0, SPECIALFN_BESSELY, y0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_y1, SPECIALFN_BESSELY, y1)
+value Specialfn_airyAi(vm *v, int nargs, value *args) {
+    double ai, aip, bi, bip;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYAI, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(ai);
+    return MORPHO_NIL;
+}
+
+value Specialfn_airyAiPrime(vm *v, int nargs, value *args) {
+    double ai, aip, bi, bip;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYAIPRIME, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(aip);
+    return MORPHO_NIL;
+}
+
+value Specialfn_airyBi(vm *v, int nargs, value *args) {
+    double ai, aip, bi, bip;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYBI, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(bi);
+    return MORPHO_NIL;
+}
+
+value Specialfn_airyBiPrime(vm *v, int nargs, value *args) {
+    double ai, aip, bi, bip;
+    if (specialfn_airy(v, args, SPECIALFN_AIRYBIPRIME, &ai, &aip, &bi, &bip)) return MORPHO_FLOAT(bip);
+    return MORPHO_NIL;
+}
+
 SPECIALFN_UNARY_WRAPPER(Specialfn_psi, SPECIALFN_DIGAMMA, psi)
 SPECIALFN_UNARY_WRAPPER(Specialfn_i0, SPECIALFN_MODIFIEDBESSELI, i0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_k0, SPECIALFN_MODIFIEDBESSELK, k0)
@@ -155,6 +193,20 @@ value Specialfn_jn(vm *v, int nargs, value *args) {
         else out=MORPHO_FLOAT(jn(n, x));
         if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "integer, float");
+
+    return out;
+}
+
+value Specialfn_jv(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double order, x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &order) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(jv(order, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "float");
 
     return out;
 }
@@ -250,8 +302,13 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_INVERSEINCOMPLETEBETA, "Float (_,_,_)", Specialfn_incbi, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (_)", Specialfn_j0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Int,_)", Specialfn_jn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_BESSELJ, "Float (Float,_)", Specialfn_jv, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELY, "Float (_)", Specialfn_y0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELY, "Float (Int,_)", Specialfn_yn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_AIRYAI, "Float (_)", Specialfn_airyAi, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_AIRYAIPRIME, "Float (_)", Specialfn_airyAiPrime, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_AIRYBI, "Float (_)", Specialfn_airyBi, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_AIRYBIPRIME, "Float (_)", Specialfn_airyBiPrime, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_DIGAMMA, "Float (_)", Specialfn_psi, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (_)", Specialfn_i0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (Int,_)", Specialfn_i1, BUILTIN_FLAGSEMPTY, NULL);

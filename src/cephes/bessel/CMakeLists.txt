@@ -1,5 +1,6 @@
 target_sources(specialfn
     PRIVATE
+        airy.c
         hyperg.c
         i0.c
         i1.c
@@ -7,6 +8,7 @@ target_sources(specialfn
         j0.c
         j1.c
         jn.c
+        jv.c
         k0.c
         k1.c
         kn.c
