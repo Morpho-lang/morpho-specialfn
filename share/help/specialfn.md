@@ -320,36 +320,44 @@ Examples:
 ## scaledModifiedBesselI0
 [scaledModifiedBesselI0]: # (scaledModifiedBesselI0)
 
-Computes the exponentially scaled modified Bessel function `I0`.
+Computes the exponentially scaled modified Bessel function of the first kind, order 0:
 
-This rescales `I0(x)` to improve numerical behavior for large `x`.
+    I₀(x) × exp(−|x|)
+
+This rescales `I₀(x)` to improve numerical behavior for large `x`.
 
     print scaledModifiedBesselI0(1)
 
 ## scaledModifiedBesselI1
 [scaledModifiedBesselI1]: # (scaledModifiedBesselI1)
 
-Computes the exponentially scaled modified Bessel function `I1`.
+Computes the exponentially scaled modified Bessel function of the first kind, order 1:
 
-This rescales `I1(x)` to improve numerical behavior for large `x`.
+    I₁(x) × exp(−|x|)
+
+This rescales `I₁(x)` to improve numerical behavior for large `x`.
 
     print scaledModifiedBesselI1(1)
 
 ## scaledModifiedBesselK0
 [scaledModifiedBesselK0]: # (scaledModifiedBesselK0)
 
-Computes the exponentially scaled modified Bessel function `K0`.
+Computes the exponentially scaled modified Bessel function of the second kind, order 0:
 
-This rescales `K0(x)` to improve numerical behavior for large `x`.
+    K₀(x) × exp(x)
+
+Defined for `x > 0`. This rescales `K₀(x)` to improve numerical behavior for large `x`.
 
     print scaledModifiedBesselK0(1)
 
 ## scaledModifiedBesselK1
 [scaledModifiedBesselK1]: # (scaledModifiedBesselK1)
 
-Computes the exponentially scaled modified Bessel function `K1`.
+Computes the exponentially scaled modified Bessel function of the second kind, order 1:
 
-This rescales `K1(x)` to improve numerical behavior for large `x`.
+    K₁(x) × exp(x)
+
+Defined for `x > 0`. This rescales `K₁(x)` to improve numerical behavior for large `x`.
 
     print scaledModifiedBesselK1(1)
 
