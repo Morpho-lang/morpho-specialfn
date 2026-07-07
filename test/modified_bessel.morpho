@@ -1,0 +1,25 @@
+// Test modified Bessel functions
+
+import specialfn
+
+var values = (
+    ( modifiedBesselI(0), 1.0 ),
+    ( modifiedBesselI(1, 0.0), 0.0 ),
+    ( modifiedBesselI(1), 1.2660658777520084 ),
+    ( modifiedBesselI(2, 1.0), 0.13574766976703828 ),
+    ( modifiedBesselK(1), 0.42102443824070834 ),
+    ( modifiedBesselK(1, 1.0), 0.6019072301972346 ),
+    ( modifiedBesselK(2, 1.0), 1.6248388986351774 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

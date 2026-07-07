@@ -1,7 +1,14 @@
 target_sources(specialfn
     PRIVATE
+        hyperg.c
+        i0.c
+        i1.c
+        iv.c
         j0.c
         j1.c
         jn.c
+        k0.c
+        k1.c
+        kn.c
         yn.c
 )

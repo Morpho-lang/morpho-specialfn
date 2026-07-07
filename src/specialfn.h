@@ -35,6 +35,8 @@
 #define SPECIALFN_INVERSEINCOMPLETEBETA "inverseIncompleteBeta"
 #define SPECIALFN_BESSELJ "besselJ"
 #define SPECIALFN_BESSELY "besselY"
+#define SPECIALFN_MODIFIEDBESSELI "modifiedBesselI"
+#define SPECIALFN_MODIFIEDBESSELK "modifiedBesselK"
 
 void mtherr_reset(void);
 int mtherr_geterror(void);

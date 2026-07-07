@@ -65,8 +65,7 @@ double hyperg(), exp(), gamma(), log(), fabs(), floor();
 #endif
 extern double MACHEP, MAXNUM;
 
-double iv( v, x )
-double v, x;
+double iv(double v, double x)
 {
 int sign;
 double t, ax;

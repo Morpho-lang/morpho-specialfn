@@ -285,8 +285,7 @@ double chbevl(), exp(), i0(), log(), sqrt();
 extern double PI;
 extern double MAXNUM;
 
-double k0(x)
-double x;
+double k0(double x)
 {
 double y, z;
 
@@ -310,8 +309,7 @@ return(y);
 
 
 
-double k0e( x )
-double x;
+double k0e(double x)
 {
 double y;
 

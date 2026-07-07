@@ -20,6 +20,12 @@ double y0(double x); // Bessel Y0
 double y1(double x); // Bessel Y1
 double jn(int n, double x); // Bessel Jn
 double yn(int n, double x); // Bessel Yn
+double i0(double x); // Modified Bessel I0
+double i1(double x); // Modified Bessel I1
+double iv(double v, double x); // Modified Bessel Iv
+double k0(double x); // Modified Bessel K0
+double k1(double x); // Modified Bessel K1
+double kn(int n, double x); // Modified Bessel Kn
 
 double igam(double a, double x);  // Incomplete gamma integral 
 double igamc(double a, double x); // Complemented incomplete gamma integral
@@ -132,6 +138,8 @@ SPECIALFN_UNARY_WRAPPER(Specialfn_j0, SPECIALFN_BESSELJ, j0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_j1, SPECIALFN_BESSELJ, j1)
 SPECIALFN_UNARY_WRAPPER(Specialfn_y0, SPECIALFN_BESSELY, y0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_y1, SPECIALFN_BESSELY, y1)
+SPECIALFN_UNARY_WRAPPER(Specialfn_i0, SPECIALFN_MODIFIEDBESSELI, i0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_k0, SPECIALFN_MODIFIEDBESSELK, k0)
 
 value Specialfn_jn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -156,6 +164,34 @@ value Specialfn_yn(vm *v, int nargs, value *args) {
     if (n == 0) out=MORPHO_FLOAT(y0(x));
     else if (n == 1) out=MORPHO_FLOAT(y1(x));
     else out=MORPHO_FLOAT(yn(n, x));
+    if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+
+    return out;
+}
+
+value Specialfn_i1(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
+    double x = MORPHO_GETFLOATVALUE(MORPHO_GETARG(args, 1));
+    mtherr_reset();
+    if (n == 0) out=MORPHO_FLOAT(i0(x));
+    else if (n == 1) out=MORPHO_FLOAT(i1(x));
+    else out=MORPHO_FLOAT(iv((double) n, x));
+    if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+
+    return out;
+}
+
+value Specialfn_kn(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
+    double x = MORPHO_GETFLOATVALUE(MORPHO_GETARG(args, 1));
+    mtherr_reset();
+    if (n == 0) out=MORPHO_FLOAT(k0(x));
+    else if (n == 1) out=MORPHO_FLOAT(k1(x));
+    else out=MORPHO_FLOAT(kn(n, x));
     if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
 
     return out;
@@ -192,4 +228,8 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Int,_)", Specialfn_jn, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELY, "Float (_)", Specialfn_y0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELY, "Float (Int,_)", Specialfn_yn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (_)", Specialfn_i0, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (Int,_)", Specialfn_i1, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_MODIFIEDBESSELK, "Float (_)", Specialfn_k0, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_MODIFIEDBESSELK, "Float (Int,_)", Specialfn_kn, BUILTIN_FLAGSEMPTY, NULL);
 }

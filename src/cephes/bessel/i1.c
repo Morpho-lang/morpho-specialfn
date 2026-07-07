@@ -359,9 +359,8 @@ extern double fabs ( double );
 double chbevl(), exp(), sqrt(), fabs();
 #endif
 
-double i1(x)
-double x;
-{ 
+double i1(double x)
+{
 double y, z;
 
 z = fabs(x);
@@ -381,9 +380,8 @@ return( z );
 
 /*							i1e()	*/
 
-double i1e( x )
-double x;
-{ 
+double i1e(double x)
+{
 double y, z;
 
 z = fabs(x);
