@@ -44,9 +44,13 @@ int airy(double x, double *ai, double *aip, double *bi, double *bip); // Airy fu
 double psi(double x); // Digamma
 double i0(double x); // Modified Bessel I0
 double i1(double x); // Modified Bessel I1
+double i0e(double x); // Scaled modified Bessel I0
+double i1e(double x); // Scaled modified Bessel I1
 double iv(double v, double x); // Modified Bessel Iv
 double k0(double x); // Modified Bessel K0
 double k1(double x); // Modified Bessel K1
+double k0e(double x); // Scaled modified Bessel K0
+double k1e(double x); // Scaled modified Bessel K1
 double kn(int n, double x); // Modified Bessel Kn
 
 double igam(double a, double x);  // Incomplete gamma integral 
@@ -504,6 +508,10 @@ value Specialfn_jacobiAmplitude(vm *v, int nargs, value *args) {
 SPECIALFN_UNARY_WRAPPER(Specialfn_psi, SPECIALFN_DIGAMMA, psi)
 SPECIALFN_UNARY_WRAPPER(Specialfn_i0, SPECIALFN_MODIFIEDBESSELI, i0)
 SPECIALFN_UNARY_WRAPPER(Specialfn_k0, SPECIALFN_MODIFIEDBESSELK, k0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_i0e, SPECIALFN_SCALEDMODIFIEDBESSELI0, i0e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_i1e, SPECIALFN_SCALEDMODIFIEDBESSELI1, i1e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_k0e, SPECIALFN_SCALEDMODIFIEDBESSELK0, k0e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_k1e, SPECIALFN_SCALEDMODIFIEDBESSELK1, k1e)
 
 value Specialfn_jn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -665,4 +673,8 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (Float,_)", Specialfn_iv, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELK, "Float (_)", Specialfn_k0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELK, "Float (Int,_)", Specialfn_kn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_SCALEDMODIFIEDBESSELI0, "Float (_)", Specialfn_i0e, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_SCALEDMODIFIEDBESSELI1, "Float (_)", Specialfn_i1e, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_SCALEDMODIFIEDBESSELK0, "Float (_)", Specialfn_k0e, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_SCALEDMODIFIEDBESSELK1, "Float (_)", Specialfn_k1e, BUILTIN_FLAGSEMPTY, NULL);
 }

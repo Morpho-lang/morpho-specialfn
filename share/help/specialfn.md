@@ -303,6 +303,34 @@ Examples:
     print modifiedBesselK(1.0)
     print modifiedBesselK(2, 1.0)
 
+## scaledModifiedBesselI0
+[scaledModifiedBesselI0]: # (scaledModifiedBesselI0)
+
+Computes the exponentially scaled modified Bessel function `I0`.
+
+    print scaledModifiedBesselI0(1)
+
+## scaledModifiedBesselI1
+[scaledModifiedBesselI1]: # (scaledModifiedBesselI1)
+
+Computes the exponentially scaled modified Bessel function `I1`.
+
+    print scaledModifiedBesselI1(1)
+
+## scaledModifiedBesselK0
+[scaledModifiedBesselK0]: # (scaledModifiedBesselK0)
+
+Computes the exponentially scaled modified Bessel function `K0`.
+
+    print scaledModifiedBesselK0(1)
+
+## scaledModifiedBesselK1
+[scaledModifiedBesselK1]: # (scaledModifiedBesselK1)
+
+Computes the exponentially scaled modified Bessel function `K1`.
+
+    print scaledModifiedBesselK1(1)
+
 ## airyAi
 [airyAi]: # (airyAi)
 

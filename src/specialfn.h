@@ -68,6 +68,10 @@
 #define SPECIALFN_DIGAMMA "digamma"
 #define SPECIALFN_MODIFIEDBESSELI "modifiedBesselI"
 #define SPECIALFN_MODIFIEDBESSELK "modifiedBesselK"
+#define SPECIALFN_SCALEDMODIFIEDBESSELI0 "scaledModifiedBesselI0"
+#define SPECIALFN_SCALEDMODIFIEDBESSELI1 "scaledModifiedBesselI1"
+#define SPECIALFN_SCALEDMODIFIEDBESSELK0 "scaledModifiedBesselK0"
+#define SPECIALFN_SCALEDMODIFIEDBESSELK1 "scaledModifiedBesselK1"
 
 void mtherr_reset(void);
 int mtherr_geterror(void);

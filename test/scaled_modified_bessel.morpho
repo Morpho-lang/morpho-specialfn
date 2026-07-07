@@ -1,0 +1,22 @@
+// Test scaled modified Bessel functions
+
+import specialfn
+
+var values = (
+    ( scaledModifiedBesselI0(1.0), 0.46575960759364043 ),
+    ( scaledModifiedBesselI1(1.0), 0.20791041534970847 ),
+    ( scaledModifiedBesselK0(1.0), 1.1444630798068949 ),
+    ( scaledModifiedBesselK1(1.0), 1.636153486263258 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}
