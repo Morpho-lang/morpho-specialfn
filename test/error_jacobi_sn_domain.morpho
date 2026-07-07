@@ -1,0 +1,4 @@
+// Error: 'SpecialfnDomain'
+import specialfn
+
+jacobiSn(1.0, 2.0)

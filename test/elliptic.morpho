@@ -1,0 +1,26 @@
+// Test elliptic functions
+
+import specialfn
+
+var values = (
+    ( incompleteEllipticF(1.0, 0.0), 1.0 ),
+    ( incompleteEllipticE(1.0, 0.0), 1.0 ),
+    ( completeEllipticK(0.0), 1.5707963267948966 ),
+    ( completeEllipticE(0.0), 1.5707963267948966 ),
+    ( jacobiSn(1.0, 0.0), 0.8414709848078965 ),
+    ( jacobiCn(1.0, 0.0), 0.5403023058681398 ),
+    ( jacobiDn(1.0, 0.0), 1.0 ),
+    ( jacobiAmplitude(1.0, 0.0), 1.0 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

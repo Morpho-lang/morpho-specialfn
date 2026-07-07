@@ -21,6 +21,11 @@ double y1(double x); // Bessel Y1
 double jn(int n, double x); // Bessel Jn
 double jv(double v, double x); // Bessel Jv
 double yn(int n, double x); // Bessel Yn
+double ellie(double phi, double m); // Incomplete elliptic E
+double ellik(double phi, double m); // Incomplete elliptic F
+double ellpe(double m); // Complete elliptic E
+double ellpk(double m); // Complete elliptic K
+int ellpj(double u, double m, double *sn, double *cn, double *dn, double *ph); // Jacobian elliptic functions
 int airy(double x, double *ai, double *aip, double *bi, double *bip); // Airy functions
 double psi(double x); // Digamma
 double i0(double x); // Modified Bessel I0
@@ -80,6 +85,20 @@ static bool specialfn_airy(vm *v, value *args, const char *label, double *ai, do
     return false;
 }
 
+static bool specialfn_ellpj(vm *v, value *args, const char *label, double *sn, double *cn, double *dn, double *ph) {
+    double u, m;
+
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &u) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &m)) {
+        mtherr_reset();
+        ellpj(u, m, sn, cn, dn, ph);
+        return true;
+    }
+
+    morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 2, "float");
+    return false;
+}
+
 #define SPECIALFN_UNARY_WRAPPER(wrapper, label, function) \
 value wrapper(vm *v, int nargs, value *args) { \
     value out=MORPHO_NIL; \
@@ -114,6 +133,8 @@ SPECIALFN_UNARY_WRAPPER(Specialfn_lgam, SPECIALFN_LOGGAMMA, lgam)
 SPECIALFN_BINARY_WRAPPER(Specialfn_beta, SPECIALFN_BETA, beta)
 SPECIALFN_BINARY_WRAPPER(Specialfn_lbeta, SPECIALFN_LOGBETA, lbeta)
 SPECIALFN_BINARY_WRAPPER(Specialfn_igam, SPECIALFN_LOWERINCOMPLETEGAMMA, igam)
+SPECIALFN_BINARY_WRAPPER(Specialfn_ellik, SPECIALFN_INCOMPLETEELLIPTICF, ellik)
+SPECIALFN_BINARY_WRAPPER(Specialfn_ellie, SPECIALFN_INCOMPLETEELLIPTICE, ellie)
 SPECIALFN_UNARY_WRAPPER(Specialfn_rgamma, SPECIALFN_RECIPROCALGAMMA, rgamma)
 SPECIALFN_UNARY_WRAPPER(Specialfn_erf, SPECIALFN_ERF, erf)
 SPECIALFN_UNARY_WRAPPER(Specialfn_erfc, SPECIALFN_ERFC, erfc)
@@ -131,6 +152,32 @@ value Specialfn_incbet(vm *v, int nargs, value *args) {
         out=MORPHO_FLOAT(incbet(a,b,x));
         if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INCOMPLETEBETA, 3, "float");
+
+    return out;
+}
+
+value Specialfn_ellpk(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double m;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &m)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(ellpk(1.0 - m));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COMPLETEELLIPTICK, 1, "float");
+
+    return out;
+}
+
+value Specialfn_ellpe(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double m;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &m)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(ellpe(1.0 - m));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COMPLETEELLIPTICE, 1, "float");
 
     return out;
 }
@@ -190,6 +237,42 @@ value Specialfn_airyBiPrime(vm *v, int nargs, value *args) {
             return MORPHO_NIL;
         }
         return MORPHO_FLOAT(bip);
+    }
+    return MORPHO_NIL;
+}
+
+value Specialfn_jacobiSn(vm *v, int nargs, value *args) {
+    double sn, cn, dn, ph;
+    if (specialfn_ellpj(v, args, SPECIALFN_JACOBISN, &sn, &cn, &dn, &ph)) {
+        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        return MORPHO_FLOAT(sn);
+    }
+    return MORPHO_NIL;
+}
+
+value Specialfn_jacobiCn(vm *v, int nargs, value *args) {
+    double sn, cn, dn, ph;
+    if (specialfn_ellpj(v, args, SPECIALFN_JACOBICN, &sn, &cn, &dn, &ph)) {
+        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        return MORPHO_FLOAT(cn);
+    }
+    return MORPHO_NIL;
+}
+
+value Specialfn_jacobiDn(vm *v, int nargs, value *args) {
+    double sn, cn, dn, ph;
+    if (specialfn_ellpj(v, args, SPECIALFN_JACOBIDN, &sn, &cn, &dn, &ph)) {
+        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        return MORPHO_FLOAT(dn);
+    }
+    return MORPHO_NIL;
+}
+
+value Specialfn_jacobiAmplitude(vm *v, int nargs, value *args) {
+    double sn, cn, dn, ph;
+    if (specialfn_ellpj(v, args, SPECIALFN_JACOBIAMPLITUDE, &sn, &cn, &dn, &ph)) {
+        if (specialfn_dispatcherror(v)) return MORPHO_NIL;
+        return MORPHO_FLOAT(ph);
     }
     return MORPHO_NIL;
 }
@@ -322,6 +405,14 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Float,_)", Specialfn_jv, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELY, "Float (_)", Specialfn_y0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELY, "Float (Int,_)", Specialfn_yn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_INCOMPLETEELLIPTICF, "Float (_,_)", Specialfn_ellik, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_INCOMPLETEELLIPTICE, "Float (_,_)", Specialfn_ellie, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_COMPLETEELLIPTICK, "Float (_)", Specialfn_ellpk, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_COMPLETEELLIPTICE, "Float (_)", Specialfn_ellpe, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_JACOBISN, "Float (_,_)", Specialfn_jacobiSn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_JACOBICN, "Float (_,_)", Specialfn_jacobiCn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_JACOBIDN, "Float (_,_)", Specialfn_jacobiDn, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_JACOBIAMPLITUDE, "Float (_,_)", Specialfn_jacobiAmplitude, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_AIRYAI, "Float (_)", Specialfn_airyAi, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_AIRYAIPRIME, "Float (_)", Specialfn_airyAiPrime, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_AIRYBI, "Float (_)", Specialfn_airyBi, BUILTIN_FLAGSEMPTY, NULL);
