@@ -16,6 +16,10 @@ double igami(double a, double p); // Inverse upper incomplete gamma
 double ei(double x); // Exponential integral Ei
 double expn(int n, double x); // Exponential integral En
 double dawsn(double x); // Dawson's integral
+double zetac(double x); // Riemann zeta minus one
+double zeta(double x, double q); // Hurwitz zeta
+double spence(double x); // Dilogarithm
+double polylog(int n, double x); // Polylogarithm
 double incbet(double a, double b, double x); // Incomplete beta
 double incbi(double a, double b, double y); // Inverse incomplete beta
 double hyperg(double a, double b, double x); // Confluent hypergeometric
@@ -23,6 +27,7 @@ double hyp2f1(double a, double b, double c, double x); // Gauss hypergeometric
 int fresnl(double x, double *s, double *c); // Fresnel integrals
 int sici(double x, double *si, double *ci); // Sine and cosine integrals
 int shichi(double x, double *shi, double *chi); // Hyperbolic sine and cosine integrals
+double struve(double v, double x); // Struve function H_v
 double j0(double x); // Bessel J0
 double j1(double x); // Bessel J1
 double y0(double x); // Bessel Y0
@@ -187,6 +192,8 @@ SPECIALFN_UNARY_WRAPPER(Specialfn_ndtr, SPECIALFN_NORMALCDF, ndtr)
 SPECIALFN_UNARY_WRAPPER(Specialfn_ndtri, SPECIALFN_INVERSENORMALCDF, ndtri)
 SPECIALFN_UNARY_WRAPPER(Specialfn_ei, SPECIALFN_EXPINTEGRALEI, ei)
 SPECIALFN_UNARY_WRAPPER(Specialfn_dawsn, SPECIALFN_DAWSON, dawsn)
+SPECIALFN_UNARY_WRAPPER(Specialfn_zetac, SPECIALFN_RIEMANNZETAMINUSONE, zetac)
+SPECIALFN_UNARY_WRAPPER(Specialfn_spence, SPECIALFN_DILOG, spence)
 
 value Specialfn_incbet(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -299,6 +306,65 @@ value Specialfn_expn(vm *v, int nargs, value *args) {
         out=MORPHO_FLOAT(expn(n, x));
         if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_EXPINTEGRALE, 2, "integer, float");
+
+    return out;
+}
+
+value Specialfn_riemannZeta(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
+        if (x == 1.0) {
+            morpho_runtimeerror(v, SPECIALFN_SINGULARITYERROR, SPECIALFN_RIEMANNZETA);
+            return MORPHO_NIL;
+        }
+        mtherr_reset();
+        out=MORPHO_FLOAT(zetac(x) + 1.0);
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_RIEMANNZETA, 1, "float");
+
+    return out;
+}
+
+value Specialfn_hurwitzZeta(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double x, q;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &q)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(zeta(x, q));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_HURWITZZETA, 2, "float");
+
+    return out;
+}
+
+value Specialfn_polylog(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(polylog(n, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_POLYLOG, 2, "integer, float");
+
+    return out;
+}
+
+value Specialfn_struve(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double order, x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &order) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(struve(order, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_STRUVEH, 2, "float");
 
     return out;
 }
@@ -570,6 +636,12 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_COSINEINTEGRAL, "Float (_)", Specialfn_cosineIntegral, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_SINHINTEGRAL, "Float (_)", Specialfn_sinhIntegral, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_COSHINTEGRAL, "Float (_)", Specialfn_coshIntegral, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_RIEMANNZETA, "Float (_)", Specialfn_riemannZeta, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_RIEMANNZETAMINUSONE, "Float (_)", Specialfn_zetac, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_HURWITZZETA, "Float (_,_)", Specialfn_hurwitzZeta, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_DILOG, "Float (_)", Specialfn_spence, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_POLYLOG, "Float (Int,_)", Specialfn_polylog, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_STRUVEH, "Float (_,_)", Specialfn_struve, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (_)", Specialfn_j0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Int,_)", Specialfn_jn, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Float,_)", Specialfn_jv, BUILTIN_FLAGSEMPTY, NULL);

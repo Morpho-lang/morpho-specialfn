@@ -169,6 +169,48 @@ Computes the hyperbolic cosine integral.
 
     print coshIntegral(1)
 
+## riemannZeta
+[riemannZeta]: # (riemannZeta)
+
+Computes the Riemann zeta function.
+
+    print riemannZeta(2)
+
+## riemannZetaMinusOne
+[riemannZetaMinusOne]: # (riemannZetaMinusOne)
+
+Computes `riemannZeta(x) - 1`.
+
+    print riemannZetaMinusOne(2)
+
+## hurwitzZeta
+[hurwitzZeta]: # (hurwitzZeta)
+
+Computes the Hurwitz zeta function.
+
+    print hurwitzZeta(2, 2)
+
+## dilog
+[dilog]: # (dilog)
+
+Computes the dilogarithm.
+
+    print dilog(1)
+
+## polylog
+[polylog]: # (polylog)
+
+Computes the polylogarithm of integer order.
+
+    print polylog(2, 1)
+
+## struveH
+[struveH]: # (struveH)
+
+Computes the Struve function `H_v(x)`.
+
+    print struveH(0, 1)
+
 ## erf
 [erf]: # (erf)
 

@@ -1,0 +1,4 @@
+// Error: 'SpecialfnDomain'
+import specialfn
+
+polylog(2, 2.0)

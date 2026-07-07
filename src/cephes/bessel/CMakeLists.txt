@@ -14,5 +14,6 @@ target_sources(specialfn
         k1.c
         kn.c
         psi.c
+        struve.c
         yn.c
 )

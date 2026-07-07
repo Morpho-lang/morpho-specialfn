@@ -1,0 +1,4 @@
+// Error: 'SpecialfnDomain'
+import specialfn
+
+dilog(-1.0)

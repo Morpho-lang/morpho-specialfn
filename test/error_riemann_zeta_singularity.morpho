@@ -1,0 +1,4 @@
+// Error: 'SpecialfnSingularity'
+import specialfn
+
+riemannZeta(1.0)

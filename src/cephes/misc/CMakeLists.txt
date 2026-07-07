@@ -5,8 +5,13 @@ target_sources(specialfn
         dawsn.c
         ei.c
         expn.c
+        fac.c
         fresnl.c
+        polylog.c
         rgamma.c
         shichi.c
         sici.c
+        spence.c
+        zeta.c
+        zetac.c
 )
