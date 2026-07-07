@@ -1,9 +1,11 @@
 [comment]: # (Specialfn help)
 
-# Specialfn
+# specialfn
 [specialfn]: # (specialfn)
 
-The `specialfn` extension provides a number of special functions for use in morpho. To use the `specialfn` extension import it,
+The `specialfn` extension provides special functions for scientific computing in morpho.
+
+Import it with:
 
     import specialfn
 
@@ -12,69 +14,253 @@ The `specialfn` extension provides a number of special functions for use in morp
 ## gamma
 [gamma]: # (gamma)
 
-Computes the Gamma function, defined by:
+Computes the Gamma function.
 
-    Γ(a) = ∫ dt from 0 to ∞ of t^(a-1)*exp(-t) 
+    print gamma(5) // expect: 24
 
-To use, import the `specialfn` package: 
+## logGamma
+[logGamma]: # (logGamma)
 
-    import specialfn
+Computes the natural logarithm of the Gamma function.
 
-The `gamma` function then takes a single numerical argument:
+    print logGamma(5)
 
-    print gamma(3.3)
+## reciprocalGamma
+[reciprocalGamma]: # (reciprocalGamma)
 
-## lgam
-[lgam]: # (lgam)
+Computes the reciprocal Gamma function `1 / Gamma(x)`.
 
-Computes the log of the gamma function (see the entry for `gamma`).
+    print reciprocalGamma(5)
 
-To use, import the `specialfn` package: 
+## lowerIncompleteGamma
+[lowerIncompleteGamma]: # (lowerIncompleteGamma)
 
-    import specialfn
+Computes the lower regularized incomplete Gamma function `P(a, x)`.
 
-The `lgam` function then takes a single numerical argument:
+    print lowerIncompleteGamma(2, 0.5)
 
-    print lgam(4.5)
+## upperIncompleteGamma
+[upperIncompleteGamma]: # (upperIncompleteGamma)
 
-## igam
-[igam]: # (igam)
+Computes the upper regularized incomplete Gamma function `Q(a, x)`.
 
-Computes the lower regularized incomplete Gamma function, defined by:
+    print upperIncompleteGamma(2, 0.5)
 
-    P(a, x) = 1/Γ(a) ∫ dt from 0 to x of t^(a-1)*exp(-t) 
+The regularized incomplete Gamma functions satisfy:
 
-It may sometimes be referred to as the "normalized" lower incomplete gamma function.
+    lowerIncompleteGamma(a, x) + upperIncompleteGamma(a, x) = 1
 
-To use, import the `specialfn` package:
+## digamma
+[digamma]: # (digamma)
 
-    import specialfn
+Computes the digamma function, the logarithmic derivative of the Gamma function.
 
-The `igam` function then takes two numerical arguments:
+    print digamma(1)
 
-    print igam(2, 0.5)
+## beta
+[beta]: # (beta)
 
-## igamc
-[igamc]: # (igamc)
+Computes the beta function.
 
-Computes the upper regularized incomplete Gamma function, defined by:
+    print beta(2, 3)
 
-    Q(a, x) = 1/Γ(a) ∫ dt from x to ∞ of t^(a-1)*exp(-t) 
+## logBeta
+[logBeta]: # (logBeta)
 
-Note that there are many related gamma functions; this is sometimes called the "complemented" incomplete gamma function. It may also be referred to as the "normalized" upper incomplete gamma function.
+Computes the natural logarithm of the beta function.
 
-To use, import the `specialfn` package:
+    print logBeta(2, 3)
 
-    import specialfn
+## incompleteBeta
+[incompleteBeta]: # (incompleteBeta)
 
-The `igamc` function then takes two numerical arguments:
+Computes the regularized incomplete beta function.
 
-    print igamc(2, 0.5)
+    print incompleteBeta(2, 3, 0.5)
 
-Note that the lower and upper regularized incomplete gamma functions obey the identity:
+## inverseIncompleteBeta
+[inverseIncompleteBeta]: # (inverseIncompleteBeta)
 
-    P(a,x) + Q(a,x) = 1
+Computes the inverse of the regularized incomplete beta function.
 
-and so
+    print inverseIncompleteBeta(2, 3, 0.5)
 
-    print igam(2, 0.5) + igamc(2, 0.5) // expect: 1
+## erf
+[erf]: # (erf)
+
+Computes the error function.
+
+    print erf(0) // expect: 0
+
+## erfc
+[erfc]: # (erfc)
+
+Computes the complementary error function.
+
+    print erfc(0) // expect: 1
+
+## normalCDF
+[normalCDF]: # (normalCDF)
+
+Computes the cumulative distribution function of the standard normal distribution.
+
+    print normalCDF(0) // expect: 0.5
+
+## inverseNormalCDF
+[inverseNormalCDF]: # (inverseNormalCDF)
+
+Computes the inverse cumulative distribution function of the standard normal distribution.
+
+    print inverseNormalCDF(0.5) // expect: 0
+
+## besselJ
+[besselJ]: # (besselJ)
+
+Computes the Bessel function of the first kind.
+
+Supported call patterns:
+
+    besselJ(x)      // order 0
+    besselJ(n, x)   // integer order
+    besselJ(v, x)   // real order
+
+Examples:
+
+    print besselJ(1.0)
+    print besselJ(2, 1.0)
+    print besselJ(0.5, 1.0)
+
+## besselY
+[besselY]: # (besselY)
+
+Computes the Bessel function of the second kind.
+
+Supported call patterns:
+
+    besselY(x)      // order 0
+    besselY(n, x)   // integer order
+
+Examples:
+
+    print besselY(1.0)
+    print besselY(2, 1.0)
+
+## modifiedBesselI
+[modifiedBesselI]: # (modifiedBesselI)
+
+Computes the modified Bessel function of the first kind.
+
+Supported call patterns:
+
+    modifiedBesselI(x)      // order 0
+    modifiedBesselI(n, x)   // integer order
+    modifiedBesselI(v, x)   // real order
+
+Examples:
+
+    print modifiedBesselI(1.0)
+    print modifiedBesselI(2, 1.0)
+    print modifiedBesselI(0.5, 1.0)
+
+## modifiedBesselK
+[modifiedBesselK]: # (modifiedBesselK)
+
+Computes the modified Bessel function of the second kind.
+
+Supported call patterns:
+
+    modifiedBesselK(x)      // order 0
+    modifiedBesselK(n, x)   // integer order
+
+Examples:
+
+    print modifiedBesselK(1.0)
+    print modifiedBesselK(2, 1.0)
+
+## airyAi
+[airyAi]: # (airyAi)
+
+Computes the Airy function `Ai(x)`.
+
+    print airyAi(0)
+
+## airyAiPrime
+[airyAiPrime]: # (airyAiPrime)
+
+Computes the derivative of the Airy function `Ai(x)`.
+
+    print airyAiPrime(0)
+
+## airyBi
+[airyBi]: # (airyBi)
+
+Computes the Airy function `Bi(x)`.
+
+    print airyBi(0)
+
+## airyBiPrime
+[airyBiPrime]: # (airyBiPrime)
+
+Computes the derivative of the Airy function `Bi(x)`.
+
+    print airyBiPrime(0)
+
+## incompleteEllipticF
+[incompleteEllipticF]: # (incompleteEllipticF)
+
+Computes the incomplete elliptic integral of the first kind using parameter `m`.
+
+    print incompleteEllipticF(0.5, 0.2)
+
+## incompleteEllipticE
+[incompleteEllipticE]: # (incompleteEllipticE)
+
+Computes the incomplete elliptic integral of the second kind using parameter `m`.
+
+    print incompleteEllipticE(0.5, 0.2)
+
+## completeEllipticK
+[completeEllipticK]: # (completeEllipticK)
+
+Computes the complete elliptic integral of the first kind using parameter `m`.
+
+This wrapper uses the standard convention, so:
+
+    print completeEllipticK(0.0) // expect: pi/2
+
+## completeEllipticE
+[completeEllipticE]: # (completeEllipticE)
+
+Computes the complete elliptic integral of the second kind using parameter `m`.
+
+This wrapper uses the standard convention, so:
+
+    print completeEllipticE(0.0) // expect: pi/2
+
+## jacobiSn
+[jacobiSn]: # (jacobiSn)
+
+Computes the Jacobi elliptic function `sn(u, m)`.
+
+    print jacobiSn(0.5, 0.2)
+
+## jacobiCn
+[jacobiCn]: # (jacobiCn)
+
+Computes the Jacobi elliptic function `cn(u, m)`.
+
+    print jacobiCn(0.5, 0.2)
+
+## jacobiDn
+[jacobiDn]: # (jacobiDn)
+
+Computes the Jacobi elliptic function `dn(u, m)`.
+
+    print jacobiDn(0.5, 0.2)
+
+## jacobiAmplitude
+[jacobiAmplitude]: # (jacobiAmplitude)
+
+Computes the Jacobi amplitude.
+
+    print jacobiAmplitude(0.5, 0.2)
