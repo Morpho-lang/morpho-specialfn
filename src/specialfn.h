@@ -20,6 +20,22 @@
 #define SPECIALFN_PLOSSERROR "SpecialfnPLoss"
 #define SPECIALFN_PLOSSERROR_MSG "Special function %s encountered partial loss of precision."
 
+#define SPECIALFN_GAMMA "gamma"
+#define SPECIALFN_LOGGAMMA "logGamma"
+#define SPECIALFN_BETA "beta"
+#define SPECIALFN_LOGBETA "logBeta"
+#define SPECIALFN_LOWERINCOMPLETEGAMMA "lowerIncompleteGamma"
+#define SPECIALFN_UPPERINCOMPLETEGAMMA "upperIncompleteGamma"
+#define SPECIALFN_RECIPROCALGAMMA "reciprocalGamma"
+#define SPECIALFN_ERF "erf"
+#define SPECIALFN_ERFC "erfc"
+#define SPECIALFN_NORMALCDF "normalCDF"
+#define SPECIALFN_INVERSENORMALCDF "inverseNormalCDF"
+#define SPECIALFN_INCOMPLETEBETA "incompleteBeta"
+#define SPECIALFN_INVERSEINCOMPLETEBETA "inverseIncompleteBeta"
+#define SPECIALFN_BESSELJ "besselJ"
+#define SPECIALFN_BESSELY "besselY"
+
 void mtherr_reset(void);
 int mtherr_geterror(void);
 int mtherr(char *name, int code);

@@ -1,4 +1,4 @@
 // Error: 'SpecialfnOverflow'
 import specialfn
 
-lgam(-35)
+logGamma(-35)

@@ -1,4 +1,4 @@
 // Error: 'SpecialfnDomain'
 import specialfn
 
-ndtri(0)
+inverseNormalCDF(0)

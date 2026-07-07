@@ -1,4 +1,4 @@
 // Error: 'SpecialfnDomain'
 import specialfn
 
-y0(0)
+besselY(0)

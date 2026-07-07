@@ -1,4 +1,4 @@
 // Error: 'SpecialfnUnderflow'
 import specialfn
 
-igam(1000, 1)
+lowerIncompleteGamma(1000, 1)

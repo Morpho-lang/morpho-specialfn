@@ -1,0 +1,4 @@
+// Error: 'SpecialfnSingularity'
+import specialfn
+
+besselY(2, 0.0)

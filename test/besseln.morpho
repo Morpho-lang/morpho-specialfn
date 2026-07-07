@@ -1,12 +1,12 @@
-// Test incomplete beta functions
+// Test integer-order Bessel functions
 
 import specialfn
 
 var values = (
-    ( incompleteBeta(1, 1, 0.25), 0.25 ),
-    ( incompleteBeta(2, 1, 0.5), 0.25 ),
-    ( inverseIncompleteBeta(1, 1, 0.25), 0.25 ),
-    ( inverseIncompleteBeta(2, 1, 0.25), 0.5 )
+    ( besselJ(2, 1), 0.11490348493190049 ),
+    ( besselY(2, 1), -1.6506826068162543 ),
+    ( besselJ(3, 1), 0.019563353982668407 ),
+    ( besselY(3, 1), -5.821517605964729 )
 )
 
 var tol = 1e-12
