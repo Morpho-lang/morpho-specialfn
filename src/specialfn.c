@@ -145,12 +145,14 @@ value Specialfn_jn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
-    double x = MORPHO_GETFLOATVALUE(MORPHO_GETARG(args, 1));
-    mtherr_reset();
-    if (n == 0) out=MORPHO_FLOAT(j0(x));
-    else if (n == 1) out=MORPHO_FLOAT(j1(x));
-    else out=MORPHO_FLOAT(jn(n, x));
-    if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        if (n == 0) out=MORPHO_FLOAT(j0(x));
+        else if (n == 1) out=MORPHO_FLOAT(j1(x));
+        else out=MORPHO_FLOAT(jn(n, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "integer, float");
 
     return out;
 }
@@ -159,12 +161,14 @@ value Specialfn_yn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
-    double x = MORPHO_GETFLOATVALUE(MORPHO_GETARG(args, 1));
-    mtherr_reset();
-    if (n == 0) out=MORPHO_FLOAT(y0(x));
-    else if (n == 1) out=MORPHO_FLOAT(y1(x));
-    else out=MORPHO_FLOAT(yn(n, x));
-    if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        if (n == 0) out=MORPHO_FLOAT(y0(x));
+        else if (n == 1) out=MORPHO_FLOAT(y1(x));
+        else out=MORPHO_FLOAT(yn(n, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELY, 2, "integer, float");
 
     return out;
 }
@@ -173,12 +177,28 @@ value Specialfn_i1(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
-    double x = MORPHO_GETFLOATVALUE(MORPHO_GETARG(args, 1));
-    mtherr_reset();
-    if (n == 0) out=MORPHO_FLOAT(i0(x));
-    else if (n == 1) out=MORPHO_FLOAT(i1(x));
-    else out=MORPHO_FLOAT(iv((double) n, x));
-    if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        if (n == 0) out=MORPHO_FLOAT(i0(x));
+        else if (n == 1) out=MORPHO_FLOAT(i1(x));
+        else out=MORPHO_FLOAT(iv((double) n, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELI, 2, "integer, float");
+
+    return out;
+}
+
+value Specialfn_iv(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double order, x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &order) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(iv(order, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELI, 2, "float");
 
     return out;
 }
@@ -187,12 +207,14 @@ value Specialfn_kn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
-    double x = MORPHO_GETFLOATVALUE(MORPHO_GETARG(args, 1));
-    mtherr_reset();
-    if (n == 0) out=MORPHO_FLOAT(k0(x));
-    else if (n == 1) out=MORPHO_FLOAT(k1(x));
-    else out=MORPHO_FLOAT(kn(n, x));
-    if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    double x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
+        mtherr_reset();
+        if (n == 0) out=MORPHO_FLOAT(k0(x));
+        else if (n == 1) out=MORPHO_FLOAT(k1(x));
+        else out=MORPHO_FLOAT(kn(n, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELK, 2, "integer, float");
 
     return out;
 }
@@ -230,6 +252,7 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_BESSELY, "Float (Int,_)", Specialfn_yn, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (_)", Specialfn_i0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (Int,_)", Specialfn_i1, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_MODIFIEDBESSELI, "Float (Float,_)", Specialfn_iv, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELK, "Float (_)", Specialfn_k0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_MODIFIEDBESSELK, "Float (Int,_)", Specialfn_kn, BUILTIN_FLAGSEMPTY, NULL);
 }

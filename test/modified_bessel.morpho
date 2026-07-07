@@ -6,6 +6,7 @@ var values = (
     ( modifiedBesselI(0), 1.0 ),
     ( modifiedBesselI(1, 0.0), 0.0 ),
     ( modifiedBesselI(1), 1.2660658777520084 ),
+    ( modifiedBesselI(0.5, 1.0), 0.9376748882454876 ),
     ( modifiedBesselI(2, 1.0), 0.13574766976703828 ),
     ( modifiedBesselK(1), 0.42102443824070834 ),
     ( modifiedBesselK(1, 1.0), 0.6019072301972346 ),
