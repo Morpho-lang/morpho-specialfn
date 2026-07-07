@@ -1,6 +1,7 @@
 target_sources(specialfn
     PRIVATE
         airy.c
+        hyp2f1.c
         hyperg.c
         i0.c
         i1.c

@@ -1,0 +1,20 @@
+// Test inverse incomplete gamma function
+
+import specialfn
+
+var values = (
+    ( inverseUpperIncompleteGamma(1.0, 0.36787944117144233), 1.0 ),
+    ( inverseUpperIncompleteGamma(2.0, 0.7357588823428847), 1.0 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

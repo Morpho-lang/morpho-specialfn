@@ -12,8 +12,11 @@ double erf(double x); // Error function
 double erfc(double x); // Complementary error function
 double ndtr(double x); // Normal CDF
 double ndtri(double x); // Inverse normal CDF
+double igami(double a, double p); // Inverse upper incomplete gamma
 double incbet(double a, double b, double x); // Incomplete beta
 double incbi(double a, double b, double y); // Inverse incomplete beta
+double hyperg(double a, double b, double x); // Confluent hypergeometric
+double hyp2f1(double a, double b, double c, double x); // Gauss hypergeometric
 double j0(double x); // Bessel J0
 double j1(double x); // Bessel J1
 double y0(double x); // Bessel Y0
@@ -193,6 +196,51 @@ value Specialfn_incbi(vm *v, int nargs, value *args) {
         out=MORPHO_FLOAT(incbi(a,b,y));
         if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSEINCOMPLETEBETA, 3, "float");
+
+    return out;
+}
+
+value Specialfn_igami(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, p;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &p)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(igami(a, p));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA, 2, "float");
+
+    return out;
+}
+
+value Specialfn_hyperg(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, b, x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 2), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(hyperg(a, b, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_CONFLUENTHYPERGEOMETRIC, 3, "float");
+
+    return out;
+}
+
+value Specialfn_hyp2f1(vm *v, int nargs, value *args) {
+    value out=MORPHO_NIL;
+
+    double a, b, c, x;
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 2), &c) &&
+        morpho_valuetofloat(MORPHO_GETARG(args, 3), &x)) {
+        mtherr_reset();
+        out=MORPHO_FLOAT(hyp2f1(a, b, c, x));
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_GAUSSHYPERGEOMETRIC, 4, "float");
 
     return out;
 }
@@ -400,6 +448,9 @@ void specialfn_initialize(void) {
     morpho_addfunction(SPECIALFN_INVERSENORMALCDF, "Float (_)", Specialfn_ndtri, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_INCOMPLETEBETA, "Float (_,_,_)", Specialfn_incbet, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_INVERSEINCOMPLETEBETA, "Float (_,_,_)", Specialfn_incbi, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA, "Float (_,_)", Specialfn_igami, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_CONFLUENTHYPERGEOMETRIC, "Float (_,_,_)", Specialfn_hyperg, BUILTIN_FLAGSEMPTY, NULL);
+    morpho_addfunction(SPECIALFN_GAUSSHYPERGEOMETRIC, "Float (_,_,_,_)", Specialfn_hyp2f1, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (_)", Specialfn_j0, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Int,_)", Specialfn_jn, BUILTIN_FLAGSEMPTY, NULL);
     morpho_addfunction(SPECIALFN_BESSELJ, "Float (Float,_)", Specialfn_jv, BUILTIN_FLAGSEMPTY, NULL);

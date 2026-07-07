@@ -85,6 +85,27 @@ Computes the inverse of the regularized incomplete beta function.
 
     print inverseIncompleteBeta(2, 3, 0.5)
 
+## inverseUpperIncompleteGamma
+[inverseUpperIncompleteGamma]: # (inverseUpperIncompleteGamma)
+
+Computes the inverse of the upper regularized incomplete Gamma function.
+
+    print inverseUpperIncompleteGamma(1, 0.36787944117144233)
+
+## confluentHypergeometric
+[confluentHypergeometric]: # (confluentHypergeometric)
+
+Computes the confluent hypergeometric function.
+
+    print confluentHypergeometric(1, 1, 1)
+
+## hypergeometric2F1
+[hypergeometric2F1]: # (hypergeometric2F1)
+
+Computes the Gauss hypergeometric function.
+
+    print hypergeometric2F1(1, 1, 2, 0.5)
+
 ## erf
 [erf]: # (erf)
 

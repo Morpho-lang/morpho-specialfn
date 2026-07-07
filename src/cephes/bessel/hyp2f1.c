@@ -108,8 +108,7 @@ double hyp2f1();
 #endif
 extern double MAXNUM, MACHEP;
 
-double hyp2f1( a, b, c, x )
-double a, b, c, x;
+double hyp2f1(double a, double b, double c, double x)
 {
 double d, d1, d2, e;
 double p, q, r, s, y, ax;
