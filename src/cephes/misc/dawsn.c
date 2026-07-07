@@ -352,8 +352,7 @@ double chbevl(), sqrt(), fabs(), polevl(), p1evl();
 #endif
 extern double PI, MACHEP;
 
-double dawsn( xx )
-double xx;
+double dawsn(double xx)
 {
 double x, y;
 int sign;

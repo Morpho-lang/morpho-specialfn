@@ -1,0 +1,4 @@
+// Error: 'SpecialfnDomain'
+import specialfn
+
+expIntegralE(1, -1.0)

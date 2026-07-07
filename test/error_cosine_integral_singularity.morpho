@@ -1,0 +1,4 @@
+// Error: 'SpecialfnSingularity'
+import specialfn
+
+cosineIntegral(0.0)

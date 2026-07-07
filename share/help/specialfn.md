@@ -106,6 +106,69 @@ Computes the Gauss hypergeometric function.
 
     print hypergeometric2F1(1, 1, 2, 0.5)
 
+## expIntegralEi
+[expIntegralEi]: # (expIntegralEi)
+
+Computes the exponential integral `Ei(x)`.
+
+    print expIntegralEi(1)
+
+## expIntegralE
+[expIntegralE]: # (expIntegralE)
+
+Computes the exponential integral `E_n(x)`.
+
+    print expIntegralE(1, 1)
+
+## dawson
+[dawson]: # (dawson)
+
+Computes Dawson's integral.
+
+    print dawson(1)
+
+## fresnelS
+[fresnelS]: # (fresnelS)
+
+Computes the Fresnel integral `S(x)`.
+
+    print fresnelS(1)
+
+## fresnelC
+[fresnelC]: # (fresnelC)
+
+Computes the Fresnel integral `C(x)`.
+
+    print fresnelC(1)
+
+## sineIntegral
+[sineIntegral]: # (sineIntegral)
+
+Computes the sine integral.
+
+    print sineIntegral(1)
+
+## cosineIntegral
+[cosineIntegral]: # (cosineIntegral)
+
+Computes the cosine integral.
+
+    print cosineIntegral(1)
+
+## sinhIntegral
+[sinhIntegral]: # (sinhIntegral)
+
+Computes the hyperbolic sine integral.
+
+    print sinhIntegral(1)
+
+## coshIntegral
+[coshIntegral]: # (coshIntegral)
+
+Computes the hyperbolic cosine integral.
+
+    print coshIntegral(1)
+
 ## erf
 [erf]: # (erf)
 

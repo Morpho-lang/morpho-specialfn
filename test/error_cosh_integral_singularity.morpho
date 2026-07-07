@@ -1,0 +1,4 @@
+// Error: 'SpecialfnSingularity'
+import specialfn
+
+coshIntegral(0.0)

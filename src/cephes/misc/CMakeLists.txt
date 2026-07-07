@@ -2,5 +2,11 @@ target_sources(specialfn
     PRIVATE
         beta.c
         chbevl.c
+        dawsn.c
+        ei.c
+        expn.c
+        fresnl.c
         rgamma.c
+        shichi.c
+        sici.c
 )
