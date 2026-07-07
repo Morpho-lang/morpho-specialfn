@@ -1,0 +1,21 @@
+// Test digamma function
+
+import specialfn
+
+var values = (
+    ( digamma(1.0), -0.5772156649015329 ),
+    ( digamma(2.0), 0.42278433509846713 ),
+    ( digamma(0.5), -1.9635100260214235 )
+)
+
+var tol = 1e-12
+
+for (v in values) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}

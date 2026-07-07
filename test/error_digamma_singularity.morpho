@@ -1,0 +1,4 @@
+// Error: 'SpecialfnSingularity'
+import specialfn
+
+digamma(0.0)

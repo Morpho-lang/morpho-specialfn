@@ -10,5 +10,6 @@ target_sources(specialfn
         k0.c
         k1.c
         kn.c
+        psi.c
         yn.c
 )
