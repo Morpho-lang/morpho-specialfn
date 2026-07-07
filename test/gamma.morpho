@@ -26,4 +26,21 @@ for (v in values) {
     if (abs(1-gp/g) > tol) print "Fail: ${x}, ${g}, ${abs(1-gp/g)}"
 }
 
+var familyValues = (
+    ( logGamma(1.0), 0.0 ),
+    ( logGamma(5.0), 3.1780538303479458 ),
+    ( lowerIncompleteGamma(1.0, 1.0), 0.6321205588285577 ),
+    ( upperIncompleteGamma(1.0, 1.0), 0.36787944117144233 )
+)
+
+for (v in familyValues) {
+    var x = v[0]
+    var xp = v[1]
+    if (abs(xp) > tol) {
+        if (abs(1-x/xp) > tol) print "Fail: ${x}, ${xp}"
+    } else {
+        if (abs(x-xp) > tol) print "Fail: ${x}, ${xp}"
+    }
+}
+
 print "Success" // expect: Success

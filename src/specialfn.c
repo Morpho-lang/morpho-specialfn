@@ -39,7 +39,7 @@ double igam(double a, double x);  // Incomplete gamma integral
 double igamc(double a, double x); // Complemented incomplete gamma integral
 
 /* -------------------------------------------------------
- * Raise Ceres errors as morpho errors
+ * Raise Cephes errors as Morpho errors
  * ------------------------------------------------------- */
 
 typedef struct {
@@ -125,7 +125,7 @@ value wrapper(vm *v, int nargs, value *args) { \
 }
 
 /* -------------------------------------------------------
- * Ceres veneers
+ * Cephes veneers
  * ------------------------------------------------------- */
 
 SPECIALFN_UNARY_WRAPPER(Specialfn_gamma, SPECIALFN_GAMMA, gamma)

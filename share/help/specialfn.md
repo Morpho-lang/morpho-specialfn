@@ -224,16 +224,12 @@ Computes the incomplete elliptic integral of the second kind using parameter `m`
 
 Computes the complete elliptic integral of the first kind using parameter `m`.
 
-This wrapper uses the standard convention, so:
-
     print completeEllipticK(0.0) // expect: pi/2
 
 ## completeEllipticE
 [completeEllipticE]: # (completeEllipticE)
 
 Computes the complete elliptic integral of the second kind using parameter `m`.
-
-This wrapper uses the standard convention, so:
 
     print completeEllipticE(0.0) // expect: pi/2
 

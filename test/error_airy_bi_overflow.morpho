@@ -1,0 +1,4 @@
+// Error: 'SpecialfnOverflow'
+import specialfn
+
+airyBi(110.0)
