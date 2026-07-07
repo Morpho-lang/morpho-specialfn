@@ -6,7 +6,8 @@ var values = (
     ( scaledModifiedBesselI0(1.0), 0.46575960759364043 ),
     ( scaledModifiedBesselI1(1.0), 0.20791041534970847 ),
     ( scaledModifiedBesselK0(1.0), 1.1444630798068949 ),
-    ( scaledModifiedBesselK1(1.0), 1.636153486263258 )
+    ( scaledModifiedBesselK1(1.0), 1.636153486263258 ),
+    ( scaledModifiedBesselI0(10.0), 0.1278333371634286 )
 )
 
 var tol = 1e-12

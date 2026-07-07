@@ -37,6 +37,8 @@ Computes the reciprocal Gamma function `1 / Gamma(x)`.
 
 Computes the lower regularized incomplete Gamma function `P(a, x)`.
 
+This is the normalized lower incomplete Gamma ratio.
+
     print lowerIncompleteGamma(2, 0.5)
 
 ## upperIncompleteGamma
@@ -76,6 +78,8 @@ Computes the natural logarithm of the beta function.
 
 Computes the regularized incomplete beta function.
 
+This is the normalized incomplete beta ratio.
+
     print incompleteBeta(2, 3, 0.5)
 
 ## inverseIncompleteBeta
@@ -89,6 +93,8 @@ Computes the inverse of the regularized incomplete beta function.
 [inverseUpperIncompleteGamma]: # (inverseUpperIncompleteGamma)
 
 Computes the inverse of the upper regularized incomplete Gamma function.
+
+Given `a` and `p`, it returns `x` such that `upperIncompleteGamma(a, x) = p`.
 
     print inverseUpperIncompleteGamma(1, 0.36787944117144233)
 
@@ -117,6 +123,8 @@ Computes the exponential integral `Ei(x)`.
 [expIntegralE]: # (expIntegralE)
 
 Computes the exponential integral `E_n(x)`.
+
+The first argument is an integer order `n`.
 
     print expIntegralE(1, 1)
 
@@ -188,6 +196,8 @@ Computes `riemannZeta(x) - 1`.
 
 Computes the Hurwitz zeta function.
 
+This is the two-parameter zeta function `zeta(x, q)`.
+
     print hurwitzZeta(2, 2)
 
 ## dilog
@@ -202,12 +212,14 @@ Computes the dilogarithm.
 
 Computes the polylogarithm of integer order.
 
+The first argument is an integer order `n`.
+
     print polylog(2, 1)
 
 ## struveH
 [struveH]: # (struveH)
 
-Computes the Struve function `H_v(x)`.
+Computes the Struve function `H_v(x)` of order `v`.
 
     print struveH(0, 1)
 
@@ -308,12 +320,16 @@ Examples:
 
 Computes the exponentially scaled modified Bessel function `I0`.
 
+This rescales `I0(x)` to improve numerical behavior for large `x`.
+
     print scaledModifiedBesselI0(1)
 
 ## scaledModifiedBesselI1
 [scaledModifiedBesselI1]: # (scaledModifiedBesselI1)
 
 Computes the exponentially scaled modified Bessel function `I1`.
+
+This rescales `I1(x)` to improve numerical behavior for large `x`.
 
     print scaledModifiedBesselI1(1)
 
@@ -322,12 +338,16 @@ Computes the exponentially scaled modified Bessel function `I1`.
 
 Computes the exponentially scaled modified Bessel function `K0`.
 
+This rescales `K0(x)` to improve numerical behavior for large `x`.
+
     print scaledModifiedBesselK0(1)
 
 ## scaledModifiedBesselK1
 [scaledModifiedBesselK1]: # (scaledModifiedBesselK1)
 
 Computes the exponentially scaled modified Bessel function `K1`.
+
+This rescales `K1(x)` to improve numerical behavior for large `x`.
 
     print scaledModifiedBesselK1(1)
 
