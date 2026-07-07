@@ -58,142 +58,45 @@ static bool specialfn_dispatcherror(vm *v) {
     return false;
 }
 
+#define SPECIALFN_UNARY_WRAPPER(wrapper, label, function) \
+value wrapper(vm *v, int nargs, value *args) { \
+    value out=MORPHO_NIL; \
+    double x; \
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) { \
+        mtherr_reset(); \
+        out=MORPHO_FLOAT(function(x)); \
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL; \
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 1, "float"); \
+    return out; \
+}
+
+#define SPECIALFN_BINARY_WRAPPER(wrapper, label, function) \
+value wrapper(vm *v, int nargs, value *args) { \
+    value out=MORPHO_NIL; \
+    double a, b; \
+    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) && \
+        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) { \
+        mtherr_reset(); \
+        out=MORPHO_FLOAT(function(a, b)); \
+        if (specialfn_dispatcherror(v)) out=MORPHO_NIL; \
+    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 2, "float"); \
+    return out; \
+}
+
 /* -------------------------------------------------------
  * Ceres veneers
  * ------------------------------------------------------- */
 
-value Specialfn_gamma(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL; 
-
-    double x; 
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(gamma(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_GAMMA, 1, "float");
-
-    return out;
-}
-
-value Specialfn_lgam(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL; 
-
-    double x; 
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(lgam(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_LOGGAMMA, 1, "float");
-
-    return out;
-}
-
-value Specialfn_beta(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double a, b;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
-        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(beta(a,b));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BETA, 2, "float");
-
-    return out;
-}
-
-value Specialfn_lbeta(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double a, b;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
-        morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(lbeta(a,b));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_LOGBETA, 2, "float");
-
-    return out;
-}
-
-value Specialfn_igam(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL; 
-
-    double a, x; 
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
-        morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(igam(a,x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_LOWERINCOMPLETEGAMMA, 2, "float");
-
-    return out;
-}
-
-value Specialfn_rgamma(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(rgamma(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_RECIPROCALGAMMA, 1, "float");
-
-    return out;
-}
-
-value Specialfn_erf(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(erf(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_ERF, 1, "float");
-
-    return out;
-}
-
-value Specialfn_erfc(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(erfc(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_ERFC, 1, "float");
-
-    return out;
-}
-
-value Specialfn_ndtr(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(ndtr(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_NORMALCDF, 1, "float");
-
-    return out;
-}
-
-value Specialfn_ndtri(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(ndtri(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSENORMALCDF, 1, "float");
-
-    return out;
-}
+SPECIALFN_UNARY_WRAPPER(Specialfn_gamma, SPECIALFN_GAMMA, gamma)
+SPECIALFN_UNARY_WRAPPER(Specialfn_lgam, SPECIALFN_LOGGAMMA, lgam)
+SPECIALFN_BINARY_WRAPPER(Specialfn_beta, SPECIALFN_BETA, beta)
+SPECIALFN_BINARY_WRAPPER(Specialfn_lbeta, SPECIALFN_LOGBETA, lbeta)
+SPECIALFN_BINARY_WRAPPER(Specialfn_igam, SPECIALFN_LOWERINCOMPLETEGAMMA, igam)
+SPECIALFN_UNARY_WRAPPER(Specialfn_rgamma, SPECIALFN_RECIPROCALGAMMA, rgamma)
+SPECIALFN_UNARY_WRAPPER(Specialfn_erf, SPECIALFN_ERF, erf)
+SPECIALFN_UNARY_WRAPPER(Specialfn_erfc, SPECIALFN_ERFC, erfc)
+SPECIALFN_UNARY_WRAPPER(Specialfn_ndtr, SPECIALFN_NORMALCDF, ndtr)
+SPECIALFN_UNARY_WRAPPER(Specialfn_ndtri, SPECIALFN_INVERSENORMALCDF, ndtri)
 
 value Specialfn_incbet(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -225,57 +128,10 @@ value Specialfn_incbi(vm *v, int nargs, value *args) {
     return out;
 }
 
-value Specialfn_j0(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(j0(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 1, "float");
-
-    return out;
-}
-
-value Specialfn_j1(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(j1(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 1, "float");
-
-    return out;
-}
-
-value Specialfn_y0(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(y0(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELY, 1, "float");
-
-    return out;
-}
-
-value Specialfn_y1(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL;
-
-    double x;
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(y1(x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELY, 1, "float");
-
-    return out;
-}
+SPECIALFN_UNARY_WRAPPER(Specialfn_j0, SPECIALFN_BESSELJ, j0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_j1, SPECIALFN_BESSELJ, j1)
+SPECIALFN_UNARY_WRAPPER(Specialfn_y0, SPECIALFN_BESSELY, y0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_y1, SPECIALFN_BESSELY, y1)
 
 value Specialfn_jn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -305,19 +161,7 @@ value Specialfn_yn(vm *v, int nargs, value *args) {
     return out;
 }
 
-value Specialfn_igamc(vm *v, int nargs, value *args) {
-    value out=MORPHO_NIL; 
-
-    double a, x; 
-    if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
-        morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
-        mtherr_reset();
-        out=MORPHO_FLOAT(igamc(a,x));
-        if (specialfn_dispatcherror(v)) out=MORPHO_NIL;
-    } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_UPPERINCOMPLETEGAMMA, 2, "float");
-
-    return out;
-}
+SPECIALFN_BINARY_WRAPPER(Specialfn_igamc, SPECIALFN_UPPERINCOMPLETEGAMMA, igamc)
 
 /* -------------------------------------------------------
  * Initialization and finalization
