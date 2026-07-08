@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "mconf.h"
 #include "specialfn.h"
 
 double gamma(double x); // Gamma function
