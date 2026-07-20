@@ -61,15 +61,15 @@ extern double log ( double );
 extern double tan ( double );
 extern double atan ( double );
 extern double floor ( double );
-extern double ellpk ( double );
-double ellik ( double, double );
+extern double cephes_ellpk ( double );
+double cephes_ellik ( double, double );
 #else
-double sqrt(), fabs(), log(), tan(), atan(), floor(), ellpk();
-double ellik();
+double sqrt(), fabs(), log(), tan(), atan(), floor(), cephes_ellpk();
+double cephes_ellik();
 #endif
 extern double PI, PIO2, MACHEP, MAXNUM;
 
-double ellik(double phi, double m)
+double cephes_ellik(double phi, double m)
 {
 double a, b, c, e, temp, t, K;
 int d, mod, sign, npio2;
@@ -81,7 +81,7 @@ if( a == 0.0 )
 	{
 	if( fabs(phi) >= PIO2 )
 		{
-		mtherr( "ellik", SING );
+		mtherr( "cephes_ellik", SING );
 		return( MAXNUM );
 		}
 	return(  log(  tan( (PIO2 + phi)/2.0 )  )   );
@@ -91,7 +91,7 @@ if( npio2 & 1 )
 	npio2 += 1;
 if( npio2 )
 	{
-	K = ellpk( a );
+	K = cephes_ellpk( a );
 	phi = phi - npio2 * PIO2;
 	}
 else
@@ -114,8 +114,8 @@ if( fabs(t) > 10.0 )
 		{
 		e = atan(e);
 		if( npio2 == 0 )
-			K = ellpk( a );
-		temp = K - ellik( e, m );
+			K = cephes_ellpk( a );
+		temp = K - cephes_ellik( e, m );
 		goto done;
 		}
 	}

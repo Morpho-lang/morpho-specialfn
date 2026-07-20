@@ -54,7 +54,7 @@ int signbit();
 #endif
 extern double NEGZERO, INFINITY, MAXNUM, MAXLOG, MINLOG, LOGE2;
 
-double powi(double x, int nn)
+double cephes_powi(double x, int nn)
 {
 int n, e, sign, asign, lx;
 double w, y, s;
@@ -122,7 +122,7 @@ else
 
 if( s > MAXLOG )
 	{
-	mtherr( "powi", OVERFLOW );
+	mtherr( "cephes_powi", OVERFLOW );
 	y = INFINITY;
 	goto done;
 	}

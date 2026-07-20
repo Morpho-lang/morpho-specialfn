@@ -54,15 +54,15 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double y0 ( double );
-extern double y1 ( double );
+extern double cephes_y0 ( double );
+extern double cephes_y1 ( double );
 extern double log ( double );
 #else
-double y0(), y1(), log();
+double cephes_y0(), cephes_y1(), log();
 #endif
 extern double MAXNUM, MAXLOG;
 
-double yn(int n, double x) {
+double cephes_yn(int n, double x) {
 double an, anm1, anm2, r;
 int k, sign;
 
@@ -79,21 +79,21 @@ else
 
 
 if( n == 0 )
-	return( sign * y0(x) );
+	return( sign * cephes_y0(x) );
 if( n == 1 )
-	return( sign * y1(x) );
+	return( sign * cephes_y1(x) );
 
 /* test for overflow */
 if( x <= 0.0 )
 	{
-	mtherr( "yn", SING );
+	mtherr( "cephes_yn", SING );
 	return( -MAXNUM );
 	}
 
 /* forward recurrence on n */
 
-anm2 = y0(x);
-anm1 = y1(x);
+anm2 = cephes_y0(x);
+anm1 = cephes_y1(x);
 k = 1;
 r = 2 * k;
 do

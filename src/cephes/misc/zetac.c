@@ -496,19 +496,19 @@ static unsigned short S[20] = {
 #ifdef ANSIPROT
 extern double sin ( double );
 extern double floor ( double );
-extern double gamma ( double );
+extern double cephes_gamma ( double );
 extern double pow ( double, double );
 extern double exp ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-double zetac ( double );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_p1evl ( double, void *, int );
+double cephes_zetac ( double );
 #else
-double sin(), floor(), gamma(), pow(), exp();
-double polevl(), p1evl(), zetac();
+double sin(), floor(), cephes_gamma(), pow(), exp();
+double cephes_polevl(), cephes_p1evl(), cephes_zetac();
 #endif
 extern double MACHEP;
 
-double zetac(double x)
+double cephes_zetac(double x)
 {
 int i;
 double a, b, s, w;
@@ -521,12 +521,12 @@ if( x < 0.0 )
 	if( x < -170.6243 )
 #endif
 		{
-		mtherr( "zetac", OVERFLOW );
+		mtherr( "cephes_zetac", OVERFLOW );
 		return(0.0);
 		}
 	s = 1.0 - x;
-	w = zetac( s );
-	b = sin(0.5*PI*x) * pow(2.0*PI, x) * gamma(s) * (1.0 + w) / PI;
+	w = cephes_zetac( s );
+	b = sin(0.5*PI*x) * pow(2.0*PI, x) * cephes_gamma(s) * (1.0 + w) / PI;
 	return(b - 1.0);
 	}
 
@@ -552,13 +552,13 @@ if( w == x )
 if( x < 1.0 )
 	{
 	w = 1.0 - x;
-	a = polevl( x, R, 5 ) / ( w * p1evl( x, S, 5 ));
+	a = cephes_polevl( x, R, 5 ) / ( w * cephes_p1evl( x, S, 5 ));
 	return( a );
 	}
 
 if( x == 1.0 )
 	{
-	mtherr( "zetac", SING );
+	mtherr( "cephes_zetac", SING );
 	return( MAXNUM );
 	}
 
@@ -566,14 +566,14 @@ if( x <= 10.0 )
 	{
 	b = pow( 2.0, x ) * (x - 1.0);
 	w = 1.0/x;
-	s = (x * polevl( w, P, 8 )) / (b * p1evl( w, Q, 8 ));
+	s = (x * cephes_polevl( w, P, 8 )) / (b * cephes_p1evl( w, Q, 8 ));
 	return( s );
 	}
 
 if( x <= 50.0 )
 	{
 	b = pow( 2.0, -x );
-	w = polevl( x, A, 10 ) / p1evl( x, B, 10 );
+	w = cephes_polevl( x, A, 10 ) / cephes_p1evl( x, B, 10 );
 	w = exp(w) + b;
 	return(w);
 	}

@@ -63,18 +63,18 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 
 #ifdef ANSIPROT
 extern double fabs ( double );
-extern double gamma ( double );
-extern double lgam ( double );
+extern double cephes_gamma ( double );
+extern double cephes_lgam ( double );
 extern double exp ( double );
 extern double log ( double );
 extern double floor ( double );
 #else
-double fabs(), gamma(), lgam(), exp(), log(), floor();
+double fabs(), cephes_gamma(), cephes_lgam(), exp(), log(), floor();
 #endif
 extern double MAXLOG, MAXNUM;
 extern int sgngam;
 
-double beta(double a, double b) {
+double cephes_beta(double a, double b) {
     double y;
     int sign;
 
@@ -91,36 +91,36 @@ double beta(double a, double b) {
 
     y = a + b;
     if (fabs(y) > MAXGAM) {
-        y = lgam(y);
+        y = cephes_lgam(y);
         sign *= sgngam;
-        y = lgam(b) - y;
+        y = cephes_lgam(b) - y;
         sign *= sgngam;
-        y = lgam(a) + y;
+        y = cephes_lgam(a) + y;
         sign *= sgngam;
         if (y > MAXLOG) {
 over:
-            mtherr("beta", OVERFLOW);
+            mtherr("cephes_beta", OVERFLOW);
             return (sign * MAXNUM);
         }
         return (sign * exp(y));
     }
 
-    y = gamma(y);
+    y = cephes_gamma(y);
     if (y == 0.0)
         goto over;
 
     if (a > b) {
-        y = gamma(a)/y;
-        y *= gamma(b);
+        y = cephes_gamma(a)/y;
+        y *= cephes_gamma(b);
     } else {
-        y = gamma(b)/y;
-        y *= gamma(a);
+        y = cephes_gamma(b)/y;
+        y *= cephes_gamma(a);
     }
 
     return(y);
 }
 
-double lbeta(double a, double b) {
+double cephes_lbeta(double a, double b) {
     double y;
     int sign;
 
@@ -137,29 +137,29 @@ double lbeta(double a, double b) {
 
     y = a + b;
     if (fabs(y) > MAXGAM) {
-        y = lgam(y);
+        y = cephes_lgam(y);
         sign *= sgngam;
-        y = lgam(b) - y;
+        y = cephes_lgam(b) - y;
         sign *= sgngam;
-        y = lgam(a) + y;
+        y = cephes_lgam(a) + y;
         sign *= sgngam;
         sgngam = sign;
         return(y);
     }
 
-    y = gamma(y);
+    y = cephes_gamma(y);
     if (y == 0.0) {
 over:
-        mtherr("lbeta", OVERFLOW);
+        mtherr("cephes_lbeta", OVERFLOW);
         return(sign * MAXNUM);
     }
 
     if (a > b) {
-        y = gamma(a)/y;
-        y *= gamma(b);
+        y = cephes_gamma(a)/y;
+        y *= cephes_gamma(b);
     } else {
-        y = gamma(b)/y;
-        y *= gamma(a);
+        y = cephes_gamma(b)/y;
+        y *= cephes_gamma(a);
     }
 
     if (y < 0) {

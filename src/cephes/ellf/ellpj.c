@@ -80,7 +80,7 @@ double sinh(), cosh(), atan(), exp();
 #endif
 extern double PIO2, MACHEP;
 
-int ellpj(double u, double m, double *sn, double *cn, double *dn, double *ph)
+int cephes_ellpj(double u, double m, double *sn, double *cn, double *dn, double *ph)
 {
 double ai, b, phi, t, twon;
 double a[9], c[9];
@@ -91,7 +91,7 @@ int i;
 
 if( m < 0.0 || m > 1.0 )
 	{
-	mtherr( "ellpj", DOMAIN );
+	mtherr( "cephes_ellpj", DOMAIN );
 	*sn = 0.0;
 	*cn = 0.0;
 	*ph = 0.0;
@@ -137,7 +137,7 @@ while( fabs(c[i]/a[i]) > MACHEP )
 	{
 	if( i > 7 )
 		{
-		mtherr( "ellpj", OVERFLOW );
+		mtherr( "cephes_ellpj", OVERFLOW );
 		goto done;
 		}
 	ai = a[i];

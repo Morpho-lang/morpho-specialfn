@@ -48,14 +48,14 @@ Copyright 1984, 1987, 2000 by Stephen L. Moshier
 #include "mconf.h"
 #ifdef ANSIPROT
 extern double fabs ( double );
-extern double j0 ( double );
-extern double j1 ( double );
+extern double cephes_j0 ( double );
+extern double cephes_j1 ( double );
 #else
-double fabs(), j0(), j1();
+double fabs(), cephes_j0(), cephes_j1();
 #endif
 extern double MACHEP;
 
-double jn(int n, double x) {
+double cephes_jn(int n, double x) {
 double pkm2, pkm1, pk, xk, r, ans;
 int k, sign;
 
@@ -78,11 +78,11 @@ if( x < 0.0 )
 	}
 
 if( n == 0 )
-	return( sign * j0(x) );
+	return( sign * cephes_j0(x) );
 if( n == 1 )
-	return( sign * j1(x) );
+	return( sign * cephes_j1(x) );
 if( n == 2 )
-	return( sign * (2.0 * j1(x) / x  -  j0(x)) );
+	return( sign * (2.0 * cephes_j1(x) / x  -  cephes_j0(x)) );
 
 if( x < MACHEP )
 	return( 0.0 );
@@ -123,8 +123,8 @@ do
 while( --k > 0 );
 
 if( fabs(pk) > fabs(pkm1) )
-	ans = j1(x)/pk;
+	ans = cephes_j1(x)/pk;
 else
-	ans = j0(x)/pkm1;
+	ans = cephes_j0(x)/pkm1;
 return( sign * ans );
 }

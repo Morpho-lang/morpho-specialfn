@@ -142,20 +142,20 @@ static unsigned short B[32] = {
 #ifdef ANSIPROT
 extern double fabs ( double );
 extern double log ( double );
-extern double polevl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
 #else
-double fabs(), log(), polevl();
+double fabs(), log(), cephes_polevl();
 #endif
 extern double PI, MACHEP;
 
-double spence(double x)
+double cephes_spence(double x)
 {
 double w, y, z;
 int flag;
 
 if( x < 0.0 )
 	{
-	mtherr( "spence", DOMAIN );
+	mtherr( "cephes_spence", DOMAIN );
 	return(0.0);
 	}
 
@@ -189,7 +189,7 @@ else
 	w = x - 1.0;
 
 
-y = -w * polevl( w, A, 7) / polevl( w, B, 7 );
+y = -w * cephes_polevl( w, A, 7) / cephes_polevl( w, B, 7 );
 
 if( flag & 1 )
 	y = (PI * PI)/6.0  - log(x) * log(1.0-x) - y;

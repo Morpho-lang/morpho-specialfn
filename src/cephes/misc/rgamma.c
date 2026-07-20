@@ -130,20 +130,20 @@ static unsigned short R[] = {
 };
 #endif
 
-static char name[] = "rgamma";
+static char name[] = "cephes_rgamma";
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double cephes_chbevl ( double, void *, int );
 extern double exp ( double );
 extern double log ( double );
 extern double sin ( double );
-extern double lgam ( double );
+extern double cephes_lgam ( double );
 #else
-double chbevl(), exp(), log(), sin(), lgam();
+double cephes_chbevl(), exp(), log(), sin(), cephes_lgam();
 #endif
 extern double PI, MAXLOG, MAXNUM;
 
-double rgamma(double x) {
+double cephes_rgamma(double x) {
     double w, y, z;
     int sign;
 
@@ -163,7 +163,7 @@ double rgamma(double x) {
             sign = -1;
         }
 
-        y = log(w * z) - log(PI) + lgam(w);
+        y = log(w * z) - log(PI) + cephes_lgam(w);
         if (y < -MAXLOG) {
             mtherr(name, UNDERFLOW);
             return(sign * 1.0 / MAXNUM);
@@ -190,6 +190,6 @@ double rgamma(double x) {
     if (w == 1.0)
         return(1.0/z);
 
-    y = w * (1.0 + chbevl(4.0*w-2.0, R, 16)) / z;
+    y = w * (1.0 + cephes_chbevl(4.0*w-2.0, R, 16)) / z;
     return(y);
 }

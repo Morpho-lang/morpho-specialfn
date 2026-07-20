@@ -61,15 +61,15 @@ extern double sin ( double x );
 extern double tan ( double x );
 extern double atan ( double );
 extern double floor ( double );
-extern double ellpe ( double );
-extern double ellpk ( double );
-double ellie ( double, double );
+extern double cephes_ellpe ( double );
+extern double cephes_ellpk ( double );
+double cephes_ellie ( double, double );
 #else
 double sqrt(), fabs(), log(), sin(), tan(), atan(), floor();
-double ellpe(), ellpk(), ellie();
+double cephes_ellpe(), cephes_ellpk(), cephes_ellie();
 #endif
 
-double ellie(double phi, double m)
+double cephes_ellie(double phi, double m)
 {
 double a, b, c, e, temp;
 double lphi, t, E;
@@ -92,7 +92,7 @@ else
 	sign = 1;
 	}
 a = 1.0 - m;
-E = ellpe( a );
+E = cephes_ellpe( a );
 if( a == 0.0 )
 	{
 	temp = sin( lphi );
@@ -110,7 +110,7 @@ if( fabs(t) > 10.0 )
 	if( fabs(e) < 10.0 )
 		{
 		e = atan(e);
-		temp = E + m * sin( lphi ) * sin( e ) - ellie( e, m );
+		temp = E + m * sin( lphi ) * sin( e ) - cephes_ellie( e, m );
 		goto done;
 		}
 	}
@@ -134,7 +134,7 @@ while( fabs(c/a) > MACHEP )
 	e += c * sin(lphi);
 	}
 
-temp = E / ellpk( 1.0 - m );
+temp = E / cephes_ellpk( 1.0 - m );
 temp *= (atan(t) + mod * PI)/(d * a);
 temp += e;
 

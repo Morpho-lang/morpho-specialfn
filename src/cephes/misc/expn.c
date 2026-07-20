@@ -51,22 +51,22 @@
 #include "mconf.h"
 #ifdef ANSIPROT
 extern double pow ( double, double );
-extern double gamma ( double );
+extern double cephes_gamma ( double );
 extern double log ( double );
 extern double exp ( double );
 extern double fabs ( double );
 #else
-double pow(), gamma(), log(), exp(), fabs();
+double pow(), cephes_gamma(), log(), exp(), fabs();
 #endif
 #define EUL 0.57721566490153286060
 #define BIG  1.44115188075855872E+17
 extern double MAXNUM, MACHEP, MAXLOG;
 
-double expn(int n, double x)
+double cephes_expn(int n, double x)
 {
 double ans, r, t, yk, xk;
 double pk, pkm1, pkm2, qk, qkm1, qkm2;
-double psi, z;
+double cephes_psi, z;
 int i, k;
 static double big = BIG;
 
@@ -75,7 +75,7 @@ if( n < 0 )
 
 if( x < 0 )
 	{
-domerr:	mtherr( "expn", DOMAIN );
+domerr:	mtherr( "cephes_expn", DOMAIN );
 	return( MAXNUM );
 	}
 
@@ -86,7 +86,7 @@ if( x == 0.0 )
 	{
 	if( n < 2 )
 		{
-		mtherr( "expn", SING );
+		mtherr( "cephes_expn", SING );
 		return( MAXNUM );
 		}
 	else
@@ -118,9 +118,9 @@ if( x > 1.0 )
 
 /*		Power series expansion		*/
 
-psi = -EUL - log(x);
+cephes_psi = -EUL - log(x);
 for( i=1; i<n; i++ )
-	psi = psi + 1.0/i;
+	cephes_psi = cephes_psi + 1.0/i;
 
 z = -x;
 xk = 0.0;
@@ -148,7 +148,7 @@ while( t > MACHEP );
 k = xk;
 t = n;
 r = n - 1;
-ans = (pow(z, r) * psi / gamma(t)) - ans;
+ans = (pow(z, r) * cephes_psi / cephes_gamma(t)) - ans;
 goto done;
 
 /*							expn.c	*/

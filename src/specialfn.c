@@ -1,61 +1,61 @@
 #include <stdio.h>
-#include <math.h>
+#include <string.h>
 
 #include "mconf.h"
 #include "specialfn.h"
 
-double gamma(double x); // Gamma function
-double lgam(double x);  // Logarithm of the gamma function
-double beta(double a, double b); // Beta function
-double lbeta(double a, double b); // Logarithm of beta
-double rgamma(double x); // Reciprocal gamma function
-double erf(double x); // Error function
-double erfc(double x); // Complementary error function
-double ndtr(double x); // Normal CDF
-double ndtri(double x); // Inverse normal CDF
-double igami(double a, double p); // Inverse upper incomplete gamma
-double ei(double x); // Exponential integral Ei
-double expn(int n, double x); // Exponential integral En
-double dawsn(double x); // Dawson's integral
-double zetac(double x); // Riemann zeta minus one
-double zeta(double x, double q); // Hurwitz zeta
-double spence(double x); // Dilogarithm
-double polylog(int n, double x); // Polylogarithm
-double incbet(double a, double b, double x); // Incomplete beta
-double incbi(double a, double b, double y); // Inverse incomplete beta
-double hyperg(double a, double b, double x); // Confluent hypergeometric
-double hyp2f1(double a, double b, double c, double x); // Gauss hypergeometric
-int fresnl(double x, double *s, double *c); // Fresnel integrals
-int sici(double x, double *si, double *ci); // Sine and cosine integrals
-int shichi(double x, double *shi, double *chi); // Hyperbolic sine and cosine integrals
-double struve(double v, double x); // Struve function H_v
-double j0(double x); // Bessel J0
-double j1(double x); // Bessel J1
-double y0(double x); // Bessel Y0
-double y1(double x); // Bessel Y1
-double jn(int n, double x); // Bessel Jn
-double jv(double v, double x); // Bessel Jv
-double yn(int n, double x); // Bessel Yn
-double ellie(double phi, double m); // Incomplete elliptic E
-double ellik(double phi, double m); // Incomplete elliptic F
-double ellpe(double m); // Complete elliptic E
-double ellpk(double m); // Complete elliptic K
-int ellpj(double u, double m, double *sn, double *cn, double *dn, double *ph); // Jacobian elliptic functions
-int airy(double x, double *ai, double *aip, double *bi, double *bip); // Airy functions
-double psi(double x); // Digamma
-double i0(double x); // Modified Bessel I0
-double i1(double x); // Modified Bessel I1
-double i0e(double x); // Scaled modified Bessel I0
-double i1e(double x); // Scaled modified Bessel I1
-double iv(double v, double x); // Modified Bessel Iv
-double k0(double x); // Modified Bessel K0
-double k1(double x); // Modified Bessel K1
-double k0e(double x); // Scaled modified Bessel K0
-double k1e(double x); // Scaled modified Bessel K1
-double kn(int n, double x); // Modified Bessel Kn
+double cephes_gamma(double x); // Gamma function
+double cephes_lgam(double x);  // Logarithm of the gamma function
+double cephes_beta(double a, double b); // Beta function
+double cephes_lbeta(double a, double b); // Logarithm of beta
+double cephes_rgamma(double x); // Reciprocal gamma function
+double cephes_erf(double x); // Error function
+double cephes_erfc(double x); // Complementary error function
+double cephes_ndtr(double x); // Normal CDF
+double cephes_ndtri(double x); // Inverse normal CDF
+double cephes_igami(double a, double p); // Inverse upper incomplete gamma
+double cephes_ei(double x); // Exponential integral Ei
+double cephes_expn(int n, double x); // Exponential integral En
+double cephes_dawsn(double x); // Dawson's integral
+double cephes_zetac(double x); // Riemann zeta minus one
+double cephes_zeta(double x, double q); // Hurwitz zeta
+double cephes_spence(double x); // Dilogarithm
+double cephes_polylog(int n, double x); // Polylogarithm
+double cephes_incbet(double a, double b, double x); // Incomplete beta
+double cephes_incbi(double a, double b, double y); // Inverse incomplete beta
+double cephes_hyperg(double a, double b, double x); // Confluent hypergeometric
+double cephes_hyp2f1(double a, double b, double c, double x); // Gauss hypergeometric
+int cephes_fresnl(double x, double *s, double *c); // Fresnel integrals
+int cephes_sici(double x, double *si, double *ci); // Sine and cosine integrals
+int cephes_shichi(double x, double *shi, double *chi); // Hyperbolic sine and cosine integrals
+double cephes_struve(double v, double x); // Struve function H_v
+double cephes_j0(double x); // Bessel J0
+double cephes_j1(double x); // Bessel J1
+double cephes_y0(double x); // Bessel Y0
+double cephes_y1(double x); // Bessel Y1
+double cephes_jn(int n, double x); // Bessel Jn
+double cephes_jv(double v, double x); // Bessel Jv
+double cephes_yn(int n, double x); // Bessel Yn
+double cephes_ellie(double phi, double m); // Incomplete elliptic E
+double cephes_ellik(double phi, double m); // Incomplete elliptic F
+double cephes_ellpe(double m); // Complete elliptic E
+double cephes_ellpk(double m); // Complete elliptic K
+int cephes_ellpj(double u, double m, double *sn, double *cn, double *dn, double *ph); // Jacobian elliptic functions
+int cephes_airy(double x, double *ai, double *aip, double *bi, double *bip); // Airy functions
+double cephes_psi(double x); // Digamma
+double cephes_i0(double x); // Modified Bessel I0
+double cephes_i1(double x); // Modified Bessel I1
+double cephes_i0e(double x); // Scaled modified Bessel I0
+double cephes_i1e(double x); // Scaled modified Bessel I1
+double cephes_iv(double v, double x); // Modified Bessel Iv
+double cephes_k0(double x); // Modified Bessel K0
+double cephes_k1(double x); // Modified Bessel K1
+double cephes_k0e(double x); // Scaled modified Bessel K0
+double cephes_k1e(double x); // Scaled modified Bessel K1
+double cephes_kn(int n, double x); // Modified Bessel Kn
 
-double igam(double a, double x);  // Incomplete gamma integral 
-double igamc(double a, double x); // Complemented incomplete gamma integral
+double cephes_igam(double a, double x);  // Incomplete gamma integral 
+double cephes_igamc(double a, double x); // Complemented incomplete gamma integral
 
 /* -------------------------------------------------------
  * Raise Cephes errors as Morpho errors
@@ -75,9 +75,27 @@ static const SpecialfnError specialfn_errors[] = {
     { PLOSS, SPECIALFN_PLOSSERROR }
 };
 
-static bool specialfn_dispatcherror(vm *v, const char *label) {
+static bool specialfn_cepheserrormatches(const char *cephes_name, const char *reported) {
+    if (cephes_name == NULL || reported == NULL) return false;
+    if (strcmp(cephes_name, reported) == 0) return true;
+    /* Cephes is inconsistent about Bessel function name casing. */
+    if (strcmp(cephes_name, "cephes_jv") == 0 && strcmp(reported, "cephes_Jv") == 0) return true;
+    /* igam and igamc delegate to one another. */
+    if ((strcmp(cephes_name, "cephes_igam") == 0 || strcmp(cephes_name, "cephes_igamc") == 0) &&
+        (strcmp(reported, "cephes_igam") == 0 || strcmp(reported, "cephes_igamc") == 0)) {
+        return true;
+    }
+    return false;
+}
+
+static bool specialfn_dispatcherror(vm *v, const char *label, const char *cephes_name) {
     int code = mtherr_geterror();
     if (code == 0) return false;
+
+    if (!specialfn_cepheserrormatches(cephes_name, merrorname)) {
+        mtherr_reset();
+        return false;
+    }
 
     const char *function = label ? label : "unknown";
 
@@ -96,7 +114,7 @@ static bool specialfn_airy(vm *v, value *args, const char *label, double *ai, do
 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
         mtherr_reset();
-        *status = airy(x, ai, aip, bi, bip);
+        *status = cephes_airy(x, ai, aip, bi, bip);
         return true;
     }
 
@@ -110,7 +128,7 @@ static bool specialfn_ellpj(vm *v, value *args, const char *label, double *sn, d
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &u) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &m)) {
         mtherr_reset();
-        ellpj(u, m, sn, cn, dn, ph);
+        cephes_ellpj(u, m, sn, cn, dn, ph);
         return true;
     }
 
@@ -122,7 +140,7 @@ static bool specialfn_fresnl(vm *v, value *args, const char *label, double *s, d
     double x;
 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        fresnl(x, s, c);
+        cephes_fresnl(x, s, c);
         return true;
     }
 
@@ -134,7 +152,7 @@ static bool specialfn_sici(vm *v, value *args, const char *label, double *si, do
     double x;
 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        sici(x, si, ci);
+        cephes_sici(x, si, ci);
         return true;
     }
 
@@ -146,7 +164,7 @@ static bool specialfn_shichi(vm *v, value *args, const char *label, double *shi,
     double x;
 
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
-        shichi(x, shi, chi);
+        cephes_shichi(x, shi, chi);
         return true;
     }
 
@@ -161,7 +179,7 @@ value wrapper(vm *v, int nargs, value *args) { \
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) { \
         mtherr_reset(); \
         out=MORPHO_FLOAT(function(x)); \
-        if (specialfn_dispatcherror(v, label)) out=MORPHO_NIL; \
+        if (specialfn_dispatcherror(v, label, #function)) out=MORPHO_NIL; \
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 1, "float"); \
     return out; \
 }
@@ -174,7 +192,7 @@ value wrapper(vm *v, int nargs, value *args) { \
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &b)) { \
         mtherr_reset(); \
         out=MORPHO_FLOAT(function(a, b)); \
-        if (specialfn_dispatcherror(v, label)) out=MORPHO_NIL; \
+        if (specialfn_dispatcherror(v, label, #function)) out=MORPHO_NIL; \
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, label, 2, "float"); \
     return out; \
 }
@@ -183,21 +201,21 @@ value wrapper(vm *v, int nargs, value *args) { \
  * Cephes veneers
  * ------------------------------------------------------- */
 
-SPECIALFN_UNARY_WRAPPER(Specialfn_gamma, SPECIALFN_GAMMA, gamma)
-SPECIALFN_UNARY_WRAPPER(Specialfn_lgam, SPECIALFN_LOGGAMMA, lgam)
-SPECIALFN_BINARY_WRAPPER(Specialfn_beta, SPECIALFN_BETA, beta)
-SPECIALFN_BINARY_WRAPPER(Specialfn_lbeta, SPECIALFN_LOGBETA, lbeta)
-SPECIALFN_BINARY_WRAPPER(Specialfn_igam, SPECIALFN_LOWERINCOMPLETEGAMMA, igam)
-SPECIALFN_BINARY_WRAPPER(Specialfn_ellik, SPECIALFN_INCOMPLETEELLIPTICF, ellik)
-SPECIALFN_BINARY_WRAPPER(Specialfn_ellie, SPECIALFN_INCOMPLETEELLIPTICE, ellie)
-SPECIALFN_UNARY_WRAPPER(Specialfn_rgamma, SPECIALFN_RECIPROCALGAMMA, rgamma)
-SPECIALFN_UNARY_WRAPPER(Specialfn_erf, SPECIALFN_ERF, erf)
-SPECIALFN_UNARY_WRAPPER(Specialfn_erfc, SPECIALFN_ERFC, erfc)
-SPECIALFN_UNARY_WRAPPER(Specialfn_ndtr, SPECIALFN_NORMALCDF, ndtr)
-SPECIALFN_UNARY_WRAPPER(Specialfn_ndtri, SPECIALFN_INVERSENORMALCDF, ndtri)
-SPECIALFN_UNARY_WRAPPER(Specialfn_ei, SPECIALFN_EXPINTEGRALEI, ei)
-SPECIALFN_UNARY_WRAPPER(Specialfn_dawsn, SPECIALFN_DAWSON, dawsn)
-SPECIALFN_UNARY_WRAPPER(Specialfn_zetac, SPECIALFN_RIEMANNZETAMINUSONE, zetac)
+SPECIALFN_UNARY_WRAPPER(Specialfn_gamma, SPECIALFN_GAMMA, cephes_gamma)
+SPECIALFN_UNARY_WRAPPER(Specialfn_lgam, SPECIALFN_LOGGAMMA, cephes_lgam)
+SPECIALFN_BINARY_WRAPPER(Specialfn_beta, SPECIALFN_BETA, cephes_beta)
+SPECIALFN_BINARY_WRAPPER(Specialfn_lbeta, SPECIALFN_LOGBETA, cephes_lbeta)
+SPECIALFN_BINARY_WRAPPER(Specialfn_igam, SPECIALFN_LOWERINCOMPLETEGAMMA, cephes_igam)
+SPECIALFN_BINARY_WRAPPER(Specialfn_ellik, SPECIALFN_INCOMPLETEELLIPTICF, cephes_ellik)
+SPECIALFN_BINARY_WRAPPER(Specialfn_ellie, SPECIALFN_INCOMPLETEELLIPTICE, cephes_ellie)
+SPECIALFN_UNARY_WRAPPER(Specialfn_rgamma, SPECIALFN_RECIPROCALGAMMA, cephes_rgamma)
+SPECIALFN_UNARY_WRAPPER(Specialfn_erf, SPECIALFN_ERF, cephes_erf)
+SPECIALFN_UNARY_WRAPPER(Specialfn_erfc, SPECIALFN_ERFC, cephes_erfc)
+SPECIALFN_UNARY_WRAPPER(Specialfn_ndtr, SPECIALFN_NORMALCDF, cephes_ndtr)
+SPECIALFN_UNARY_WRAPPER(Specialfn_ndtri, SPECIALFN_INVERSENORMALCDF, cephes_ndtri)
+SPECIALFN_UNARY_WRAPPER(Specialfn_ei, SPECIALFN_EXPINTEGRALEI, cephes_ei)
+SPECIALFN_UNARY_WRAPPER(Specialfn_dawsn, SPECIALFN_DAWSON, cephes_dawsn)
+SPECIALFN_UNARY_WRAPPER(Specialfn_zetac, SPECIALFN_RIEMANNZETAMINUSONE, cephes_zetac)
 
 value Specialfn_dilog(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
@@ -205,8 +223,8 @@ value Specialfn_dilog(vm *v, int nargs, value *args) {
     double x;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(spence(1.0 - x));
-        if (specialfn_dispatcherror(v, SPECIALFN_DILOG)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_spence(1.0 - x));
+        if (specialfn_dispatcherror(v, SPECIALFN_DILOG, "cephes_spence")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_DILOG, 1, "float");
 
     return out;
@@ -220,8 +238,8 @@ value Specialfn_incbet(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(incbet(a,b,x));
-        if (specialfn_dispatcherror(v, SPECIALFN_INCOMPLETEBETA)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_incbet(a,b,x));
+        if (specialfn_dispatcherror(v, SPECIALFN_INCOMPLETEBETA, "cephes_incbet")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INCOMPLETEBETA, 3, "float");
 
     return out;
@@ -233,8 +251,8 @@ value Specialfn_ellpk(vm *v, int nargs, value *args) {
     double m;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &m)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(ellpk(1.0 - m));
-        if (specialfn_dispatcherror(v, SPECIALFN_COMPLETEELLIPTICK)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_ellpk(1.0 - m));
+        if (specialfn_dispatcherror(v, SPECIALFN_COMPLETEELLIPTICK, "cephes_ellpk")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COMPLETEELLIPTICK, 1, "float");
 
     return out;
@@ -246,8 +264,8 @@ value Specialfn_ellpe(vm *v, int nargs, value *args) {
     double m;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &m)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(ellpe(1.0 - m));
-        if (specialfn_dispatcherror(v, SPECIALFN_COMPLETEELLIPTICE)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_ellpe(1.0 - m));
+        if (specialfn_dispatcherror(v, SPECIALFN_COMPLETEELLIPTICE, "cephes_ellpe")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COMPLETEELLIPTICE, 1, "float");
 
     return out;
@@ -261,8 +279,8 @@ value Specialfn_incbi(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &y)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(incbi(a,b,y));
-        if (specialfn_dispatcherror(v, SPECIALFN_INVERSEINCOMPLETEBETA)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_incbi(a,b,y));
+        if (specialfn_dispatcherror(v, SPECIALFN_INVERSEINCOMPLETEBETA, "cephes_incbi")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSEINCOMPLETEBETA, 3, "float");
 
     return out;
@@ -275,8 +293,8 @@ value Specialfn_igami(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &a) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &p)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(igami(a, p));
-        if (specialfn_dispatcherror(v, SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_igami(a, p));
+        if (specialfn_dispatcherror(v, SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA, "cephes_igami")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_INVERSEUPPERINCOMPLETEGAMMA, 2, "float");
 
     return out;
@@ -290,8 +308,8 @@ value Specialfn_hyperg(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &b) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(hyperg(a, b, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_CONFLUENTHYPERGEOMETRIC)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_hyperg(a, b, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_CONFLUENTHYPERGEOMETRIC, "cephes_hyperg")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_CONFLUENTHYPERGEOMETRIC, 3, "float");
 
     return out;
@@ -306,8 +324,8 @@ value Specialfn_hyp2f1(vm *v, int nargs, value *args) {
         morpho_valuetofloat(MORPHO_GETARG(args, 2), &c) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 3), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(hyp2f1(a, b, c, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_GAUSSHYPERGEOMETRIC)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_hyp2f1(a, b, c, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_GAUSSHYPERGEOMETRIC, "cephes_hyp2f1")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_GAUSSHYPERGEOMETRIC, 4, "float");
 
     return out;
@@ -320,8 +338,8 @@ value Specialfn_expn(vm *v, int nargs, value *args) {
     double x;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(expn(n, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_EXPINTEGRALE)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_expn(n, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_EXPINTEGRALE, "cephes_expn")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_EXPINTEGRALE, 2, "integer, float");
 
     return out;
@@ -337,8 +355,8 @@ value Specialfn_riemannZeta(vm *v, int nargs, value *args) {
             return MORPHO_NIL;
         }
         mtherr_reset();
-        out=MORPHO_FLOAT(zetac(x) + 1.0);
-        if (specialfn_dispatcherror(v, SPECIALFN_RIEMANNZETA)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_zetac(x) + 1.0);
+        if (specialfn_dispatcherror(v, SPECIALFN_RIEMANNZETA, "cephes_zetac")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_RIEMANNZETA, 1, "float");
 
     return out;
@@ -351,8 +369,8 @@ value Specialfn_hurwitzZeta(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &x) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &q)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(zeta(x, q));
-        if (specialfn_dispatcherror(v, SPECIALFN_HURWITZZETA)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_zeta(x, q));
+        if (specialfn_dispatcherror(v, SPECIALFN_HURWITZZETA, "cephes_zeta")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_HURWITZZETA, 2, "float");
 
     return out;
@@ -365,8 +383,8 @@ value Specialfn_polylog(vm *v, int nargs, value *args) {
     double x;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(polylog(n, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_POLYLOG)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_polylog(n, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_POLYLOG, "cephes_polylog")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_POLYLOG, 2, "integer, float");
 
     return out;
@@ -383,8 +401,8 @@ value Specialfn_struve(vm *v, int nargs, value *args) {
             return MORPHO_NIL;
         }
         mtherr_reset();
-        out=MORPHO_FLOAT(struve(order, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_STRUVEH)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_struve(order, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_STRUVEH, "cephes_struve")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_STRUVEH, 2, "float");
 
     return out;
@@ -415,7 +433,7 @@ value Specialfn_cosineIntegral(vm *v, int nargs, value *args) {
             morpho_runtimeerror(v, SPECIALFN_SINGULARITYERROR, SPECIALFN_COSINEINTEGRAL);
             return MORPHO_NIL;
         }
-        sici(x, &si, &ci);
+        cephes_sici(x, &si, &ci);
         return MORPHO_FLOAT(ci);
     }
     morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COSINEINTEGRAL, 1, "float");
@@ -435,17 +453,17 @@ value Specialfn_coshIntegral(vm *v, int nargs, value *args) {
             morpho_runtimeerror(v, SPECIALFN_SINGULARITYERROR, SPECIALFN_COSHINTEGRAL);
             return MORPHO_NIL;
         }
-        shichi(x, &shi, &chi);
+        cephes_shichi(x, &shi, &chi);
         return MORPHO_FLOAT(chi);
     }
     morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_COSHINTEGRAL, 1, "float");
     return MORPHO_NIL;
 }
 
-SPECIALFN_UNARY_WRAPPER(Specialfn_j0, SPECIALFN_BESSELJ, j0)
-SPECIALFN_UNARY_WRAPPER(Specialfn_j1, SPECIALFN_BESSELJ, j1)
-SPECIALFN_UNARY_WRAPPER(Specialfn_y0, SPECIALFN_BESSELY, y0)
-SPECIALFN_UNARY_WRAPPER(Specialfn_y1, SPECIALFN_BESSELY, y1)
+SPECIALFN_UNARY_WRAPPER(Specialfn_j0, SPECIALFN_BESSELJ, cephes_j0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_j1, SPECIALFN_BESSELJ, cephes_j1)
+SPECIALFN_UNARY_WRAPPER(Specialfn_y0, SPECIALFN_BESSELY, cephes_y0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_y1, SPECIALFN_BESSELY, cephes_y1)
 value Specialfn_airyAi(vm *v, int nargs, value *args) {
     double ai, aip, bi, bip;
     int status;
@@ -489,7 +507,7 @@ value Specialfn_airyBiPrime(vm *v, int nargs, value *args) {
 value Specialfn_jacobiSn(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBISN, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v, SPECIALFN_JACOBISN)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBISN, "cephes_ellpj")) return MORPHO_NIL;
         return MORPHO_FLOAT(sn);
     }
     return MORPHO_NIL;
@@ -498,7 +516,7 @@ value Specialfn_jacobiSn(vm *v, int nargs, value *args) {
 value Specialfn_jacobiCn(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBICN, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v, SPECIALFN_JACOBICN)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBICN, "cephes_ellpj")) return MORPHO_NIL;
         return MORPHO_FLOAT(cn);
     }
     return MORPHO_NIL;
@@ -507,7 +525,7 @@ value Specialfn_jacobiCn(vm *v, int nargs, value *args) {
 value Specialfn_jacobiDn(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBIDN, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v, SPECIALFN_JACOBIDN)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBIDN, "cephes_ellpj")) return MORPHO_NIL;
         return MORPHO_FLOAT(dn);
     }
     return MORPHO_NIL;
@@ -516,31 +534,39 @@ value Specialfn_jacobiDn(vm *v, int nargs, value *args) {
 value Specialfn_jacobiAmplitude(vm *v, int nargs, value *args) {
     double sn, cn, dn, ph;
     if (specialfn_ellpj(v, args, SPECIALFN_JACOBIAMPLITUDE, &sn, &cn, &dn, &ph)) {
-        if (specialfn_dispatcherror(v, SPECIALFN_JACOBIAMPLITUDE)) return MORPHO_NIL;
+        if (specialfn_dispatcherror(v, SPECIALFN_JACOBIAMPLITUDE, "cephes_ellpj")) return MORPHO_NIL;
         return MORPHO_FLOAT(ph);
     }
     return MORPHO_NIL;
 }
 
-SPECIALFN_UNARY_WRAPPER(Specialfn_psi, SPECIALFN_DIGAMMA, psi)
-SPECIALFN_UNARY_WRAPPER(Specialfn_i0, SPECIALFN_MODIFIEDBESSELI, i0)
-SPECIALFN_UNARY_WRAPPER(Specialfn_k0, SPECIALFN_MODIFIEDBESSELK, k0)
-SPECIALFN_UNARY_WRAPPER(Specialfn_i0e, SPECIALFN_SCALEDMODIFIEDBESSELI0, i0e)
-SPECIALFN_UNARY_WRAPPER(Specialfn_i1e, SPECIALFN_SCALEDMODIFIEDBESSELI1, i1e)
-SPECIALFN_UNARY_WRAPPER(Specialfn_k0e, SPECIALFN_SCALEDMODIFIEDBESSELK0, k0e)
-SPECIALFN_UNARY_WRAPPER(Specialfn_k1e, SPECIALFN_SCALEDMODIFIEDBESSELK1, k1e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_psi, SPECIALFN_DIGAMMA, cephes_psi)
+SPECIALFN_UNARY_WRAPPER(Specialfn_i0, SPECIALFN_MODIFIEDBESSELI, cephes_i0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_k0, SPECIALFN_MODIFIEDBESSELK, cephes_k0)
+SPECIALFN_UNARY_WRAPPER(Specialfn_i0e, SPECIALFN_SCALEDMODIFIEDBESSELI0, cephes_i0e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_i1e, SPECIALFN_SCALEDMODIFIEDBESSELI1, cephes_i1e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_k0e, SPECIALFN_SCALEDMODIFIEDBESSELK0, cephes_k0e)
+SPECIALFN_UNARY_WRAPPER(Specialfn_k1e, SPECIALFN_SCALEDMODIFIEDBESSELK1, cephes_k1e)
 
 value Specialfn_jn(vm *v, int nargs, value *args) {
     value out=MORPHO_NIL;
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
     double x;
+    const char *cephes_name;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        if (n == 0) out=MORPHO_FLOAT(j0(x));
-        else if (n == 1) out=MORPHO_FLOAT(j1(x));
-        else out=MORPHO_FLOAT(jn(n, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_BESSELJ)) out=MORPHO_NIL;
+        if (n == 0) {
+            out=MORPHO_FLOAT(cephes_j0(x));
+            cephes_name = "cephes_j0";
+        } else if (n == 1) {
+            out=MORPHO_FLOAT(cephes_j1(x));
+            cephes_name = "cephes_j1";
+        } else {
+            out=MORPHO_FLOAT(cephes_jn(n, x));
+            cephes_name = "cephes_jn";
+        }
+        if (specialfn_dispatcherror(v, SPECIALFN_BESSELJ, cephes_name)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "integer, float");
 
     return out;
@@ -553,8 +579,8 @@ value Specialfn_jv(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &order) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(jv(order, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_BESSELJ)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_jv(order, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_BESSELJ, "cephes_jv")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELJ, 2, "float");
 
     return out;
@@ -565,12 +591,20 @@ value Specialfn_yn(vm *v, int nargs, value *args) {
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
     double x;
+    const char *cephes_name;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        if (n == 0) out=MORPHO_FLOAT(y0(x));
-        else if (n == 1) out=MORPHO_FLOAT(y1(x));
-        else out=MORPHO_FLOAT(yn(n, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_BESSELY)) out=MORPHO_NIL;
+        if (n == 0) {
+            out=MORPHO_FLOAT(cephes_y0(x));
+            cephes_name = "cephes_y0";
+        } else if (n == 1) {
+            out=MORPHO_FLOAT(cephes_y1(x));
+            cephes_name = "cephes_y1";
+        } else {
+            out=MORPHO_FLOAT(cephes_yn(n, x));
+            cephes_name = "cephes_yn";
+        }
+        if (specialfn_dispatcherror(v, SPECIALFN_BESSELY, cephes_name)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_BESSELY, 2, "integer, float");
 
     return out;
@@ -581,12 +615,20 @@ value Specialfn_i1(vm *v, int nargs, value *args) {
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
     double x;
+    const char *cephes_name;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        if (n == 0) out=MORPHO_FLOAT(i0(x));
-        else if (n == 1) out=MORPHO_FLOAT(i1(x));
-        else out=MORPHO_FLOAT(iv((double) n, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELI)) out=MORPHO_NIL;
+        if (n == 0) {
+            out=MORPHO_FLOAT(cephes_i0(x));
+            cephes_name = "cephes_i0";
+        } else if (n == 1) {
+            out=MORPHO_FLOAT(cephes_i1(x));
+            cephes_name = "cephes_i1";
+        } else {
+            out=MORPHO_FLOAT(cephes_iv((double) n, x));
+            cephes_name = "cephes_iv";
+        }
+        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELI, cephes_name)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELI, 2, "integer, float");
 
     return out;
@@ -599,8 +641,8 @@ value Specialfn_iv(vm *v, int nargs, value *args) {
     if (morpho_valuetofloat(MORPHO_GETARG(args, 0), &order) &&
         morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        out=MORPHO_FLOAT(iv(order, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELI)) out=MORPHO_NIL;
+        out=MORPHO_FLOAT(cephes_iv(order, x));
+        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELI, "cephes_iv")) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELI, 2, "float");
 
     return out;
@@ -611,18 +653,26 @@ value Specialfn_kn(vm *v, int nargs, value *args) {
 
     int n = MORPHO_GETINTEGERVALUE(MORPHO_GETARG(args, 0));
     double x;
+    const char *cephes_name;
     if (morpho_valuetofloat(MORPHO_GETARG(args, 1), &x)) {
         mtherr_reset();
-        if (n == 0) out=MORPHO_FLOAT(k0(x));
-        else if (n == 1) out=MORPHO_FLOAT(k1(x));
-        else out=MORPHO_FLOAT(kn(n, x));
-        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELK)) out=MORPHO_NIL;
+        if (n == 0) {
+            out=MORPHO_FLOAT(cephes_k0(x));
+            cephes_name = "cephes_k0";
+        } else if (n == 1) {
+            out=MORPHO_FLOAT(cephes_k1(x));
+            cephes_name = "cephes_k1";
+        } else {
+            out=MORPHO_FLOAT(cephes_kn(n, x));
+            cephes_name = "cephes_kn";
+        }
+        if (specialfn_dispatcherror(v, SPECIALFN_MODIFIEDBESSELK, cephes_name)) out=MORPHO_NIL;
     } else morpho_runtimeerror(v, VM_INVALIDARGSDETAIL, SPECIALFN_MODIFIEDBESSELK, 2, "integer, float");
 
     return out;
 }
 
-SPECIALFN_BINARY_WRAPPER(Specialfn_igamc, SPECIALFN_UPPERINCOMPLETEGAMMA, igamc)
+SPECIALFN_BINARY_WRAPPER(Specialfn_igamc, SPECIALFN_UPPERINCOMPLETEGAMMA, cephes_igamc)
 
 /* -------------------------------------------------------
  * Initialization and finalization

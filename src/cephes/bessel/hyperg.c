@@ -69,29 +69,29 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 #ifdef ANSIPROT
 extern double exp ( double );
 extern double log ( double );
-extern double gamma ( double );
-extern double lgam ( double );
+extern double cephes_gamma ( double );
+extern double cephes_lgam ( double );
 extern double fabs ( double );
-double hyp2f0 ( double, double, double, int, double * );
+double cephes_hyp2f0 ( double, double, double, int, double * );
 static double hy1f1p(double, double, double, double *);
 static double hy1f1a(double, double, double, double *);
-double hyperg (double, double, double);
+double cephes_hyperg (double, double, double);
 #else
-double exp(), log(), gamma(), lgam(), fabs(), hyp2f0();
+double exp(), log(), cephes_gamma(), cephes_lgam(), fabs(), cephes_hyp2f0();
 static double hy1f1p();
 static double hy1f1a();
-double hyperg();
+double cephes_hyperg();
 #endif
 extern double MAXNUM, MACHEP;
 
-double hyperg(double a, double b, double x)
+double cephes_hyperg(double a, double b, double x)
 {
 double asum, psum, acanc, pcanc, temp;
 
 /* See if a Kummer transformation will help */
 temp = b - a;
 if( fabs(temp) < 0.001 * fabs(a) )
-	return( exp(x) * hyperg( temp, b, -x )  );
+	return( exp(x) * cephes_hyperg( temp, b, -x )  );
 
 
 psum = hy1f1p( a, b, x, &pcanc );
@@ -114,7 +114,7 @@ if( acanc < pcanc )
 
 done:
 if( pcanc > 1.0e-12 )
-	mtherr( "hyperg", PLOSS );
+	mtherr( "cephes_hyperg", PLOSS );
 
 return( psum );
 }
@@ -145,7 +145,7 @@ while( t > MACHEP )
 	{
 	if( bn == 0 )			/* check bn first since if both	*/
 		{
-		mtherr( "hyperg", SING );
+		mtherr( "cephes_hyperg", SING );
 		return( MAXNUM );	/* an and bn are zero it is	*/
 		}
 	if( an == 0 )			/* a singularity		*/
@@ -228,23 +228,23 @@ u = -temp * a;
 
 if( b > 0 )
 	{
-	temp = lgam(b);
+	temp = cephes_lgam(b);
 	t += temp;
 	u += temp;
 	}
 
-h1 = hyp2f0( a, a-b+1, -1.0/x, 1, &err1 );
+h1 = cephes_hyp2f0( a, a-b+1, -1.0/x, 1, &err1 );
 
-temp = exp(u) / gamma(b-a);
+temp = exp(u) / cephes_gamma(b-a);
 h1 *= temp;
 err1 *= temp;
 
-h2 = hyp2f0( b-a, 1.0-a, 1.0/x, 2, &err2 );
+h2 = cephes_hyp2f0( b-a, 1.0-a, 1.0/x, 2, &err2 );
 
 if( a < 0 )
-	temp = exp(t) / gamma(a);
+	temp = exp(t) / cephes_gamma(a);
 else
-	temp = exp( t - lgam(a) );
+	temp = exp( t - cephes_lgam(a) );
 
 h2 *= temp;
 err2 *= temp;
@@ -259,7 +259,7 @@ acanc = fabs(err1) + fabs(err2);
 
 if( b < 0 )
 	{
-	temp = gamma(b);
+	temp = cephes_gamma(b);
 	asum *= temp;
 	acanc *= fabs(temp);
 	}
@@ -280,7 +280,7 @@ return( asum );
 
 /*							hyp2f0()	*/
 
-double hyp2f0(double a, double b, double x, int type, double *err)
+double cephes_hyp2f0(double a, double b, double x, int type, double *err)
 {
 double a0, alast, t, tlast, maxt;
 double n, an, bn, u, sum, temp;
@@ -373,6 +373,6 @@ return( sum );
 /* series blew up: */
 error:
 *err = MAXNUM;
-mtherr( "hyperg", TLOSS );
+mtherr( "cephes_hyperg", TLOSS );
 return( sum );
 }

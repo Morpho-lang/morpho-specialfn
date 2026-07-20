@@ -57,13 +57,13 @@ Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
 #endif
 
 #ifdef ANSIPROT
-extern int airy ( double, double *, double *, double *, double * );
+extern int cephes_airy ( double, double *, double *, double *, double * );
 extern double fabs ( double );
 extern double floor ( double );
 extern double frexp ( double, int * );
-extern double polevl ( double, void *, int );
-extern double j0 ( double );
-extern double j1 ( double );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_j0 ( double );
+extern double cephes_j1 ( double );
 extern double sqrt ( double );
 extern double cbrt ( double );
 extern double exp ( double );
@@ -72,24 +72,24 @@ extern double sin ( double );
 extern double cos ( double );
 extern double acos ( double );
 extern double pow ( double, double );
-extern double gamma ( double );
-extern double lgam ( double );
+extern double cephes_gamma ( double );
+extern double cephes_lgam ( double );
 static double recur(double *, double, double *, int);
 static double jvs(double, double);
 static double hankel(double, double);
 static double jnx(double, double);
 static double jnt(double, double);
 #else
-int airy();
-double fabs(), floor(), frexp(), polevl(), j0(), j1(), sqrt(), cbrt();
-double exp(), log(), sin(), cos(), acos(), pow(), gamma(), lgam();
+int cephes_airy();
+double fabs(), floor(), frexp(), cephes_polevl(), cephes_j0(), cephes_j1(), sqrt(), cbrt();
+double exp(), log(), sin(), cos(), acos(), pow(), cephes_gamma(), cephes_lgam();
 static double recur(), jvs(), hankel(), jnx(), jnt();
 #endif
 
 extern double MAXNUM, MACHEP, MINLOG, MAXLOG;
 #define BIG  1.44115188075855872E+17
 
-double jv(double n, double x)
+double cephes_jv(double n, double x)
 {
 double k, q, t, y, an;
 int i, sign, nint;
@@ -115,14 +115,14 @@ if( y == an )
 		x = -x;
 		}
 	if( n == 0.0 )
-		return( j0(x) );
+		return( cephes_j0(x) );
 	if( n == 1.0 )
-		return( sign * j1(x) );
+		return( sign * cephes_j1(x) );
 	}
 
 if( (x < 0.0) && (y != an) )
 	{
-	mtherr( "Jv", DOMAIN );
+	mtherr( "cephes_Jv", DOMAIN );
 	y = 0.0;
 	goto done;
  	}
@@ -151,12 +151,12 @@ if( an < 500.0 )
 		q = recur( &n, x, &k, 1 );
 		if( k == 0.0 )
 			{
-			y = j0(x)/q;
+			y = cephes_j0(x)/q;
 			goto done;
 			}
 		if( k == 1.0 )
 			{
-			y = j1(x)/q;
+			y = cephes_j1(x)/q;
 			goto done;
 			}
 		}
@@ -249,7 +249,7 @@ else
  */
 	if( n < 0.0 )
 		{
-		mtherr( "Jv", TLOSS );
+		mtherr( "cephes_Jv", TLOSS );
 		y = 0.0;
 		goto done;
 		}
@@ -319,7 +319,7 @@ do
 
 	if( ++ctr > 1000 )
 		{
-		mtherr( "jv", UNDERFLOW );
+		mtherr( "cephes_jv", UNDERFLOW );
 		goto done;
 		}
 	if( t < MACHEP )
@@ -447,7 +447,7 @@ if(  (ex > -1023)
   && (n > 0.0)
   && (n < (MAXGAM-1.0)) )
 	{
-	t = pow( 0.5*x, n ) / gamma( n + 1.0 );
+	t = pow( 0.5*x, n ) / cephes_gamma( n + 1.0 );
 #if DEBUG
 printf( "pow(.5*x, %.4e)/gamma(n+1)=%.5e\n", n, t );
 #endif
@@ -457,11 +457,11 @@ else
 	{
 #if DEBUG
 	z = n * log(0.5*x);
-	k = lgam( n+1.0 );
+	k = cephes_lgam( n+1.0 );
 	t = z - k;
 	printf( "log pow=%.5e, lgam(%.4e)=%.5e\n", z, n+1.0, k );
 #else
-	t = n * log(0.5*x) - lgam(n + 1.0);
+	t = n * log(0.5*x) - cephes_lgam(n + 1.0);
 #endif
 	if( y < 0 )
 		{
@@ -478,7 +478,7 @@ printf( "log y=%.5e\n", log(y) );
 		}
 	if( t > MAXLOG )
 		{
-		mtherr( "Jv", OVERFLOW );
+		mtherr( "cephes_Jv", OVERFLOW );
 		return( MAXNUM );
 		}
 	y = sgngam * exp( t );
@@ -633,7 +633,7 @@ static double P7[] = {
 
 static double jnx(double n, double x)
 {
-double zeta, sqz, zz, zp, np;
+double cephes_zeta, sqz, zz, zp, np;
 double cbn, n23, t, z, sz;
 double pp, qq, z32i, zzi;
 double ak, bk, akl, bkl;
@@ -658,14 +658,14 @@ if( zz > 0.0 )
 	{
 	sz = sqrt( zz );
 	t = 1.5 * (log( (1.0+sz)/z ) - sz );	/* zeta ** 3/2		*/
-	zeta = cbrt( t * t );
+	cephes_zeta = cbrt( t * t );
 	nflg = 1;
 	}
 else
 	{
 	sz = sqrt(-zz);
 	t = 1.5 * (sz - acos(1.0/z));
-	zeta = -cbrt( t * t );
+	cephes_zeta = -cbrt( t * t );
 	nflg = -1;
 	}
 z32i = fabs(1.0/t);
@@ -673,25 +673,25 @@ sqz = cbrt(t);
 
 /* Airy function */
 n23 = cbrt( n * n );
-t = n23 * zeta;
+t = n23 * cephes_zeta;
 
 #if DEBUG
-printf("zeta %.5E, Airy(%.5E)\n", zeta, t );
+printf("zeta %.5E, Airy(%.5E)\n", cephes_zeta, t );
 #endif
-airy( t, &ai, &aip, &bi, &bip );
+cephes_airy( t, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 u[0] = 1.0;
 zzi = 1.0/zz;
-u[1] = polevl( zzi, P1, 1 )/sz;
-u[2] = polevl( zzi, P2, 2 )/zz;
-u[3] = polevl( zzi, P3, 3 )/(sz*zz);
+u[1] = cephes_polevl( zzi, P1, 1 )/sz;
+u[2] = cephes_polevl( zzi, P2, 2 )/zz;
+u[3] = cephes_polevl( zzi, P3, 3 )/(sz*zz);
 pp = zz*zz;
-u[4] = polevl( zzi, P4, 4 )/pp;
-u[5] = polevl( zzi, P5, 5 )/(pp*sz);
+u[4] = cephes_polevl( zzi, P4, 4 )/pp;
+u[5] = cephes_polevl( zzi, P5, 5 )/(pp*sz);
 pp *= zz;
-u[6] = polevl( zzi, P6, 6 )/pp;
-u[7] = polevl( zzi, P7, 7 )/(pp*sz);
+u[6] = cephes_polevl( zzi, P6, 6 )/pp;
+u[7] = cephes_polevl( zzi, P7, 7 )/(pp*sz);
 
 #if DEBUG
 for( k=0; k<=7; k++ )
@@ -772,7 +772,7 @@ for( k=0; k<=3; k++ )
 	}
 
 /* normalizing factor ( 4*zeta/(1 - z**2) )**1/4	*/
-t = 4.0 * zeta/zz;
+t = 4.0 * cephes_zeta/zz;
 t = sqrt( sqrt(t) );
 
 t *= ai*pp/cbrt(n)  +  aip*qq/(n23*n);
@@ -830,20 +830,20 @@ cbtwo = cbrt( 2.0 );
 
 /* Airy function */
 zz = -cbtwo * z;
-airy( zz, &ai, &aip, &bi, &bip );
+cephes_airy( zz, &ai, &aip, &bi, &bip );
 
 /* polynomials in expansion */
 zz = z * z;
 z3 = zz * z;
 F[0] = 1.0;
 F[1] = -z/5.0;
-F[2] = polevl( z3, PF2, 1 ) * zz;
-F[3] = polevl( z3, PF3, 2 );
-F[4] = polevl( z3, PF4, 3 ) * z;
+F[2] = cephes_polevl( z3, PF2, 1 ) * zz;
+F[3] = cephes_polevl( z3, PF3, 2 );
+F[4] = cephes_polevl( z3, PF4, 3 ) * z;
 G[0] = 0.3 * zz;
-G[1] = polevl( z3, PG1, 1 );
-G[2] = polevl( z3, PG2, 2 ) * z;
-G[3] = polevl( z3, PG3, 2 ) * zz;
+G[1] = cephes_polevl( z3, PG1, 1 );
+G[2] = cephes_polevl( z3, PG2, 2 ) * z;
+G[3] = cephes_polevl( z3, PG3, 2 ) * zz;
 #if DEBUG
 for( k=0; k<=4; k++ )
 	printf( "F[%d] = %.5E\n", k, F[k] );

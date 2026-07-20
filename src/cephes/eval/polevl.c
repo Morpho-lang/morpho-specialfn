@@ -50,7 +50,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 */
 
 
-double polevl(double x, double coef[], int N) {
+double cephes_polevl(double x, double coef[], int N) {
 double ans;
 int i;
 double *p;
@@ -72,7 +72,7 @@ return( ans );
  * Otherwise same as polevl.
  */
 
-double p1evl(double x, double coef[], int N) {
+double cephes_p1evl(double x, double coef[], int N) {
 double ans;
 double *p;
 int i;

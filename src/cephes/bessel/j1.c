@@ -445,20 +445,20 @@ static unsigned short DZ2[] = {0x4048,0x9bf6,0x6072,0xa432};
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_p1evl ( double, void *, int );
 extern double log ( double );
 extern double sin ( double );
 extern double cos ( double );
 extern double sqrt ( double );
-double j1 ( double );
+double cephes_j1 ( double );
 #else
-double polevl(), p1evl(), log(), sin(), cos(), sqrt();
-double j1();
+double cephes_polevl(), cephes_p1evl(), log(), sin(), cos(), sqrt();
+double cephes_j1();
 #endif
 extern double TWOOPI, THPIO4, SQ2OPI;
 
-double j1(double x) {
+double cephes_j1(double x) {
 double w, z, p, q, xn;
 
 w = x;
@@ -468,15 +468,15 @@ if( x < 0 )
 if( w <= 5.0 )
 	{
 	z = x * x;	
-	w = polevl( z, RP, 3 ) / p1evl( z, RQ, 8 );
+	w = cephes_polevl( z, RP, 3 ) / cephes_p1evl( z, RQ, 8 );
 	w = w * x * (z - Z1) * (z - Z2);
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
+p = cephes_polevl( z, PP, 6)/cephes_polevl( z, PQ, 6 );
+q = cephes_polevl( z, QP, 7)/cephes_p1evl( z, QQ, 7 );
 xn = x - THPIO4;
 p = p * cos(xn) - w * q * sin(xn);
 return( p * SQ2OPI / sqrt(x) );
@@ -485,26 +485,26 @@ return( p * SQ2OPI / sqrt(x) );
 
 extern double MAXNUM;
 
-double y1(double x) {
+double cephes_y1(double x) {
 double w, z, p, q, xn;
 
 if( x <= 5.0 )
 	{
 	if( x <= 0.0 )
 		{
-		mtherr( "y1", DOMAIN );
+		mtherr( "cephes_y1", DOMAIN );
 		return( -MAXNUM );
 		}
 	z = x * x;
-	w = x * (polevl( z, YP, 5 ) / p1evl( z, YQ, 8 ));
-	w += TWOOPI * ( j1(x) * log(x)  -  1.0/x );
+	w = x * (cephes_polevl( z, YP, 5 ) / cephes_p1evl( z, YQ, 8 ));
+	w += TWOOPI * ( cephes_j1(x) * log(x)  -  1.0/x );
 	return( w );
 	}
 
 w = 5.0/x;
 z = w * w;
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
+p = cephes_polevl( z, PP, 6)/cephes_polevl( z, PQ, 6 );
+q = cephes_polevl( z, QP, 7)/cephes_p1evl( z, QQ, 7 );
 xn = x - THPIO4;
 p = p * sin(xn) + w * q * cos(xn);
 return( p * SQ2OPI / sqrt(x) );

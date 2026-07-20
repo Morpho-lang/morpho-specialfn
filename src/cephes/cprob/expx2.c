@@ -58,7 +58,7 @@ double exp();
 extern double MAXLOG;
 extern double INFINITY;
 
-double expx2(double x, int sign) {
+double cephes_expx2(double x, int sign) {
   double u, u1, m, f;
 
   x = fabs (x);

@@ -197,32 +197,32 @@ static double C1 = 1.3862943611198906188E0; /* log(4) */
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_p1evl ( double, void *, int );
 extern double log ( double );
 #else
-double polevl(), p1evl(), log();
+double cephes_polevl(), cephes_p1evl(), log();
 #endif
 extern double MACHEP, MAXNUM;
 
-double ellpk(double x)
+double cephes_ellpk(double x)
 {
 
 if( (x < 0.0) || (x > 1.0) )
 	{
-	mtherr( "ellpk", DOMAIN );
+	mtherr( "cephes_ellpk", DOMAIN );
 	return( 0.0 );
 	}
 
 if( x > MACHEP )
 	{
-	return( polevl(x,P,10) - log(x) * polevl(x,Q,10) );
+	return( cephes_polevl(x,P,10) - log(x) * cephes_polevl(x,Q,10) );
 	}
 else
 	{
 	if( x == 0.0 )
 		{
-		mtherr( "ellpk", SING );
+		mtherr( "cephes_ellpk", SING );
 		return( MAXNUM );
 		}
 	else

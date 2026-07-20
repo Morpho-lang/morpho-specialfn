@@ -91,7 +91,7 @@ double fabs(), exp(), log(), sqrt();
 #endif
 extern double MACHEP, MAXNUM, MAXLOG, PI;
 
-double kn(int nn, double x)
+double cephes_kn(int nn, double x)
 {
 double k, kf, nk1f, nkf, zn, t, s, z0, z;
 double ans, fn, pn, pk, zmn, tlg, tox;
@@ -105,16 +105,16 @@ else
 if( n > MAXFAC )
 	{
 overf:
-	mtherr( "kn", OVERFLOW );
+	mtherr( "cephes_kn", OVERFLOW );
 	return( MAXNUM );
 	}
 
 if( x <= 0.0 )
 	{
 	if( x < 0.0 )
-		mtherr( "kn", DOMAIN );
+		mtherr( "cephes_kn", DOMAIN );
 	else
-		mtherr( "kn", SING );
+		mtherr( "cephes_kn", SING );
 	return( MAXNUM );
 	}
 
@@ -218,7 +218,7 @@ asymp:
 
 if( x > MAXLOG )
 	{
-	mtherr( "kn", UNDERFLOW );
+	mtherr( "cephes_kn", UNDERFLOW );
 	return(0.0);
 	}
 k = n;

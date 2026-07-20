@@ -54,18 +54,18 @@ Copyright 1984, 1987, 1988, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double hyperg ( double, double, double );
+extern double cephes_hyperg ( double, double, double );
 extern double exp ( double );
-extern double gamma ( double );
+extern double cephes_gamma ( double );
 extern double log ( double );
 extern double fabs ( double );
 extern double floor ( double );
 #else
-double hyperg(), exp(), gamma(), log(), fabs(), floor();
+double cephes_hyperg(), exp(), cephes_gamma(), log(), fabs(), floor();
 #endif
 extern double MACHEP, MAXNUM;
 
-double iv(double v, double x)
+double cephes_iv(double v, double x)
 {
 int sign;
 double t, ax;
@@ -86,7 +86,7 @@ if( x < 0.0 )
 	{
 	if( t != v )
 		{
-		mtherr( "iv", DOMAIN );
+		mtherr( "cephes_iv", DOMAIN );
 		return( 0.0 );
 		}
 	if( v != 2.0 * floor(v/2.0) )
@@ -100,7 +100,7 @@ if( x == 0.0 )
 		return( 1.0 );
 	if( v < 0.0 )
 		{
-		mtherr( "iv", OVERFLOW );
+		mtherr( "cephes_iv", OVERFLOW );
 		return( MAXNUM );
 		}
 	else
@@ -109,7 +109,7 @@ if( x == 0.0 )
 
 ax = fabs(x);
 t = v * log( 0.5 * ax )  -  x;
-t = sign * exp(t) / gamma( v + 1.0 );
+t = sign * exp(t) / cephes_gamma( v + 1.0 );
 ax = v + 0.5;
-return( t * hyperg( ax,  2.0 * ax,  2.0 * x ) );
+return( t * cephes_hyperg( ax,  2.0 * ax,  2.0 * x ) );
 }

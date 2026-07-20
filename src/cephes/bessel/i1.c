@@ -351,15 +351,15 @@ static unsigned short B[] = {
 
 /*							i1.c	*/
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double cephes_chbevl ( double, void *, int );
 extern double exp ( double );
 extern double sqrt ( double );
 extern double fabs ( double );
 #else
-double chbevl(), exp(), sqrt(), fabs();
+double cephes_chbevl(), exp(), sqrt(), fabs();
 #endif
 
-double i1(double x)
+double cephes_i1(double x)
 {
 double y, z;
 
@@ -367,11 +367,11 @@ z = fabs(x);
 if( z <= 8.0 )
 	{
 	y = (z/2.0) - 2.0;
-	z = chbevl( y, A, 29 ) * z * exp(z);
+	z = cephes_chbevl( y, A, 29 ) * z * exp(z);
 	}
 else
 	{
-	z = exp(z) * chbevl( 32.0/z - 2.0, B, 25 ) / sqrt(z);
+	z = exp(z) * cephes_chbevl( 32.0/z - 2.0, B, 25 ) / sqrt(z);
 	}
 if( x < 0.0 )
 	z = -z;
@@ -380,7 +380,7 @@ return( z );
 
 /*							i1e()	*/
 
-double i1e(double x)
+double cephes_i1e(double x)
 {
 double y, z;
 
@@ -388,11 +388,11 @@ z = fabs(x);
 if( z <= 8.0 )
 	{
 	y = (z/2.0) - 2.0;
-	z = chbevl( y, A, 29 ) * z;
+	z = cephes_chbevl( y, A, 29 ) * z;
 	}
 else
 	{
-	z = chbevl( 32.0/z - 2.0, B, 25 ) / sqrt(z);
+	z = cephes_chbevl( 32.0/z - 2.0, B, 25 ) / sqrt(z);
 	}
 if( x < 0.0 )
 	z = -z;

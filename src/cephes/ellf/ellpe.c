@@ -174,21 +174,21 @@ static unsigned short Q[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
 extern double log ( double );
 #else
-double polevl(), log();
+double cephes_polevl(), log();
 #endif
 
-double ellpe(double x)
+double cephes_ellpe(double x)
 {
 
 if( (x <= 0.0) || (x > 1.0) )
 	{
 	if( x == 0.0 )
 		return( 1.0 );
-	mtherr( "ellpe", DOMAIN );
+	mtherr( "cephes_ellpe", DOMAIN );
 	return( 0.0 );
 	}
-return( polevl(x,P,10) - log(x) * (x * polevl(x,Q,9)) );
+return( cephes_polevl(x,P,10) - log(x) * (x * cephes_polevl(x,Q,9)) );
 }

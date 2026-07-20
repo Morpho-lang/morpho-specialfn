@@ -91,7 +91,7 @@ static double A[] = {
 /* 30 Nov 86 -- error in third coefficient fixed */
 
 
-double zeta(double x, double q)
+double cephes_zeta(double x, double q)
 {
 int i;
 double a, b, k, s, t, w;
@@ -102,7 +102,7 @@ if( x == 1.0 )
 if( x < 1.0 )
 	{
 domerr:
-	mtherr( "zeta", DOMAIN );
+	mtherr( "cephes_zeta", DOMAIN );
 	return(0.0);
 	}
 
@@ -110,7 +110,7 @@ if( q <= 0.0 )
 	{
 	if(q == floor(q))
 		{
-		mtherr( "zeta", SING );
+		mtherr( "cephes_zeta", SING );
 retinf:
 		return( MAXNUM );
 		}

@@ -273,19 +273,19 @@ extern double pow ( double, double );
 extern double log ( double );
 extern double exp ( double );
 extern double sin ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_p1evl ( double, void *, int );
 extern double floor ( double );
 extern double fabs ( double );
 extern int isnan ( double );
 extern int isfinite ( double );
 static double stirf ( double );
-double lgam ( double );
+double cephes_lgam ( double );
 #else
-double pow(), log(), exp(), sin(), polevl(), p1evl(), floor(), fabs();
+double pow(), log(), exp(), sin(), cephes_polevl(), cephes_p1evl(), floor(), fabs();
 int isnan(), isfinite();
 static double stirf();
-double lgam();
+double cephes_lgam();
 #endif
 #ifdef INFINITIES
 extern double INFINITY;
@@ -301,7 +301,7 @@ static double stirf(double x) {
 	double y, w, v;
 
 	w = 1.0/x;
-	w = 1.0 + w * polevl( w, STIR, 4 );
+	w = 1.0 + w * cephes_polevl( w, STIR, 4 );
 	y = exp(x);
 	if( x > MAXSTIR )
 		{ /* Avoid overflow in pow() */
@@ -316,7 +316,7 @@ static double stirf(double x) {
 	return( y );
 }
 
-double gamma(double x) {
+double cephes_gamma(double x) {
 	double p, q, z;
 	int i;
 
@@ -347,7 +347,7 @@ double gamma(double x) {
 				{
 	#ifdef NANS
 	gamnan:
-				mtherr( "gamma", DOMAIN );
+				mtherr( "cephes_gamma", DOMAIN );
 				return (NAN);
 	#else
 				goto goverf;
@@ -369,7 +369,7 @@ double gamma(double x) {
 				return( sgngam * INFINITY);
 	#else
 	goverf:
-				mtherr( "gamma", OVERFLOW );
+				mtherr( "cephes_gamma", OVERFLOW );
 				return( sgngam * MAXNUM);
 	#endif
 				}
@@ -410,8 +410,8 @@ double gamma(double x) {
 		return(z);
 
 	x -= 2.0;
-	p = polevl( x, P, 6 );
-	q = polevl( x, Q, 7 );
+	p = cephes_polevl( x, P, 6 );
+	q = cephes_polevl( x, Q, 7 );
 	return( z * p / q );
 
 	small:
@@ -424,7 +424,7 @@ double gamma(double x) {
 		return( INFINITY );
 	#endif
 	#else
-		mtherr( "gamma", SING );
+		mtherr( "cephes_gamma", SING );
 		return( MAXNUM );
 	#endif
 		}
@@ -566,7 +566,7 @@ static unsigned short LS2P[] = {
 
 /* Logarithm of gamma function */
 
-double lgam(double x) {
+double cephes_lgam(double x) {
 	double p, q, u, w, z;
 	int i;
 
@@ -584,13 +584,13 @@ double lgam(double x) {
 	if( x < -34.0 )
 		{
 		q = -x;
-		w = lgam(q); /* note this modifies sgngam! */
+		w = cephes_lgam(q); /* note this modifies sgngam! */
 		p = floor(q);
 		if( p == q )
 			{
 	lgsing:
 	#ifdef INFINITIES
-			mtherr( "lgam", SING );
+			mtherr( "cephes_lgam", SING );
 			return (INFINITY);
 	#else
 			goto loverf;
@@ -645,7 +645,7 @@ double lgam(double x) {
 			return( log(z) );
 		p -= 2.0;
 		x = x + p;
-		p = x * polevl( x, B, 5 ) / p1evl( x, C, 6);
+		p = x * cephes_polevl( x, B, 5 ) / cephes_p1evl( x, C, 6);
 		return( log(z) + p );
 		}
 
@@ -655,7 +655,7 @@ double lgam(double x) {
 		return( sgngam * INFINITY );
 	#else
 	loverf:
-		mtherr( "lgam", OVERFLOW );
+		mtherr( "cephes_lgam", OVERFLOW );
 		return( sgngam * MAXNUM );
 	#endif
 		}
@@ -670,6 +670,6 @@ double lgam(double x) {
 			- 2.7777777777777777777778e-3) *p
 			+ 0.0833333333333333333333) / x;
 	else
-		q += polevl( p, A, 4 ) / x;
+		q += cephes_polevl( p, A, 4 ) / x;
 	return( q );
 }

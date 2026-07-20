@@ -459,20 +459,20 @@ static unsigned short RQ[32] = {
 #endif
 
 #ifdef ANSIPROT
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_p1evl ( double, void *, int );
 extern double log ( double );
 extern double sin ( double );
 extern double cos ( double );
 extern double sqrt ( double );
-double j0 ( double );
+double cephes_j0 ( double );
 #else
-double polevl(), p1evl(), log(), sin(), cos(), sqrt();
-double j0();
+double cephes_polevl(), cephes_p1evl(), log(), sin(), cos(), sqrt();
+double cephes_j0();
 #endif
 extern double TWOOPI, SQ2OPI, PIO4;
 
-double j0(double x) {
+double cephes_j0(double x) {
 double w, z, p, q, xn;
 
 if( x < 0 )
@@ -485,14 +485,14 @@ if( x <= 5.0 )
 		return( 1.0 - z/4.0 );
 
 	p = (z - DR1) * (z - DR2);
-	p = p * polevl( z, RP, 3)/p1evl( z, RQ, 8 );
+	p = p * cephes_polevl( z, RP, 3)/cephes_p1evl( z, RQ, 8 );
 	return( p );
 	}
 
 w = 5.0/x;
 q = 25.0/(x*x);
-p = polevl( q, PP, 6)/polevl( q, PQ, 6 );
-q = polevl( q, QP, 7)/p1evl( q, QQ, 7 );
+p = cephes_polevl( q, PP, 6)/cephes_polevl( q, PQ, 6 );
+q = cephes_polevl( q, QP, 7)/cephes_p1evl( q, QQ, 7 );
 xn = x - PIO4;
 p = p * cos(xn) - w * q * sin(xn);
 return( p * SQ2OPI / sqrt(x) );
@@ -513,26 +513,26 @@ return( p * SQ2OPI / sqrt(x) );
 */
 extern double MAXNUM;
 
-double y0(double x) {
+double cephes_y0(double x) {
 double w, z, p, q, xn;
 
 if( x <= 5.0 )
 	{
 	if( x <= 0.0 )
 		{
-		mtherr( "y0", DOMAIN );
+		mtherr( "cephes_y0", DOMAIN );
 		return( -MAXNUM );
 		}
 	z = x * x;
-	w = polevl( z, YP, 7) / p1evl( z, YQ, 7 );
-	w += TWOOPI * log(x) * j0(x);
+	w = cephes_polevl( z, YP, 7) / cephes_p1evl( z, YQ, 7 );
+	w += TWOOPI * log(x) * cephes_j0(x);
 	return( w );
 	}
 
 w = 5.0/x;
 z = 25.0 / (x * x);
-p = polevl( z, PP, 6)/polevl( z, PQ, 6 );
-q = polevl( z, QP, 7)/p1evl( z, QQ, 7 );
+p = cephes_polevl( z, PP, 6)/cephes_polevl( z, PQ, 6 );
+q = cephes_polevl( z, QP, 7)/cephes_p1evl( z, QQ, 7 );
 xn = x - PIO4;
 p = p * sin(xn) + w * q * cos(xn);
 return( p * SQ2OPI / sqrt(x) );

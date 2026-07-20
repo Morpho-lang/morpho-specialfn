@@ -52,18 +52,18 @@ Copyright 1984, 1987, 1995, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
 #ifdef ANSIPROT
-extern double igamc ( double, double );
-extern double ndtri ( double );
+extern double cephes_igamc ( double, double );
+extern double cephes_ndtri ( double );
 extern double exp ( double );
 extern double fabs ( double );
 extern double log ( double );
 extern double sqrt ( double );
-extern double lgam ( double );
+extern double cephes_lgam ( double );
 #else
-double igamc(), ndtri(), exp(), fabs(), log(), sqrt(), lgam();
+double cephes_igamc(), cephes_ndtri(), exp(), fabs(), log(), sqrt(), cephes_lgam();
 #endif
 
-double igami(double a, double y0)
+double cephes_igami(double a, double cephes_y0)
 {
 double x0, x1, x, yl, yh, y, d, lgm, dithresh;
 int i, dir;
@@ -77,19 +77,19 @@ dithresh = 5.0 * MACHEP;
 
 /* approximation to inverse function */
 d = 1.0/(9.0*a);
-y = ( 1.0 - d - ndtri(y0) * sqrt(d) );
+y = ( 1.0 - d - cephes_ndtri(cephes_y0) * sqrt(d) );
 x = a * y * y * y;
 
-lgm = lgam(a);
+lgm = cephes_lgam(a);
 
 for( i=0; i<10; i++ )
 	{
 	if( x > x0 || x < x1 )
 		goto ihalve;
-	y = igamc(a,x);
+	y = cephes_igamc(a,x);
 	if( y < yl || y > yh )
 		goto ihalve;
-	if( y < y0 )
+	if( y < cephes_y0 )
 		{
 		x0 = x;
 		yl = y;
@@ -105,7 +105,7 @@ for( i=0; i<10; i++ )
 		goto ihalve;
 	d = -exp(d);
 /* compute the step to the next approximation of x */
-	d = (y - y0)/d;
+	d = (y - cephes_y0)/d;
 	if( fabs(d/x) < MACHEP )
 		goto done;
 	x = x - d;
@@ -122,8 +122,8 @@ if( x0 == MAXNUM )
 	while( x0 == MAXNUM )
 		{
 		x = (1.0 + d) * x;
-		y = igamc( a, x );
-		if( y < y0 )
+		y = cephes_igamc( a, x );
+		if( y < cephes_y0 )
 			{
 			x0 = x;
 			yl = y;
@@ -138,16 +138,16 @@ dir = 0;
 for( i=0; i<400; i++ )
 	{
 	x = x1  +  d * (x0 - x1);
-	y = igamc( a, x );
+	y = cephes_igamc( a, x );
 	lgm = (x0 - x1)/(x1 + x0);
 	if( fabs(lgm) < dithresh )
 		break;
-	lgm = (y - y0)/y0;
+	lgm = (y - cephes_y0)/cephes_y0;
 	if( fabs(lgm) < dithresh )
 		break;
 	if( x <= 0.0 )
 		break;
-	if( y >= y0 )
+	if( y >= cephes_y0 )
 		{
 		x1 = x;
 		yh = y;
@@ -159,7 +159,7 @@ for( i=0; i<400; i++ )
 		else if( dir > 1 )
 			d = 0.5 * d + 0.5; 
 		else
-			d = (y0 - yl)/(yh - yl);
+			d = (cephes_y0 - yl)/(yh - yl);
 		dir += 1;
 		}
 	else
@@ -174,12 +174,12 @@ for( i=0; i<400; i++ )
 		else if( dir < -1 )
 			d = 0.5 * d;
 		else
-			d = (y0 - yl)/(yh - yl);
+			d = (cephes_y0 - yl)/(yh - yl);
 		dir -= 1;
 		}
 	}
 if( x == 0.0 )
-	mtherr( "igami", UNDERFLOW );
+	mtherr( "cephes_igami", UNDERFLOW );
 
 done:
 return( x );

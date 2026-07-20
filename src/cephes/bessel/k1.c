@@ -277,57 +277,57 @@ static unsigned short B[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double cephes_chbevl ( double, void *, int );
 extern double exp ( double );
-extern double i1 ( double );
+extern double cephes_i1 ( double );
 extern double log ( double );
 extern double sqrt ( double );
 #else
-double chbevl(), exp(), i1(), log(), sqrt();
+double cephes_chbevl(), exp(), cephes_i1(), log(), sqrt();
 #endif
 extern double PI;
 extern double MINLOG, MAXNUM;
 
-double k1(double x)
+double cephes_k1(double x)
 {
 double y, z;
 
 z = 0.5 * x;
 if( z <= 0.0 )
 	{
-	mtherr( "k1", DOMAIN );
+	mtherr( "cephes_k1", DOMAIN );
 	return( MAXNUM );
 	}
 
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y =  log(z) * i1(x)  +  chbevl( y, A, 11 ) / x;
+	y =  log(z) * cephes_i1(x)  +  cephes_chbevl( y, A, 11 ) / x;
 	return( y );
 	}
 
-return(  exp(-x) * chbevl( 8.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  exp(-x) * cephes_chbevl( 8.0/x - 2.0, B, 25 ) / sqrt(x) );
 }
 
 
 
 
-double k1e(double x)
+double cephes_k1e(double x)
 {
 double y;
 
 if( x <= 0.0 )
 	{
-	mtherr( "k1e", DOMAIN );
+	mtherr( "cephes_k1e", DOMAIN );
 	return( MAXNUM );
 	}
 
 if( x <= 2.0 )
 	{
 	y = x * x - 2.0;
-	y =  log( 0.5 * x ) * i1(x)  +  chbevl( y, A, 11 ) / x;
+	y =  log( 0.5 * x ) * cephes_i1(x)  +  cephes_chbevl( y, A, 11 ) / x;
 	return( y * exp(x) );
 	}
 
-return(  chbevl( 8.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  cephes_chbevl( 8.0/x - 2.0, B, 25 ) / sqrt(x) );
 }

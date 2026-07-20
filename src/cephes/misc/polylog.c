@@ -206,26 +206,26 @@ static short B4[48] = {
 #endif
 
 #ifdef ANSIPROT
-extern double spence ( double );
-extern double polevl ( double, void *, int );
-extern double p1evl ( double, void *, int );
-extern double zetac ( double );
+extern double cephes_spence ( double );
+extern double cephes_polevl ( double, void *, int );
+extern double cephes_p1evl ( double, void *, int );
+extern double cephes_zetac ( double );
 extern double pow ( double, double );
-extern double powi ( double, int );
+extern double cephes_powi ( double, int );
 extern double log ( double );
-extern double fac ( int i );
+extern double cephes_fac ( int i );
 extern double fabs (double);
-double polylog (int, double);
+double cephes_polylog (int, double);
 #else
-extern double spence(), polevl(), p1evl(), zetac();
-extern double pow(), powi(), log();
-extern double fac(); /* factorial */
+extern double cephes_spence(), cephes_polevl(), cephes_p1evl(), cephes_zetac();
+extern double pow(), cephes_powi(), log();
+extern double cephes_fac(); /* factorial */
 extern double fabs();
-double polylog();
+double cephes_polylog();
 #endif
 extern double MACHEP;
 
-double polylog(int n, double x)
+double cephes_polylog(int n, double x)
 {
   double h, k, p, s, t, u, xc, z;
   int i, j;
@@ -256,7 +256,7 @@ double polylog(int n, double x)
      Not defined for x > 1.  Use cpolylog if you need that.  */
   if (x > 1.0 || n < -1)
     {
-      mtherr("polylog", DOMAIN);
+      mtherr("cephes_polylog", DOMAIN);
       return 0.0;
     }
 
@@ -269,7 +269,7 @@ double polylog(int n, double x)
   /* Argument +1 */
   if (x == 1.0 && n > 1)
     {
-      s = zetac ((double) n) + 1.0;
+      s = cephes_zetac ((double) n) + 1.0;
       return s;
     }
 
@@ -281,8 +281,8 @@ double polylog(int n, double x)
   if (x == -1.0 && n > 1)
     {
       /* Li_n(1) = zeta(n) */
-      s = zetac ((double) n) + 1.0;
-      s = s * (powi (2.0, 1 - n) - 1.0);
+      s = cephes_zetac ((double) n) + 1.0;
+      s = s * (cephes_powi (2.0, 1 - n) - 1.0);
       return s;
     }
 
@@ -303,7 +303,7 @@ double polylog(int n, double x)
       for (r = 1; r <= n / 2; r++)
 	{
 	  j = 2 * r;
-	  p = polylog (j, -1.0);
+	  p = cephes_polylog (j, -1.0);
 	  j = n - j;
 	  if (j == 0)
 	    {
@@ -311,22 +311,22 @@ double polylog(int n, double x)
 	      break;
 	    }
 	  q = (double) j;
-	  q = pow (w, q) * p / fac (j);
+	  q = pow (w, q) * p / cephes_fac (j);
 	  s = s + q;
 	}
       s = 2.0 * s;
-      q = polylog (n, 1.0 / x);
+      q = cephes_polylog (n, 1.0 / x);
       if (n & 1)
 	q = -q;
       s = s - q;
-      s = s - pow (w, (double) n) / fac (n);
+      s = s - pow (w, (double) n) / cephes_fac (n);
       return s;
     }
 
   if (n == 2)
     {
       if (x < 0.0 || x > 1.0)
-	return (spence (1.0 - x));
+	return (cephes_spence (1.0 - x));
     }
 
 
@@ -352,9 +352,9 @@ double polylog(int n, double x)
 	  xc = 1.0 - x;
 	  s = s - 0.5 * u * u * log(xc);
           s = s + PI * PI * u / 6.0;
-          s = s - polylog (3, -xc/x);
-	  s = s - polylog (3, xc);
-	  s = s + zetac(3.0);
+          s = s - cephes_polylog (3, -xc/x);
+	  s = s - cephes_polylog (3, xc);
+	  s = s + cephes_zetac(3.0);
 	  s = s + 1.0;
 	  return s;
 	}
@@ -381,7 +381,7 @@ if (n == 4)
     if (x >= 0.875)
       {
 	u = 1.0 - x;
-	s = polevl(u, A4, 12) / p1evl(u, B4, 12);
+	s = cephes_polevl(u, A4, 12) / cephes_p1evl(u, B4, 12);
 	s =  s * u * u - 1.202056903159594285400 * u;
 	s +=  1.0823232337111381915160;
 	return s;
@@ -421,21 +421,21 @@ if (n == 4)
   for (i = 1; i < n; i++)
     h = h + 1.0/i;
   p = 1.0;
-  s = zetac((double)n) + 1.0;
+  s = cephes_zetac((double)n) + 1.0;
   for (j=1; j<=n+1; j++)
   {
     p = p * z / j;
     if (j == n-1)
       s = s + h * p;
     else
-      s = s + (zetac((double)(n-j)) + 1.0) * p;
+      s = s + (cephes_zetac((double)(n-j)) + 1.0) * p;
   }
   j = n + 3;
   z = z * z;
   for(;;)
     {
       p = p * z / ((j-1)*j);
-      h = (zetac((double)(n-j)) + 1.0);
+      h = (cephes_zetac((double)(n-j)) + 1.0);
       h = h * p;
       s = s + h;
       if (fabs(h/s) < MACHEP)
@@ -454,12 +454,12 @@ pseries:
     {
       p = p * x;
       k += 1.0;
-      h = p / powi(k, n);
+      h = p / cephes_powi(k, n);
       s = s + h;
     }
   while (fabs(h/s) > MACHEP);
-  s += x * x * x / powi(3.0,n);
-  s += x * x / powi(2.0,n);
+  s += x * x * x / cephes_powi(3.0,n);
+  s += x * x / cephes_powi(2.0,n);
   s += x;
   return s;
 }

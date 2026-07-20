@@ -84,21 +84,21 @@ Copyright 1985, 1987, 2000 by Stephen L. Moshier
 
 #include "mconf.h"
 #ifdef ANSIPROT
-extern double lgam ( double );
+extern double cephes_lgam ( double );
 extern double exp ( double );
 extern double log ( double );
 extern double fabs ( double );
-extern double igam ( double, double );
-extern double igamc ( double, double );
+extern double cephes_igam ( double, double );
+extern double cephes_igamc ( double, double );
 #else
-double lgam(), exp(), log(), fabs(), igam(), igamc();
+double cephes_lgam(), exp(), log(), fabs(), cephes_igam(), cephes_igamc();
 #endif
 
 extern double MACHEP, MAXLOG;
 static double big = 4.503599627370496e15;
 static double biginv =  2.22044604925031308085e-16;
 
-double igamc(double a, double x) {
+double cephes_igamc(double a, double x) {
 double ans, ax, c, yc, r, t, y, z;
 double pk, pkm1, pkm2, qk, qkm1, qkm2;
 
@@ -106,12 +106,12 @@ if( (x <= 0) || ( a <= 0) )
 	return( 1.0 );
 
 if( (x < 1.0) || (x < a) )
-	return( 1.0 - igam(a,x) );
+	return( 1.0 - cephes_igam(a,x) );
 
-ax = a * log(x) - x - lgam(a);
+ax = a * log(x) - x - cephes_lgam(a);
 if( ax < -MAXLOG )
 	{
-	mtherr( "igamc", UNDERFLOW );
+	mtherr( "cephes_igamc", UNDERFLOW );
 	return( 0.0 );
 	}
 ax = exp(ax);
@@ -171,20 +171,20 @@ return( ans * ax );
  *
  */
 
-double igam(double a, double x) {
+double cephes_igam(double a, double x) {
 double ans, ax, c, r;
 
 if( (x <= 0) || ( a <= 0) )
 	return( 0.0 );
 
 if( (x > 1.0) && (x > a ) )
-	return( 1.0 - igamc(a,x) );
+	return( 1.0 - cephes_igamc(a,x) );
 
 /* Compute  x**a * exp(-x) / gamma(a)  */
-ax = a * log(x) - x - lgam(a);
+ax = a * log(x) - x - cephes_lgam(a);
 if( ax < -MAXLOG )
 	{
-	mtherr( "igam", UNDERFLOW );
+	mtherr( "cephes_igam", UNDERFLOW );
 	return( 0.0 );
 	}
 ax = exp(ax);

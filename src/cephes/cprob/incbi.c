@@ -48,19 +48,19 @@ Copyright 1984, 1996, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MAXNUM, MAXLOG, MINLOG;
 #ifdef ANSIPROT
-extern double ndtri ( double );
+extern double cephes_ndtri ( double );
 extern double exp ( double );
 extern double fabs ( double );
 extern double log ( double );
 extern double sqrt ( double );
-extern double lgam ( double );
-extern double incbet ( double, double, double );
+extern double cephes_lgam ( double );
+extern double cephes_incbet ( double, double, double );
 #else
-double ndtri(), exp(), fabs(), log(), sqrt(), lgam(), incbet();
+double cephes_ndtri(), exp(), fabs(), log(), sqrt(), cephes_lgam(), cephes_incbet();
 #endif
 
-double incbi(double aa, double bb, double yy0) {
-double a, b, y0, d, y, x, x0, x1, lgm, yp, di, dithresh, yl, yh, xt;
+double cephes_incbi(double aa, double bb, double yy0) {
+double a, b, cephes_y0, d, y, x, x0, x1, lgm, yp, di, dithresh, yl, yh, xt;
 int i, rflg, dir, nflg;
 
 
@@ -81,9 +81,9 @@ if( aa <= 1.0 || bb <= 1.0 )
 	rflg = 0;
 	a = aa;
 	b = bb;
-	y0 = yy0;
+	cephes_y0 = yy0;
 	x = a/(a+b);
-	y = incbet( a, b, x );
+	y = cephes_incbet( a, b, x );
 	goto ihalve;
 	}
 else
@@ -92,14 +92,14 @@ else
 	}
 /* approximation to inverse function */
 
-yp = -ndtri(yy0);
+yp = -cephes_ndtri(yy0);
 
 if( yy0 > 0.5 )
 	{
 	rflg = 1;
 	a = bb;
 	b = aa;
-	y0 = 1.0 - yy0;
+	cephes_y0 = 1.0 - yy0;
 	yp = -yp;
 	}
 else
@@ -107,7 +107,7 @@ else
 	rflg = 0;
 	a = aa;
 	b = bb;
-	y0 = yy0;
+	cephes_y0 = yy0;
 	}
 
 lgm = (yp * yp - 3.0)/6.0;
@@ -122,8 +122,8 @@ if( d < MINLOG )
 	goto under;
 	}
 x = a/( a + b * exp(d) );
-y = incbet( a, b, x );
-yp = (y - y0)/y0;
+y = cephes_incbet( a, b, x );
+yp = (y - cephes_y0)/cephes_y0;
 if( fabs(yp) < 0.2 )
 	goto newt;
 
@@ -146,15 +146,15 @@ for( i=0; i<100; i++ )
 			if( x == 0.0 )
 				goto under;
 			}
-		y = incbet( a, b, x );
+		y = cephes_incbet( a, b, x );
 		yp = (x1 - x0)/(x1 + x0);
 		if( fabs(yp) < dithresh )
 			goto newt;
-		yp = (y-y0)/y0;
+		yp = (y-cephes_y0)/cephes_y0;
 		if( fabs(yp) < dithresh )
 			goto newt;
 		}
-	if( y < y0 )
+	if( y < cephes_y0 )
 		{
 		x0 = x;
 		yl = y;
@@ -168,7 +168,7 @@ for( i=0; i<100; i++ )
 		else if( dir > 1 )
 			di = 0.5 * di + 0.5; 
 		else
-			di = (y0 - y)/(yh - yl);
+			di = (cephes_y0 - y)/(yh - yl);
 		dir += 1;
 		if( x0 > 0.75 )
 			{
@@ -177,17 +177,17 @@ for( i=0; i<100; i++ )
 				rflg = 0;
 				a = aa;
 				b = bb;
-				y0 = yy0;
+				cephes_y0 = yy0;
 				}
 			else
 				{
 				rflg = 1;
 				a = bb;
 				b = aa;
-				y0 = 1.0 - yy0;
+				cephes_y0 = 1.0 - yy0;
 				}
 			x = 1.0 - x;
-			y = incbet( a, b, x );
+			y = cephes_incbet( a, b, x );
 			x0 = 0.0;
 			yl = 0.0;
 			x1 = 1.0;
@@ -214,11 +214,11 @@ for( i=0; i<100; i++ )
 		else if( dir < -1 )
 			di = 0.5 * di;
 		else
-			di = (y - y0)/(yh - yl);
+			di = (y - cephes_y0)/(yh - yl);
 		dir -= 1;
 		}
 	}
-mtherr( "incbi", PLOSS );
+mtherr( "cephes_incbi", PLOSS );
 if( x0 >= 1.0 )
 	{
 	x = 1.0 - MACHEP;
@@ -227,7 +227,7 @@ if( x0 >= 1.0 )
 if( x <= 0.0 )
 	{
 under:
-	mtherr( "incbi", UNDERFLOW );
+	mtherr( "cephes_incbi", UNDERFLOW );
 	x = 0.0;
 	goto done;
 	}
@@ -237,13 +237,13 @@ newt:
 if( nflg )
 	goto done;
 nflg = 1;
-lgm = lgam(a+b) - lgam(a) - lgam(b);
+lgm = cephes_lgam(a+b) - cephes_lgam(a) - cephes_lgam(b);
 
 for( i=0; i<8; i++ )
 	{
 	/* Compute the function at this point. */
 	if( i != 0 )
-		y = incbet(a,b,x);
+		y = cephes_incbet(a,b,x);
 	if( y < yl )
 		{
 		x = x0;
@@ -254,7 +254,7 @@ for( i=0; i<8; i++ )
 		x = x1;
 		y = yh;
 		}
-	else if( y < y0 )
+	else if( y < cephes_y0 )
 		{
 		x0 = x;
 		yl = y;
@@ -274,7 +274,7 @@ for( i=0; i<8; i++ )
 		break;
 	d = exp(d);
 	/* Compute the step to the next approximation of x. */
-	d = (y - y0)/d;
+	d = (y - cephes_y0)/d;
 	xt = x - d;
 	if( xt <= x0 )
 		{

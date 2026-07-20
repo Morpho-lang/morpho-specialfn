@@ -112,14 +112,14 @@ static unsigned short A[] = {
 extern double floor ( double );
 extern double log ( double );
 extern double tan ( double );
-extern double polevl ( double, void *, int );
+extern double cephes_polevl ( double, void *, int );
 #else
-double floor(), log(), tan(), polevl();
+double floor(), log(), tan(), cephes_polevl();
 #endif
 extern double PI, MAXNUM;
 
 
-double psi(double x)
+double cephes_psi(double x)
 {
 double p, q, nz, s, w, y, z;
 int i, n, negative;
@@ -134,7 +134,7 @@ if( x <= 0.0 )
 	p = floor(q);
 	if( p == q )
 		{
-		mtherr( "psi", SING );
+		mtherr( "cephes_psi", SING );
 		return( MAXNUM );
 		}
 /* Remove the zeros of tan(PI x)
@@ -182,7 +182,7 @@ while( s < 10.0 )
 if( s < 1.0e17 )
 	{
 	z = 1.0/(s * s);
-	y = z * polevl( z, A, 6 );
+	y = z * cephes_polevl( z, A, 6 );
 	}
 else
 	y = 0.0;

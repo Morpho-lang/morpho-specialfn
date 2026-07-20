@@ -69,8 +69,8 @@ Copyright 1984, 1995, 2000 by Stephen L. Moshier
 
 extern double MACHEP, MINLOG, MAXLOG;
 #ifdef ANSIPROT
-extern double gamma ( double );
-extern double lgam ( double );
+extern double cephes_gamma ( double );
+extern double cephes_lgam ( double );
 extern double exp ( double );
 extern double log ( double );
 extern double pow ( double, double );
@@ -79,7 +79,7 @@ static double incbcf(double, double, double);
 static double incbd(double, double, double);
 static double pseries(double, double, double);
 #else
-double gamma(), lgam(), exp(), log(), pow(), fabs();
+double cephes_gamma(), cephes_lgam(), exp(), log(), pow(), fabs();
 static double incbcf(), incbd(), pseries();
 #endif
 
@@ -87,7 +87,7 @@ static double big = 4.503599627370496e15;
 static double biginv =  2.22044604925031308085e-16;
 
 
-double incbet(double aa, double bb, double xx) {
+double cephes_incbet(double aa, double bb, double xx) {
 double a, b, t, x, xc, w, y;
 int flag;
 
@@ -101,7 +101,7 @@ if( (xx <= 0.0) || ( xx >= 1.0) )
 	if( xx == 1.0 )
 		return( 1.0 );
 domerr:
-	mtherr( "incbet", DOMAIN );
+	mtherr( "cephes_incbet", DOMAIN );
 	return( 0.0 );
 	}
 
@@ -156,11 +156,11 @@ if( (a+b) < MAXGAM && fabs(y) < MAXLOG && fabs(t) < MAXLOG )
 	t *= pow(x,a);
 	t /= a;
 	t *= w;
-	t *= gamma(a+b) / (gamma(a) * gamma(b));
+	t *= cephes_gamma(a+b) / (cephes_gamma(a) * cephes_gamma(b));
 	goto done;
 	}
 /* Resort to logarithms.  */
-y += t + lgam(a+b) - lgam(a) - lgam(b);
+y += t + cephes_lgam(a+b) - cephes_lgam(a) - cephes_lgam(b);
 y += log(w/a);
 if( y < MINLOG )
 	t = 0.0;
@@ -185,11 +185,11 @@ return( t );
 
 static double incbcf(double a, double b, double x) {
 double xk, pk, pkm1, pkm2, qk, qkm1, qkm2;
-double k1, k2, k3, k4, k5, k6, k7, k8;
+double cephes_k1, k2, k3, k4, k5, k6, k7, k8;
 double r, t, ans, thresh;
 int n;
 
-k1 = a;
+cephes_k1 = a;
 k2 = a + b;
 k3 = a;
 k4 = a + 1.0;
@@ -209,7 +209,7 @@ thresh = 3.0 * MACHEP;
 do
 	{
 	
-	xk = -( x * k1 * k2 )/( k3 * k4 );
+	xk = -( x * cephes_k1 * k2 )/( k3 * k4 );
 	pk = pkm1 +  pkm2 * xk;
 	qk = qkm1 +  qkm2 * xk;
 	pkm2 = pkm1;
@@ -238,7 +238,7 @@ do
 	if( t < thresh )
 		goto cdone;
 
-	k1 += 1.0;
+	cephes_k1 += 1.0;
 	k2 += 1.0;
 	k3 += 2.0;
 	k4 += 2.0;
@@ -275,11 +275,11 @@ return(ans);
 
 static double incbd(double a, double b, double x) {
 double xk, pk, pkm1, pkm2, qk, qkm1, qkm2;
-double k1, k2, k3, k4, k5, k6, k7, k8;
+double cephes_k1, k2, k3, k4, k5, k6, k7, k8;
 double r, t, ans, z, thresh;
 int n;
 
-k1 = a;
+cephes_k1 = a;
 k2 = b - 1.0;
 k3 = a;
 k4 = a + 1.0;
@@ -300,7 +300,7 @@ thresh = 3.0 * MACHEP;
 do
 	{
 	
-	xk = -( z * k1 * k2 )/( k3 * k4 );
+	xk = -( z * cephes_k1 * k2 )/( k3 * k4 );
 	pk = pkm1 +  pkm2 * xk;
 	qk = qkm1 +  qkm2 * xk;
 	pkm2 = pkm1;
@@ -329,7 +329,7 @@ do
 	if( t < thresh )
 		goto cdone;
 
-	k1 += 1.0;
+	cephes_k1 += 1.0;
 	k2 -= 1.0;
 	k3 += 2.0;
 	k4 += 2.0;
@@ -386,12 +386,12 @@ s += ai;
 u = a * log(x);
 if( (a+b) < MAXGAM && fabs(u) < MAXLOG )
 	{
-	t = gamma(a+b)/(gamma(a)*gamma(b));
+	t = cephes_gamma(a+b)/(cephes_gamma(a)*cephes_gamma(b));
 	s = s * t * pow(x,a);
 	}
 else
 	{
-	t = lgam(a+b) - lgam(a) - lgam(b) + u + log(s);
+	t = cephes_lgam(a+b) - cephes_lgam(a) - cephes_lgam(b) + u + log(s);
 	if( t < MINLOG )
 		s = 0.0;
 	else

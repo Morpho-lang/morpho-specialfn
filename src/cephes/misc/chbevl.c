@@ -56,7 +56,7 @@ Copyright 1984, 1987 by Stephen L. Moshier
 Direct inquiries to 30 Frost Street, Cambridge, MA 02140
 */
 
-double chbevl(double x, double array[], int n) {
+double cephes_chbevl(double x, double array[], int n) {
     double b0, b1, b2, *p;
     int i;
 

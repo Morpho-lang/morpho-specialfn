@@ -4,7 +4,7 @@ Please note that this morpho package is comprised of code from an external packa
 
 ## Cephes copyright statement
 
-The `specialfn` package is based in part on the [Cephes mathematical library](http://www.netlib.org/cephes/). Cephes files are in `/src/cephes`. These have been modified from their original version to use ANSI function definitions, and in one case (`mtherr.c`) to provide `morpho` error reporting.
+The `specialfn` package is based in part on the [Cephes mathematical library](http://www.netlib.org/cephes/). Cephes files are in `/src/cephes`. These have been modified from their original version by converting them to use ANSI function definitions and renaming with a `cephes_` prefix to avoid collisions with POSIX symbols. One file,`mtherr.c` was rewritten to provide Morpho error reporting.
  
 The Cephes library is accompanied by the following statement: 
 

@@ -93,22 +93,22 @@ Copyright 1984, 1987, 1992, 2000 by Stephen L. Moshier
 extern double fabs ( double );
 extern double pow ( double, double );
 extern double round ( double );
-extern double gamma ( double );
+extern double cephes_gamma ( double );
 extern double log ( double );
 extern double exp ( double );
-extern double psi ( double );
+extern double cephes_psi ( double );
 static double hyt2f1(double, double, double, double, double *);
 static double hys2f1(double, double, double, double, double *);
-double hyp2f1(double, double, double, double);
+double cephes_hyp2f1(double, double, double, double);
 #else
-double fabs(), pow(), round(), gamma(), log(), exp(), psi();
+double fabs(), pow(), round(), cephes_gamma(), log(), exp(), cephes_psi();
 static double hyt2f1();
 static double hys2f1();
-double hyp2f1();
+double cephes_hyp2f1();
 #endif
 extern double MAXNUM, MACHEP;
 
-double hyp2f1(double a, double b, double c, double x)
+double cephes_hyp2f1(double a, double b, double c, double x)
 {
 double d, d1, d2, e;
 double p, q, r, s, y, ax;
@@ -199,7 +199,7 @@ if( fabs(ax-1.0) < EPS )			/* |x| == 1.0	*/
 			}
 		if( d <= 0.0 )
 			goto hypdiv;
-		y = gamma(c)*gamma(d)/(gamma(p)*gamma(r));
+		y = cephes_gamma(c)*cephes_gamma(d)/(cephes_gamma(p)*cephes_gamma(r));
 		goto hypdon;
 		}
 
@@ -221,8 +221,8 @@ if( d < 0.0 )
 	err = 0.0;
 	aid = 2 - id;
 	e = c + aid;
-	d2 = hyp2f1(a,b,e,x);
-	d1 = hyp2f1(a,b,e+1.0,x);
+	d2 = cephes_hyp2f1(a,b,e,x);
+	d1 = cephes_hyp2f1(a,b,e+1.0,x);
 	q = a + b + 1.0;
 	for( i=0; i<aid; i++ )
 		{
@@ -246,7 +246,7 @@ y = hyt2f1( a, b, c, x, &err );
 hypdon:
 if( err > ETHRESH )
 	{
-	mtherr( "hyp2f1", PLOSS );
+	mtherr( "cephes_hyp2f1", PLOSS );
 /*	printf( "Estimated err = %.2e\n", err ); */
 	}
 return(y);
@@ -260,7 +260,7 @@ goto hypdon;
 
 /* The alarm exit */
 hypdiv:
-mtherr( "hyp2f1", OVERFLOW );
+mtherr( "cephes_hyp2f1", OVERFLOW );
 return( MAXNUM );
 }
 
@@ -275,7 +275,7 @@ return( MAXNUM );
 static double hyt2f1(double a, double b, double c, double x, double *loss)
 {
 double p, q, r, s, t, y, d, err, err1;
-double ax, id, d1, d2, e, y1;
+double ax, id, d1, d2, e, cephes_y1;
 int i, aid;
 
 err = 0.0;
@@ -304,9 +304,9 @@ if( fabs(d-id) > EPS ) /* test for integer c-a-b */
 		goto done;
 /* If power series fails, then apply AMS55 #15.3.6 */
 	q = hys2f1( a, b, 1.0-d, s, &err );	
-	q *= gamma(d) /(gamma(c-a) * gamma(c-b));
+	q *= cephes_gamma(d) /(cephes_gamma(c-a) * cephes_gamma(c-b));
 	r = pow(s,d) * hys2f1( c-a, c-b, d+1.0, s, &err1 );
-	r *= gamma(-d)/(gamma(a) * gamma(b));
+	r *= cephes_gamma(-d)/(cephes_gamma(a) * cephes_gamma(b));
 	y = q + r;
 
 	q = fabs(q); /* estimate cancellation error */
@@ -315,7 +315,7 @@ if( fabs(d-id) > EPS ) /* test for integer c-a-b */
 		r = q;
 	err += err1 + (MACHEP*r)/y;
 
-	y *= gamma(c);
+	y *= cephes_gamma(c);
 	goto done;
 	}
 else
@@ -339,15 +339,15 @@ else
 	ax = log(s);
 
 	/* sum for t = 0 */
-	y = psi(1.0) + psi(1.0+e) - psi(a+d1) - psi(b+d1) - ax;
-	y /= gamma(e+1.0);
+	y = cephes_psi(1.0) + cephes_psi(1.0+e) - cephes_psi(a+d1) - cephes_psi(b+d1) - ax;
+	y /= cephes_gamma(e+1.0);
 
-	p = (a+d1) * (b+d1) * s / gamma(e+2.0);	/* Poch for t=1 */
+	p = (a+d1) * (b+d1) * s / cephes_gamma(e+2.0);	/* Poch for t=1 */
 	t = 1.0;
 	do
 		{
-		r = psi(1.0+t) + psi(1.0+t+e) - psi(a+t+d1)
-			- psi(b+t+d1) - ax;
+		r = cephes_psi(1.0+t) + cephes_psi(1.0+t+e) - cephes_psi(a+t+d1)
+			- cephes_psi(b+t+d1) - ax;
 		q = p * r;
 		y += q;
 		p *= s * (a+t+d1) / (t+1.0);
@@ -359,11 +359,11 @@ else
 
 	if( id == 0.0 )
 		{
-		y *= gamma(c)/(gamma(a)*gamma(b));
+		y *= cephes_gamma(c)/(cephes_gamma(a)*cephes_gamma(b));
 		goto psidon;
 		}
 
-	y1 = 1.0;
+	cephes_y1 = 1.0;
 
 	if( aid == 1 )
 		goto nosum;
@@ -376,13 +376,13 @@ else
 		p *= s * (a+t+d2) * (b+t+d2) / r;
 		t += 1.0;
 		p /= t;
-		y1 += p;
+		cephes_y1 += p;
 		}
 nosum:
-	p = gamma(c);
-	y1 *= gamma(e) * p / (gamma(a+d1) * gamma(b+d1));
+	p = cephes_gamma(c);
+	cephes_y1 *= cephes_gamma(e) * p / (cephes_gamma(a+d1) * cephes_gamma(b+d1));
 
-	y *= p / (gamma(a+d2) * gamma(b+d2));
+	y *= p / (cephes_gamma(a+d2) * cephes_gamma(b+d2));
 	if( (aid & 1) != 0 )
 		y = -y;
 
@@ -390,9 +390,9 @@ nosum:
 	if( id > 0.0 )
 		y *= q;
 	else
-		y1 *= q;
+		cephes_y1 *= q;
 
-	y += y1;
+	y += cephes_y1;
 psidon:
 	goto done;
 	}

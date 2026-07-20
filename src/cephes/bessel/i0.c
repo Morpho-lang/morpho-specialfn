@@ -352,14 +352,14 @@ static unsigned short B[] = {
 #endif
 
 #ifdef ANSIPROT
-extern double chbevl ( double, void *, int );
+extern double cephes_chbevl ( double, void *, int );
 extern double exp ( double );
 extern double sqrt ( double );
 #else
-double chbevl(), exp(), sqrt();
+double cephes_chbevl(), exp(), sqrt();
 #endif
 
-double i0(double x)
+double cephes_i0(double x)
 {
 double y;
 
@@ -368,17 +368,17 @@ if( x < 0 )
 if( x <= 8.0 )
 	{
 	y = (x/2.0) - 2.0;
-	return( exp(x) * chbevl( y, A, 30 ) );
+	return( exp(x) * cephes_chbevl( y, A, 30 ) );
 	}
 
-return(  exp(x) * chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  exp(x) * cephes_chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
 
 }
 
 
 
 
-double i0e(double x)
+double cephes_i0e(double x)
 {
 double y;
 
@@ -387,9 +387,9 @@ if( x < 0 )
 if( x <= 8.0 )
 	{
 	y = (x/2.0) - 2.0;
-	return( chbevl( y, A, 30 ) );
+	return( cephes_chbevl( y, A, 30 ) );
 	}
 
-return(  chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
+return(  cephes_chbevl( 32.0/x - 2.0, B, 25 ) / sqrt(x) );
 
 }
